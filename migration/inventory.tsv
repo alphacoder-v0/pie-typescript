@@ -1,0 +1,1375 @@
+# guard semantics: allocation-guard=panic/unwrap/expect (abort op, throw invariant); precondition-guard=Result/anyhow error path (record+partial result); n/a=non-error site
+site	construct	rulebook_ref	guard	note
+crates/mcp/src/client.rs:30	oneshot	§2.2 withResolvers	n/a	type InflightMap = HashMap<u64, oneshot::Sender<Result<serde_json::Value, RpcError>>>;
+crates/mcp/src/client.rs:39	Mutex	§2.2 await-in-critical-section test	n/a	inflight: Arc<Mutex<InflightMap>>,
+crates/mcp/src/client.rs:75	Mutex	§2.2 await-in-critical-section test	n/a	inflight: Arc<Mutex<InflightMap>>,
+crates/mcp/src/client.rs:76	Mutex	§2.2 await-in-critical-section test	n/a	initialized: Arc<Mutex<bool>>,
+crates/mcp/src/client.rs:79	Mutex	§2.2 await-in-critical-section test	n/a	catalog: Arc<Mutex<Vec<McpTool>>>,
+crates/mcp/src/client.rs:85	mpsc channel	§2.2 AsyncQueue	n/a	notify_rx: Mutex<Option<mpsc::UnboundedReceiver<McpServerNotification>>>,
+crates/mcp/src/client.rs:85	Mutex	§2.2 await-in-critical-section test	n/a	notify_rx: Mutex<Option<mpsc::UnboundedReceiver<McpServerNotification>>>,
+crates/mcp/src/client.rs:91	Mutex	§2.2 await-in-critical-section test	n/a	let inflight: Arc<Mutex<InflightMap>> = Arc::new(Mutex::new(HashMap::new()));
+crates/mcp/src/client.rs:94	mpsc channel	§2.2 AsyncQueue	n/a	let (pump_notify_tx, notify_rx) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/mcp/src/client.rs:95	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/mcp/src/client.rs:124	unwrap	§2.4 invariant()	allocation-guard	let id = id.unwrap();
+crates/mcp/src/client.rs:179	mpsc channel	§2.2 AsyncQueue	n/a	pub fn take_notifications(&self) -> Option<mpsc::UnboundedReceiver<McpServerNotification>>
+crates/mcp/src/client.rs:199	Notify	§2.2 Signal	n/a	// Notify server that we're ready.
+crates/mcp/src/client.rs:268	oneshot	§2.2 withResolvers	n/a	let (tx, rx) = oneshot::channel();
+crates/mcp/src/client.rs:296	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/mcp/src/http.rs:104	Mutex	§2.2 await-in-critical-section test	n/a	auth: Arc<Mutex<HttpMcpAuth>>,
+crates/mcp/src/http.rs:108	mpsc channel	§2.2 AsyncQueue	n/a	tx: mpsc::Sender<Result<String, McpError>>,
+crates/mcp/src/http.rs:109	mpsc channel	§2.2 AsyncQueue	n/a	rx: AsyncMutex<mpsc::Receiver<Result<String, McpError>>>,
+crates/mcp/src/http.rs:109	Mutex	§2.2 await-in-critical-section test	n/a	rx: AsyncMutex<mpsc::Receiver<Result<String, McpError>>>,
+crates/mcp/src/http.rs:111	Mutex	§2.2 await-in-critical-section test	n/a	sse_task: AsyncMutex<Option<JoinHandle<()>>>,
+crates/mcp/src/http.rs:129	mpsc channel	§2.2 AsyncQueue	n/a	let (tx, rx) = mpsc::channel(256);
+crates/mcp/src/http.rs:216	Mutex	§2.2 await-in-critical-section test	n/a	auth: Arc<Mutex<HttpMcpAuth>>,
+crates/mcp/src/http.rs:221	mpsc channel	§2.2 AsyncQueue	n/a	tx: mpsc::Sender<Result<String, McpError>>,
+crates/mcp/src/http.rs:224	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/mcp/src/http.rs:278	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/mcp/src/http.rs:290	mpsc channel	§2.2 AsyncQueue	n/a	tx: mpsc::Sender<Result<String, McpError>>,
+crates/mcp/src/http.rs:306	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/mcp/src/http.rs:339	mpsc channel	§2.2 AsyncQueue	n/a	tx: mpsc::Sender<Result<String, McpError>>,
+crates/mcp/src/http.rs:341	Mutex	§2.2 await-in-critical-section test	n/a	last_event_id: Option<std::sync::Arc<Mutex<Option<String>>>>,
+crates/mcp/src/http.rs:381	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/mcp/src/http.rs:489	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/mcp/src/protocol.rs:92	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type")]
+crates/mcp/src/stdio.rs:18	Mutex	§2.2 await-in-critical-section test	n/a	stdin: AsyncMutex<ChildStdin>,
+crates/mcp/src/stdio.rs:19	mpsc channel	§2.2 AsyncQueue	n/a	rx: AsyncMutex<tokio::sync::mpsc::Receiver<Result<String, McpError>>>,
+crates/mcp/src/stdio.rs:19	Mutex	§2.2 await-in-critical-section test	n/a	rx: AsyncMutex<tokio::sync::mpsc::Receiver<Result<String, McpError>>>,
+crates/mcp/src/stdio.rs:20	Mutex	§2.2 await-in-critical-section test	n/a	child: AsyncMutex<Option<Child>>,
+crates/mcp/src/stdio.rs:22	Mutex	§2.2 await-in-critical-section test	n/a	stderr_tail: Arc<Mutex<Vec<String>>>,
+crates/mcp/src/stdio.rs:50	mpsc channel	§2.2 AsyncQueue	n/a	let (tx, rx) = tokio::sync::mpsc::channel::<Result<String, McpError>>(64);
+crates/mcp/src/stdio.rs:52	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/mcp/src/stdio.rs:73	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/api_registry.rs:51	Mutex	§2.2 await-in-critical-section test	n/a	fn registry() -> &'static Mutex<Registry> {
+crates/ai/src/api_registry.rs:52	Mutex	§2.2 await-in-critical-section test	n/a	static CELL: OnceLock<Mutex<Registry>> = OnceLock::new();
+crates/ai/src/api_registry.rs:61	expect	§2.4 invariant()	allocation-guard	let mut reg = registry().lock().expect("registry poisoned");
+crates/ai/src/api_registry.rs:78	expect	§2.4 invariant()	allocation-guard	let reg = registry().lock().expect("registry poisoned");
+crates/ai/src/api_registry.rs:86	expect	§2.4 invariant()	allocation-guard	let mut reg = registry().lock().expect("registry poisoned");
+crates/ai/src/api_registry.rs:92	expect	§2.4 invariant()	allocation-guard	let mut reg = registry().lock().expect("registry poisoned");
+crates/ai/src/api_registry.rs:99	expect	§2.4 invariant()	allocation-guard	let reg = registry().lock().expect("registry poisoned");
+crates/ai/src/api_registry.rs:182	Mutex	§2.2 await-in-critical-section test	n/a	fn registry_test_lock() -> &'static TokioMutex<()> {
+crates/ai/src/api_registry.rs:183	Mutex	§2.2 await-in-critical-section test	n/a	static CELL: OnceLock<TokioMutex<()>> = OnceLock::new();
+crates/ai/src/api_registry.rs:279	expect	§2.4 invariant()	allocation-guard	let handle = get_api_provider(&Api::from("race-api")).expect("provider handle");
+crates/ai/src/api_registry.rs:299	expect	§2.4 invariant()	allocation-guard	let handle = get_api_provider(&Api::from("race-api")).expect("provider handle");
+crates/ai/src/api_registry.rs:319	expect	§2.4 invariant()	allocation-guard	let handle = get_api_provider(&Api::from("race-api")).expect("provider handle");
+crates/ai/src/bedrock_anthropic.rs:247	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type")]
+crates/ai/src/bedrock_anthropic.rs:342	unwrap	§2.4 invariant()	allocation-guard	payload: serde_json::to_vec(&outer).unwrap(),
+crates/ai/src/bedrock_anthropic.rs:354	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/bedrock_anthropic.rs:364	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/bedrock_anthropic.rs:374	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/bedrock_anthropic.rs:377	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected: {other:?}"),
+crates/ai/src/bedrock_anthropic.rs:382	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/bedrock_anthropic.rs:385	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected: {other:?}"),
+crates/ai/src/bedrock_anthropic.rs:392	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/bedrock_anthropic.rs:394	unwrap	§2.4 invariant()	allocation-guard	let events = c.ingest(&frame(r#"{"type":"message_stop"}"#)).unwrap();
+crates/ai/src/bedrock_anthropic.rs:401	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected terminal: {other:?}"),
+crates/ai/src/bedrock_anthropic.rs:412	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/bedrock_anthropic.rs:417	panic!	§2.4 invariant()	allocation-guard	other => panic!("expected Error variant, got {other:?}"),
+crates/ai/src/bedrock_anthropic.rs:424	unwrap	§2.4 invariant()	allocation-guard	let events = c.ingest(&frame(r#"{"type":"ping"}"#)).unwrap();
+crates/ai/src/event_stream.rs:279	unwrap	§2.4 invariant()	allocation-guard	let (msg, consumed) = parse_message(&buf).unwrap();
+crates/ai/src/images_api_registry.rs:21	Mutex	§2.2 await-in-critical-section test	n/a	fn registry() -> &'static Mutex<HashMap<String, Box<dyn ImagesApiProvider>>> {
+crates/ai/src/images_api_registry.rs:22	Mutex	§2.2 await-in-critical-section test	n/a	static CELL: OnceLock<Mutex<HashMap<String, Box<dyn ImagesApiProvider>>>> = OnceLock::new(
+crates/ai/src/models.rs:14	Mutex	§2.2 await-in-critical-section test	n/a	fn custom_registry() -> &'static Mutex<HashMap<String, Model>> {
+crates/ai/src/models.rs:15	Mutex	§2.2 await-in-critical-section test	n/a	static CELL: OnceLock<Mutex<HashMap<String, Model>>> = OnceLock::new();
+crates/ai/src/models.rs:24	expect	§2.4 invariant()	allocation-guard	let custom = custom_registry().lock().expect("registry poisoned");
+crates/ai/src/models.rs:35	expect	§2.4 invariant()	allocation-guard	let custom = custom_registry().lock().expect("registry poisoned");
+crates/ai/src/models.rs:43	expect	§2.4 invariant()	allocation-guard	let mut reg = custom_registry().lock().expect("registry poisoned");
+crates/ai/src/models.rs:48	expect	§2.4 invariant()	allocation-guard	let mut reg = custom_registry().lock().expect("registry poisoned");
+crates/ai/src/models_generated.rs:57	expect	§2.4 invariant()	allocation-guard	serde_json::from_str(CATALOG_JSON).expect("models.generated.json is malformed");
+crates/ai/src/sigv4.rs:185	expect	§2.4 invariant()	allocation-guard	let mut mac = HmacSha256::new_from_slice(key).expect("hmac key");
+crates/ai/src/sigv4.rs:199	unwrap	§2.4 invariant()	allocation-guard	let url = url::Url::parse("https://example.amazonaws.com/").unwrap();
+crates/ai/src/sigv4.rs:223	unwrap	§2.4 invariant()	allocation-guard	let sig = a.authorization.rsplit("Signature=").next().unwrap();
+crates/ai/src/sigv4.rs:233	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/sigv4.rs:276	unwrap	§2.4 invariant()	allocation-guard	let url = url::Url::parse("https://x.example.com/?b=2&a=hello%20world").unwrap();
+crates/ai/src/types.rs:256	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type")]
+crates/ai/src/types.rs:279	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type")]
+crates/ai/src/types.rs:341	serde untagged	§2.1 ordered-union-parse	n/a	#[serde(untagged)]
+crates/ai/src/types.rs:433	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "role")]
+crates/ai/src/vertex_adc.rs:193	expect	§2.4 invariant()	allocation-guard	.expect("payload b64");
+crates/ai/src/vertex_adc.rs:194	unwrap	§2.4 invariant()	allocation-guard	let payload: serde_json::Value = serde_json::from_slice(&payload_bytes).unwrap();
+crates/ai/src/vertex_adc.rs:208	unwrap	§2.4 invariant()	allocation-guard	let tmp = tempfile::NamedTempFile::new().unwrap();
+crates/ai/src/vertex_adc.rs:218	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/ai/src/vertex_adc.rs:219	unwrap	§2.4 invariant()	allocation-guard	let sa = load_service_account(Some(tmp.path())).unwrap();
+crates/ai/src/vertex_provider.rs:148	unwrap	§2.4 invariant()	allocation-guard	let creds = VertexCreds::from_env().unwrap();
+crates/ai/src/utils/abort.rs:26	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/ai/src/utils/abort.rs:49	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/ai/src/utils/abort.rs:65	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/ai/src/utils/abort.rs:83	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/ai/src/utils/abort.rs:101	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/ai/src/utils/aws_eventstream.rs:200	expect	§2.4 invariant()	allocation-guard	let msg = s.try_decode().expect("one frame");
+crates/ai/src/utils/event_stream.rs:24	mpsc channel	§2.2 AsyncQueue	n/a	tx: mpsc::UnboundedSender<AssistantMessageEvent>,
+crates/ai/src/utils/event_stream.rs:27	oneshot	§2.2 withResolvers	n/a	final_tx: Option<oneshot::Sender<AssistantMessage>>,
+crates/ai/src/utils/event_stream.rs:63	mpsc channel	§2.2 AsyncQueue	n/a	rx: mpsc::UnboundedReceiver<AssistantMessageEvent>,
+crates/ai/src/utils/event_stream.rs:66	oneshot	§2.2 withResolvers	n/a	final_rx: Option<oneshot::Receiver<AssistantMessage>>,
+crates/ai/src/utils/event_stream.rs:72	mpsc channel	§2.2 AsyncQueue	n/a	let (tx, rx) = mpsc::unbounded_channel();
+crates/ai/src/utils/event_stream.rs:73	oneshot	§2.2 withResolvers	n/a	let (final_tx, final_rx) = oneshot::channel();
+crates/ai/src/utils/hash.rs:37	expect	§2.4 invariant()	allocation-guard	String::from_utf8(buf).expect("base36 alpha is ascii")
+crates/ai/src/utils/json_parse.rs:79	unwrap	§2.4 invariant()	allocation-guard	let v = parse_partial_json(r#"{"a": 1, "b": "two"}"#).unwrap();
+crates/ai/src/utils/json_parse.rs:86	unwrap	§2.4 invariant()	allocation-guard	let v = parse_partial_json(r#"{"a": 1"#).unwrap();
+crates/ai/src/utils/json_parse.rs:92	unwrap	§2.4 invariant()	allocation-guard	let v = parse_partial_json(r#"{"a": "hello"#).unwrap();
+crates/ai/src/utils/json_parse.rs:98	unwrap	§2.4 invariant()	allocation-guard	let v = parse_partial_json(r#"{"a": 1,"#).unwrap();
+crates/ai/src/utils/json_parse.rs:104	unwrap	§2.4 invariant()	allocation-guard	let v = parse_partial_json("").unwrap();
+crates/ai/src/utils/overflow.rs:39	expect	§2.4 invariant()	allocation-guard	.map(|p| Regex::new(&format!("(?i){p}")).expect("valid overflow regex"))
+crates/ai/src/utils/overflow.rs:52	expect	§2.4 invariant()	allocation-guard	.map(|p| Regex::new(&format!("(?i){p}")).expect("valid non-overflow regex"))
+crates/ai/src/utils/retry.rs:71	unwrap	§2.4 invariant()	allocation-guard	.unwrap(),
+crates/ai/src/providers/amazon_bedrock.rs:46	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/anthropic.rs:120	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/anthropic.rs:825	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &opts, &resolve_compat(&m)).unwrap();
+crates/ai/src/providers/anthropic.rs:830	unwrap	§2.4 invariant()	allocation-guard	let msgs = body["messages"].as_array().unwrap();
+crates/ai/src/providers/anthropic.rs:858	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &opts, &resolve_compat(&m)).unwrap();
+crates/ai/src/providers/anthropic.rs:882	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &opts, &resolve_compat(&m)).unwrap();
+crates/ai/src/providers/anthropic.rs:918	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &opts, &resolve_compat(&m)).unwrap();
+crates/ai/src/providers/anthropic.rs:919	unwrap	§2.4 invariant()	allocation-guard	let tools_v = body["tools"].as_array().unwrap();
+crates/ai/src/providers/azure_openai_responses.rs:46	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/cloudflare.rs:89	unwrap	§2.4 invariant()	allocation-guard	resolve_cloudflare_base_url(&m).unwrap(),
+crates/ai/src/providers/faux.rs:20	Mutex	§2.2 await-in-critical-section test	n/a	fn response_queue() -> &'static Mutex<VecDeque<AssistantMessage>> {
+crates/ai/src/providers/faux.rs:21	Mutex	§2.2 await-in-critical-section test	n/a	static CELL: OnceLock<Mutex<VecDeque<AssistantMessage>>> = OnceLock::new();
+crates/ai/src/providers/faux.rs:27	expect	§2.4 invariant()	allocation-guard	let mut q = response_queue().lock().expect("faux queue poisoned");
+crates/ai/src/providers/faux.rs:33	expect	§2.4 invariant()	allocation-guard	let mut q = response_queue().lock().expect("faux queue poisoned");
+crates/ai/src/providers/faux.rs:41	expect	§2.4 invariant()	allocation-guard	.expect("faux queue poisoned")
+crates/ai/src/providers/faux.rs:113	expect	§2.4 invariant()	allocation-guard	.expect("faux queue poisoned")
+crates/ai/src/providers/faux.rs:258	Mutex	§2.2 await-in-critical-section test	n/a	static LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+crates/ai/src/providers/google.rs:53	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/google_shared.rs:113	unwrap	§2.4 invariant()	allocation-guard	last["parts"].as_array_mut().unwrap().push(part);
+crates/ai/src/providers/google_vertex.rs:45	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/mistral.rs:47	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/mistral.rs:286	unwrap	§2.4 invariant()	allocation-guard	content_index: tool_content_index.unwrap(),
+crates/ai/src/providers/openai_codex_responses.rs:49	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/openai_codex_responses.rs:278	unwrap	§2.4 invariant()	allocation-guard	let input = body["input"].as_array().unwrap();
+crates/ai/src/providers/openai_completions.rs:62	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/openai_completions.rs:767	unwrap	§2.4 invariant()	allocation-guard	let msgs = body["messages"].as_array().unwrap();
+crates/ai/src/providers/openai_completions.rs:793	unwrap	§2.4 invariant()	allocation-guard	let arr = v.as_array().unwrap();
+crates/ai/src/providers/openai_completions.rs:799	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/ai/src/providers/openai_responses.rs:89	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/ai/src/providers/openai_responses.rs:880	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &Default::default(), &resolve_compat(&m)).unwrap()
+crates/ai/src/providers/openai_responses.rs:881	unwrap	§2.4 invariant()	allocation-guard	let input = body["input"].as_array().unwrap();
+crates/ai/src/providers/openai_responses.rs:903	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &opts, &resolve_compat(&m)).unwrap();
+crates/ai/src/providers/openai_responses.rs:923	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &opts, &resolve_compat(&m)).unwrap();
+crates/ai/src/providers/openai_responses.rs:970	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &Default::default(), &resolve_compat(&m)).unwrap()
+crates/ai/src/providers/openai_responses.rs:971	unwrap	§2.4 invariant()	allocation-guard	let input = body["input"].as_array().unwrap();
+crates/ai/src/providers/openai_responses.rs:975	expect	§2.4 invariant()	allocation-guard	.expect("reasoning input item");
+crates/ai/src/providers/openai_responses.rs:983	expect	§2.4 invariant()	allocation-guard	.expect("assistant message item");
+crates/ai/src/providers/openai_responses.rs:998	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &Default::default(), &resolve_compat(&m)).unwrap()
+crates/ai/src/providers/openai_responses.rs:999	unwrap	§2.4 invariant()	allocation-guard	let input = body["input"].as_array().unwrap();
+crates/ai/src/providers/openai_responses.rs:1051	unwrap	§2.4 invariant()	allocation-guard	let body = build_request_body(&m, &ctx, &Default::default(), &resolve_compat(&m)).unwrap()
+crates/ai/src/providers/openai_responses.rs:1052	unwrap	§2.4 invariant()	allocation-guard	let input = body["input"].as_array().unwrap();
+crates/ai/src/providers/openai_responses.rs:1056	expect	§2.4 invariant()	allocation-guard	.expect("function_call output item");
+crates/ai/src/providers/openai_responses.rs:1059	unwrap	§2.4 invariant()	allocation-guard	assert!(fc["arguments"].as_str().unwrap().contains("\"x\":1"));
+crates/ai/src/providers/transform_messages.rs:274	panic!	§2.4 invariant()	allocation-guard	panic!("expected assistant");
+crates/ai/src/providers/transform_messages.rs:347	panic!	§2.4 invariant()	allocation-guard	panic!("expected blocks");
+crates/ai/src/providers/transform_messages.rs:350	panic!	§2.4 invariant()	allocation-guard	panic!("expected user");
+crates/agent/src/agent.rs:21	Notify	§2.2 Signal	n/a	use tokio::sync::Notify;
+crates/agent/src/agent.rs:64	Mutex	§2.2 await-in-critical-section test	n/a	pub state: Mutex<AgentState>,
+crates/agent/src/agent.rs:65	Mutex	§2.2 await-in-critical-section test	n/a	pub listeners: Mutex<Vec<AgentListener>>,
+crates/agent/src/agent.rs:66	Mutex	§2.2 await-in-critical-section test	n/a	pub steering: Mutex<PendingMessageQueue>,
+crates/agent/src/agent.rs:67	Mutex	§2.2 await-in-critical-section test	n/a	pub follow_up: Mutex<PendingMessageQueue>,
+crates/agent/src/agent.rs:69	Mutex	§2.2 await-in-critical-section test	n/a	pub active_cancel: Mutex<Option<CancellationToken>>,
+crates/agent/src/agent.rs:70	Notify	§2.2 Signal	n/a	pub idle: Notify,
+crates/agent/src/agent.rs:122	Notify	§2.2 Signal	n/a	idle: Notify::new(),
+crates/agent/src/agent.rs:211	expect	§2.4 invariant()	allocation-guard	.expect("convert_to_llm is always set in Agent::new")(msgs)
+crates/agent/src/agent_loop.rs:271	select!	§2.2 selectN+abort	n/a	let ev = tokio::select! {
+crates/agent/src/agent_loop.rs:613	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move { run_one(inner, call, cancel).await })
+crates/agent/src/agent_loop.rs:762	tokio::spawn	§2.2 detach()	n/a	// cloning the `Arc` into a `tokio::spawn`ed task. The wiring still has a
+crates/agent/src/agent_loop.rs:766	mpsc channel	§2.2 AsyncQueue	n/a	let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel::<AgentToolResult>();
+crates/agent/src/agent_loop.rs:772	tokio::spawn	§2.2 detach()	n/a	let mut pump_handle = tokio::spawn(async move {
+crates/agent/src/agent_loop.rs:799	tokio::spawn	§2.2 detach()	n/a	// misbehaved and kept the Arc alive (e.g. handed it to a `tokio::spawn`ed
+crates/agent/src/types.rs:120	serde untagged	§2.1 ordered-union-parse	n/a	#[serde(untagged)]
+crates/agent/src/types.rs:244	tokio::spawn	§2.2 detach()	n/a	/// `Arc` into a `tokio::spawn`ed task that outlives this call. The agent loop caps the
+crates/agent/src/harness/agent_harness.rs:922	Mutex	§2.2 await-in-critical-section test	n/a	skills: Mutex<Vec<Skill>>,
+crates/agent/src/harness/agent_harness.rs:924	Mutex	§2.2 await-in-critical-section test	n/a	templates: Mutex<PromptTemplateRegistry>,
+crates/agent/src/harness/agent_harness.rs:925	Mutex	§2.2 await-in-critical-section test	n/a	compaction_settings: Mutex<CompactionSettings>,
+crates/agent/src/harness/agent_harness.rs:932	Mutex	§2.2 await-in-critical-section test	n/a	harness_listeners: Arc<Mutex<Vec<HarnessListener>>>,
+crates/agent/src/harness/agent_harness.rs:933	Mutex	§2.2 await-in-critical-section test	n/a	session_start_emitted: Mutex<bool>,
+crates/agent/src/harness/agent_harness.rs:945	Mutex	§2.2 await-in-critical-section test	n/a	/// an `Arc<Mutex<...>>` so [`Self::notification_status_snapshot`] can read and the
+crates/agent/src/harness/agent_harness.rs:947	tokio::spawn	§2.2 detach()	n/a	/// pump tasks are detached (`tokio::spawn`); they tear down naturally when the hook's
+crates/agent/src/harness/agent_harness.rs:949	Mutex	§2.2 await-in-critical-section test	n/a	notification_hooks: Arc<Mutex<Vec<DynNotificationHook>>>,
+crates/agent/src/harness/agent_harness.rs:969	Mutex	§2.2 await-in-critical-section test	n/a	running_triggers: Arc<Mutex<std::collections::HashMap<String, RunningTriggerHandle>>>,
+crates/agent/src/harness/agent_harness.rs:979	Mutex	§2.2 await-in-critical-section test	n/a	active_hook_cancel: Mutex<Option<tokio_util::sync::CancellationToken>>,
+crates/agent/src/harness/agent_harness.rs:1282	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/agent/src/harness/agent_harness.rs:1445	mpsc channel	§2.2 AsyncQueue	n/a	///   the `sink` (an `mpsc::UnboundedSender<Trigger>`).
+crates/agent/src/harness/agent_harness.rs:1462	mpsc channel	§2.2 AsyncQueue	n/a	let (sink, mut rx): (TriggerSink, _) = tokio::sync::mpsc::unbounded_channel();
+crates/agent/src/harness/agent_harness.rs:1473	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/agent/src/harness/agent_harness.rs:1490	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/agent/src/harness/agent_harness.rs:1770	expect	§2.4 invariant()	allocation-guard	let msg = pending_user_msg.take().expect(
+crates/agent/src/harness/agent_harness.rs:2001	select!	§2.2 selectN+abort	n/a	let run_outcome: Result<(), AgentRunError> = tokio::select! {
+crates/agent/src/harness/agent_harness.rs:2177	Mutex	§2.2 await-in-critical-section test	n/a	Arc<Mutex<Vec<super::types::SessionError>>>,
+crates/agent/src/harness/agent_harness.rs:2352	Mutex	§2.2 await-in-critical-section test	n/a	persist_errors: Arc<Mutex<Vec<super::types::SessionError>>>,
+crates/agent/src/harness/agent_harness.rs:2369	Mutex	§2.2 await-in-critical-section test	n/a	fn emit_from_listeners(listeners: &Arc<Mutex<Vec<HarnessListener>>>, event: HarnessEvent) 
+crates/agent/src/harness/agent_harness.rs:2395	Mutex	§2.2 await-in-critical-section test	n/a	listeners: Arc<Mutex<Vec<HarnessListener>>>,
+crates/agent/src/harness/agent_harness.rs:2398	Mutex	§2.2 await-in-critical-section test	n/a	running_registry: Arc<Mutex<std::collections::HashMap<String, RunningTriggerHandle>>>,
+crates/agent/src/harness/agent_harness.rs:2658	Mutex	§2.2 await-in-critical-section test	n/a	let persist_errors: Arc<Mutex<Vec<super::types::SessionError>>> =
+crates/agent/src/harness/agent_harness.rs:2682	select!	§2.2 selectN+abort	n/a	let run_outcome: Result<(), AgentRunError> = tokio::select! {
+crates/agent/src/harness/agent_harness.rs:3023	Mutex	§2.2 await-in-critical-section test	n/a	listeners: &Arc<Mutex<Vec<HarnessListener>>>,
+crates/agent/src/harness/cost.rs:33	Mutex	§2.2 await-in-critical-section test	n/a	inner: Arc<Mutex<CostSnapshot>>,
+crates/agent/src/harness/notification_hook.rs:27	mpsc channel	§2.2 AsyncQueue	n/a	/// `mpsc::UnboundedSender` is intentional for v1 — bounded back-pressure is a follow-up
+crates/agent/src/harness/notification_hook.rs:30	mpsc channel	§2.2 AsyncQueue	n/a	pub type TriggerSink = mpsc::UnboundedSender<Trigger>;
+crates/agent/src/harness/notification_hook.rs:158	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "kind", rename_all = "snake_case")]
+crates/agent/src/harness/notification_hook.rs:182	unwrap	§2.4 invariant()	allocation-guard	let json = serde_json::to_string(&pending).unwrap();
+crates/agent/src/harness/notification_hook.rs:203	unwrap	§2.4 invariant()	allocation-guard	let json = serde_json::to_string(&state).unwrap();
+crates/agent/src/harness/notification_hook.rs:204	unwrap	§2.4 invariant()	allocation-guard	let decoded: HookState = serde_json::from_str(&json).unwrap();
+crates/agent/src/harness/notification_hook.rs:222	unwrap	§2.4 invariant()	allocation-guard	let json = serde_json::to_string(&state).unwrap();
+crates/agent/src/harness/permission.rs:89	expect	§2.4 invariant()	allocation-guard	let set = RegexSet::new(&regexes).expect("danger patterns must compile");
+crates/agent/src/harness/permission.rs:403	panic!	§2.4 invariant()	allocation-guard	panic!("false positive on {safe:?}: {reason}")
+crates/agent/src/harness/permission.rs:460	panic!	§2.4 invariant()	allocation-guard	PermissionDecision::Allow => panic!("missed dangerous pattern: {d:?}"),
+crates/agent/src/harness/permission.rs:477	panic!	§2.4 invariant()	allocation-guard	panic!("rm-classifier false positive on {safe:?}: {reason}")
+crates/agent/src/harness/permission.rs:488	panic!	§2.4 invariant()	allocation-guard	other => panic!("read should be allowed: {other:?}"),
+crates/agent/src/harness/prompt_templates.rs:192	unwrap	§2.4 invariant()	allocation-guard	let (fm, body) = parse_frontmatter(raw).unwrap();
+crates/agent/src/harness/skills.rs:514	unwrap	§2.4 invariant()	allocation-guard	let (fm, body) = parse_frontmatter(raw).unwrap();
+crates/agent/src/harness/skills.rs:522	unwrap	§2.4 invariant()	allocation-guard	let (fm, body) = parse_frontmatter("# Heading\n\nbody").unwrap();
+crates/agent/src/harness/trigger.rs:73	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "kind", rename_all = "snake_case")]
+crates/agent/src/harness/trigger.rs:80	serde tagged enum	§2.1 discriminated-union	n/a	/// `serde(tag = "kind")` and reserves the latter for the discriminator.)
+crates/agent/src/harness/trigger.rs:321	unwrap	§2.4 invariant()	allocation-guard	received_at: chrono::DateTime::from_timestamp(1_700_000_000, 0).unwrap(),
+crates/agent/src/harness/trigger.rs:328	unwrap	§2.4 invariant()	allocation-guard	let json = serde_json::to_string(&trigger).unwrap();
+crates/agent/src/harness/trigger.rs:329	unwrap	§2.4 invariant()	allocation-guard	let decoded: Trigger = serde_json::from_str(&json).unwrap();
+crates/agent/src/harness/trigger.rs:335	unwrap	§2.4 invariant()	allocation-guard	let v = serde_json::to_string(&PayloadVisibility::Local).unwrap();
+crates/agent/src/harness/trigger.rs:337	unwrap	§2.4 invariant()	allocation-guard	let s = serde_json::to_string(&PayloadVisibility::Shared).unwrap();
+crates/agent/src/harness/trigger.rs:339	unwrap	§2.4 invariant()	allocation-guard	let r = serde_json::to_string(&PayloadVisibility::Redacted).unwrap();
+crates/agent/src/harness/trigger.rs:349	unwrap	§2.4 invariant()	allocation-guard	let json = serde_json::to_string(&record).unwrap();
+crates/agent/src/harness/trigger.rs:356	unwrap	§2.4 invariant()	allocation-guard	let decoded: TriggerRecord = serde_json::from_str(&json).unwrap();
+crates/agent/src/harness/trigger.rs:367	unwrap	§2.4 invariant()	allocation-guard	let mut json: serde_json::Value = serde_json::to_value(&record).unwrap();
+crates/agent/src/harness/trigger.rs:369	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/agent/src/harness/trigger.rs:371	unwrap	§2.4 invariant()	allocation-guard	let decoded: TriggerRecord = serde_json::from_value(json).unwrap();
+crates/agent/src/harness/trigger.rs:406	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(serde_json::to_string(&variant).unwrap(), expected);
+crates/agent/src/harness/trigger.rs:416	unwrap	§2.4 invariant()	allocation-guard	let json = serde_json::to_string(&mcp).unwrap();
+crates/agent/src/harness/trigger.rs:417	serde tagged enum	§2.1 discriminated-union	n/a	// Use `serde(tag = "kind")` so consumers can branch on `kind` without inspecting
+crates/agent/src/harness/trigger.rs:423	unwrap	§2.4 invariant()	allocation-guard	let decoded: TriggerSource = serde_json::from_str(&json).unwrap();
+crates/agent/src/harness/trigger.rs:442	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(serde_json::to_string(&variant).unwrap(), expected);
+crates/agent/src/harness/trigger.rs:443	unwrap	§2.4 invariant()	allocation-guard	let decoded: ReplacementPolicy = serde_json::from_str(expected).unwrap();
+crates/agent/src/harness/trigger.rs:455	unwrap	§2.4 invariant()	allocation-guard	let mut json: serde_json::Value = serde_json::to_value(&trigger).unwrap();
+crates/agent/src/harness/trigger.rs:456	unwrap	§2.4 invariant()	allocation-guard	json.as_object_mut().unwrap().remove("replacement_policy");
+crates/agent/src/harness/trigger.rs:473	unwrap	§2.4 invariant()	allocation-guard	let json = serde_json::to_string(&record).unwrap();
+crates/agent/src/harness/trigger.rs:478	unwrap	§2.4 invariant()	allocation-guard	let decoded: TriggerRecord = serde_json::from_str(&json).unwrap();
+crates/agent/src/harness/trigger_runtime.rs:80	Mutex	§2.2 await-in-critical-section test	n/a	inner: std::sync::Arc<Mutex<Inner>>,
+crates/agent/src/harness/trigger_runtime.rs:284	expect	§2.4 invariant()	allocation-guard	now - chrono::Duration::from_std(window).expect("dedup_window fits in chrono::Duration");
+crates/agent/src/harness/trigger_runtime.rs:294	expect	§2.4 invariant()	allocation-guard	now - chrono::Duration::from_std(window).expect("dedup_window fits in chrono::Duration");
+crates/agent/src/harness/trigger_runtime.rs:340	unwrap	§2.4 invariant()	allocation-guard	DateTime::from_timestamp(1_700_000_000, 0).unwrap()
+crates/agent/src/harness/trigger_runtime.rs:397	panic!	§2.4 invariant()	allocation-guard	other => panic!("expected Deduped, got {other:?}"),
+crates/agent/src/harness/compaction/compaction.rs:732	anyhow context	§2.4 Error{cause}	precondition-guard	fn model_with_context_window(context_window: u32) -> Model {
+crates/agent/src/harness/compaction/compaction.rs:840	unwrap	§2.4 invariant()	allocation-guard	*captured_clone.lock().unwrap() = text;
+crates/agent/src/harness/compaction/compaction.rs:843	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/agent/src/harness/compaction/compaction.rs:867	anyhow context	§2.4 Error{cause}	precondition-guard	model_with_context_window(5_000),
+crates/agent/src/harness/compaction/compaction.rs:879	expect	§2.4 invariant()	allocation-guard	.expect("compaction should succeed with a bounded summarizer prompt");
+crates/agent/src/harness/compaction/compaction.rs:882	unwrap	§2.4 invariant()	allocation-guard	assert!(!captured.lock().unwrap().is_empty());
+crates/agent/src/harness/compaction/compaction.rs:909	unwrap	§2.4 invariant()	allocation-guard	*captured_clone.lock().unwrap() = options.and_then(|o| o.base.max_tokens);
+crates/agent/src/harness/compaction/compaction.rs:911	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/agent/src/harness/compaction/compaction.rs:933	expect	§2.4 invariant()	allocation-guard	.expect("compaction should succeed");
+crates/agent/src/harness/compaction/compaction.rs:935	unwrap	§2.4 invariant()	allocation-guard	let max_tokens = captured_max_tokens.lock().unwrap().take();
+crates/agent/src/harness/compaction/compaction.rs:996	unwrap	§2.4 invariant()	allocation-guard	let mut lens = prompt_lens_clone.lock().unwrap();
+crates/agent/src/harness/compaction/compaction.rs:1001	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/agent/src/harness/compaction/compaction.rs:1022	anyhow context	§2.4 Error{cause}	precondition-guard	model_with_context_window(5_000),
+crates/agent/src/harness/compaction/compaction.rs:1034	expect	§2.4 invariant()	allocation-guard	.expect("compaction should survive one provider overflow rejection");
+crates/agent/src/harness/compaction/compaction.rs:1037	unwrap	§2.4 invariant()	allocation-guard	let lens = prompt_lens.lock().unwrap();
+crates/agent/src/harness/session/jsonl_storage.rs:24	Mutex	§2.2 await-in-critical-section test	n/a	cache: Mutex<Option<Vec<SessionTreeEntry>>>,
+crates/agent/src/harness/session/jsonl_storage.rs:98	unwrap	§2.4 invariant()	allocation-guard	if let Some(cached) = self.cache.lock().unwrap().clone() {
+crates/agent/src/harness/session/jsonl_storage.rs:116	unwrap	§2.4 invariant()	allocation-guard	*self.cache.lock().unwrap() = Some(out.clone());
+crates/agent/src/harness/session/jsonl_storage.rs:121	unwrap	§2.4 invariant()	allocation-guard	*self.cache.lock().unwrap() = None;
+crates/agent/src/harness/session/jsonl_storage.rs:160	unwrap	§2.4 invariant()	allocation-guard	Ok(serde_json::to_value(&self.metadata).unwrap())
+crates/agent/src/harness/session/memory_repo.rs:13	Mutex	§2.2 await-in-critical-section test	n/a	sessions: Mutex<Vec<Session>>,
+crates/agent/src/harness/session/memory_repo.rs:27	unwrap	§2.4 invariant()	allocation-guard	self.sessions.lock().unwrap().push(session.clone());
+crates/agent/src/harness/session/memory_repo.rs:32	unwrap	§2.4 invariant()	allocation-guard	self.sessions.lock().unwrap().len()
+crates/agent/src/harness/session/memory_repo.rs:36	unwrap	§2.4 invariant()	allocation-guard	self.sessions.lock().unwrap().clone()
+crates/agent/src/harness/session/memory_repo.rs:40	unwrap	§2.4 invariant()	allocation-guard	let mut g = self.sessions.lock().unwrap();
+crates/agent/src/harness/session/memory_storage.rs:22	Mutex	§2.2 await-in-critical-section test	n/a	inner: Mutex<Inner>,
+crates/agent/src/harness/session/memory_storage.rs:44	expect	§2.4 invariant()	allocation-guard	self.inner.lock().expect("storage mutex poisoned")
+crates/agent/src/harness/session/memory_storage.rs:57	unwrap	§2.4 invariant()	allocation-guard	Ok(serde_json::to_value(&self.metadata).unwrap())
+crates/agent/src/harness/session/session.rs:25	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type", rename_all = "snake_case")]
+crates/agent/src/harness/env/native.rs:354	expect	§2.4 invariant()	allocation-guard	let stdout = child.stdout.take().expect("stdout was configured as piped");
+crates/agent/src/harness/env/native.rs:355	expect	§2.4 invariant()	allocation-guard	let stderr = child.stderr.take().expect("stderr was configured as piped");
+crates/agent/src/harness/env/native.rs:360	tokio::spawn	§2.2 detach()	n/a	let stdout_handle = tokio::spawn(drain_stream(stdout, on_stdout));
+crates/agent/src/harness/env/native.rs:361	tokio::spawn	§2.2 detach()	n/a	let stderr_handle = tokio::spawn(drain_stream(stderr, on_stderr));
+crates/agent/src/harness/env/native.rs:370	select!	§2.2 selectN+abort	n/a	let outcome: ExecOutcome = tokio::select! {
+crates/agent/src/harness/env/native.rs:521	expect	§2.4 invariant()	allocation-guard	.expect("exec must succeed");
+crates/agent/src/harness/env/native.rs:536	expect	§2.4 invariant()	allocation-guard	.expect("exec must succeed");
+crates/agent/src/harness/env/native.rs:550	unwrap	§2.4 invariant()	allocation-guard	sink.lock().unwrap().push(line.to_string());
+crates/agent/src/harness/env/native.rs:559	expect	§2.4 invariant()	allocation-guard	.expect("exec must succeed");
+crates/agent/src/harness/env/native.rs:561	unwrap	§2.4 invariant()	allocation-guard	let lines = captured.lock().unwrap().clone();
+crates/agent/src/harness/env/native.rs:595	expect	§2.4 invariant()	allocation-guard	let dir = tempdir().expect("tempdir");
+crates/agent/src/harness/env/native.rs:625	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/agent/src/harness/env/native.rs:655	expect	§2.4 invariant()	allocation-guard	.expect("must not deadlock — concurrent stdio drain")
+crates/agent/src/harness/env/native.rs:656	expect	§2.4 invariant()	allocation-guard	.expect("exec must succeed");
+crates/coding-agent/src/agent_session.rs:54	expect	§2.4 invariant()	allocation-guard	.expect("retry regex")
+crates/coding-agent/src/agent_session.rs:215	u128	§2.1 bigint/site-specific	n/a	let n = (base as u128) << exponent;
+crates/coding-agent/src/agent_session.rs:216	u128	§2.1 bigint/site-specific	n/a	n.min(max as u128) as u64
+crates/coding-agent/src/agent_session.rs:290	Mutex	§2.2 await-in-critical-section test	n/a	responses: Arc<tokio::sync::Mutex<Vec<AssistantMessage>>>,
+crates/coding-agent/src/agent_session.rs:295	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/agent_session.rs:360	unwrap	§2.4 invariant()	allocation-guard	runner.prompt("hi").await.unwrap();
+crates/coding-agent/src/agent_session.rs:362	unwrap	§2.4 invariant()	allocation-guard	let entries = session.entries().await.unwrap();
+crates/coding-agent/src/agent_session.rs:371	unwrap	§2.4 invariant()	allocation-guard	let active = session.build_context().await.unwrap();
+crates/coding-agent/src/auth.rs:19	Mutex	§2.2 await-in-critical-section test	n/a	pub(crate) static ENV_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+crates/coding-agent/src/auth.rs:26	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "kind", rename_all = "snake_case")]
+crates/coding-agent/src/auth.rs:85	anyhow context	§2.4 Error{cause}	precondition-guard	std::fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
+crates/coding-agent/src/auth.rs:90	anyhow context	§2.4 Error{cause}	precondition-guard	serde_json::from_str(&text).with_context(|| format!("parse {}", path.display()))?;
+crates/coding-agent/src/auth.rs:102	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("create {}", parent.display()))?;
+crates/coding-agent/src/auth.rs:106	anyhow context	§2.4 Error{cause}	precondition-guard	std::fs::write(&tmp, text).with_context(|| format!("write {}", tmp.display()))?;
+crates/coding-agent/src/auth.rs:113	anyhow context	§2.4 Error{cause}	precondition-guard	std::fs::rename(&tmp, path).with_context(|| format!("rename {}", path.display()))?;
+crates/coding-agent/src/auth.rs:181	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/auth.rs:190	unwrap	§2.4 invariant()	allocation-guard	store.save_to(&path).unwrap();
+crates/coding-agent/src/auth.rs:191	unwrap	§2.4 invariant()	allocation-guard	let reloaded = AuthStore::load_from(&path).unwrap();
+crates/coding-agent/src/auth.rs:193	unwrap	§2.4 invariant()	allocation-guard	match reloaded.get("anthropic").unwrap() {
+crates/coding-agent/src/auth.rs:195	panic!	§2.4 invariant()	allocation-guard	_ => panic!("wrong kind"),
+crates/coding-agent/src/auth.rs:201	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/auth.rs:213	unwrap	§2.4 invariant()	allocation-guard	store.save_to(&path).unwrap();
+crates/coding-agent/src/auth.rs:214	unwrap	§2.4 invariant()	allocation-guard	let reloaded = AuthStore::load_from(&path).unwrap();
+crates/coding-agent/src/auth.rs:215	unwrap	§2.4 invariant()	allocation-guard	match reloaded.get("anthropic").unwrap() {
+crates/coding-agent/src/auth.rs:227	panic!	§2.4 invariant()	allocation-guard	_ => panic!("wrong kind"),
+crates/coding-agent/src/auth.rs:248	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/auth.rs:249	unwrap	§2.4 invariant()	allocation-guard	let store = AuthStore::load_from(&dir.path().join("nope.json")).unwrap();
+crates/coding-agent/src/auth.rs:255	unwrap	§2.4 invariant()	allocation-guard	let _guard = ENV_LOCK.lock().unwrap();
+crates/coding-agent/src/auth.rs:274	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/auth.rs:278	unwrap	§2.4 invariant()	allocation-guard	store.save_to(&path).unwrap();
+crates/coding-agent/src/auth.rs:279	unwrap	§2.4 invariant()	allocation-guard	let mode = std::fs::metadata(&path).unwrap().permissions().mode() & 0o777;
+crates/coding-agent/src/bug_report.rs:45	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("create bug-reports dir {}", parent.display()))?;
+crates/coding-agent/src/bug_report.rs:108	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("write {}", dest.display()))?;
+crates/coding-agent/src/bug_report.rs:154	expect	§2.4 invariant()	allocation-guard	.map(|(label, src)| (label, Regex::new(src).expect("regex must compile")))
+crates/coding-agent/src/builtin_skills.rs:132	expect	§2.4 invariant()	allocation-guard	.expect("name validated against known set above");
+crates/coding-agent/src/builtin_skills.rs:273	expect	§2.4 invariant()	allocation-guard	let resolved = resolve_builtins(&[], &[]).expect("empty inputs are always OK");
+crates/coding-agent/src/builtin_skills.rs:281	expect	§2.4 invariant()	allocation-guard	resolve_builtins(&["karpathy-guidelines".to_string()], &[]).expect("known name");
+crates/coding-agent/src/builtin_skills.rs:334	expect	§2.4 invariant()	allocation-guard	.expect("unknown config name must NOT hard fail");
+crates/coding-agent/src/builtin_skills.rs:351	expect	§2.4 invariant()	allocation-guard	.expect("config soft path must not fail on unknown");
+crates/coding-agent/src/builtin_skills.rs:364	expect	§2.4 invariant()	allocation-guard	.expect("known on both sides is fine");
+crates/coding-agent/src/builtin_skills.rs:382	expect	§2.4 invariant()	allocation-guard	.expect("repeated --builtin-skill should be idempotent");
+crates/coding-agent/src/builtin_skills.rs:518	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/clipboard_image.rs:27	spawn_blocking	§2.2 plain-async	n/a	tokio::task::spawn_blocking(read_clipboard_sync)
+crates/coding-agent/src/clipboard_image.rs:29	anyhow context	§2.4 Error{cause}	precondition-guard	.context("clipboard task failed")?
+crates/coding-agent/src/clipboard_image.rs:33	anyhow context	§2.4 Error{cause}	precondition-guard	let mut clipboard = arboard::Clipboard::new().context("open clipboard")?;
+crates/coding-agent/src/clipboard_image.rs:57	anyhow context	§2.4 Error{cause}	precondition-guard	.context("clipboard image dimensions are too large")?;
+crates/coding-agent/src/clipboard_image.rs:65	anyhow context	§2.4 Error{cause}	precondition-guard	let width_u32 = u32::try_from(width).context("clipboard image width is too large")?;
+crates/coding-agent/src/clipboard_image.rs:66	anyhow context	§2.4 Error{cause}	precondition-guard	let height_u32 = u32::try_from(height).context("clipboard image height is too large")?;
+crates/coding-agent/src/clipboard_image.rs:68	anyhow context	§2.4 Error{cause}	precondition-guard	.context("clipboard image buffer does not match dimensions")?;
+crates/coding-agent/src/clipboard_image.rs:72	anyhow context	§2.4 Error{cause}	precondition-guard	.context("encode clipboard image as PNG")?;
+crates/coding-agent/src/clipboard_image.rs:97	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/clipboard_image.rs:104	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/commands.rs:28	Mutex	§2.2 await-in-critical-section test	n/a	static SINK: Mutex<Option<Sink>> = Mutex::new(None);
+crates/coding-agent/src/commands.rs:3225	unwrap	§2.4 invariant()	allocation-guard	let (name, args) = parse("/model anthropic:claude").unwrap();
+crates/coding-agent/src/commands.rs:3232	unwrap	§2.4 invariant()	allocation-guard	let (name, args) = parse("/say \"hello world\" again").unwrap();
+crates/coding-agent/src/commands.rs:3262	unwrap	§2.4 invariant()	allocation-guard	let _guard = crate::auth::ENV_LOCK.lock().unwrap();
+crates/coding-agent/src/commands.rs:3263	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/commands.rs:3268	expect	§2.4 invariant()	allocation-guard	let hint = model_credential_hint("deepseek").expect("deepseek key is missing");
+crates/coding-agent/src/commands.rs:3277	unwrap	§2.4 invariant()	allocation-guard	let _guard = crate::auth::ENV_LOCK.lock().unwrap();
+crates/coding-agent/src/commands.rs:3278	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/commands.rs:3291	unwrap	§2.4 invariant()	allocation-guard	store.save().unwrap();
+crates/coding-agent/src/commands.rs:3374	unwrap	§2.4 invariant()	allocation-guard	let text = model_catalog_text(Some(&provider.0)).unwrap();
+crates/coding-agent/src/commands.rs:3430	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/config.rs:116	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(parse_trigger_poll_interval_secs(text).unwrap(), Some(15));
+crates/coding-agent/src/config.rs:121	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(parse_trigger_poll_interval_secs("").unwrap(), None);
+crates/coding-agent/src/config.rs:126	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(parse_relay_base_url("").unwrap(), DEFAULT_RELAY_BASE_URL);
+crates/coding-agent/src/config.rs:128	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(parse_relay_base_url(text).unwrap(), "http://127.0.0.1:8787");
+crates/coding-agent/src/control_plane_prompt.rs:11	oneshot	§2.2 withResolvers	n/a	pub(crate) responder: oneshot::Sender<ControlPlanePromptDecision>,
+crates/coding-agent/src/control_plane_prompt.rs:22	mpsc channel	§2.2 AsyncQueue	n/a	mpsc::UnboundedReceiver<UiControlPlanePrompt>,
+crates/coding-agent/src/control_plane_prompt.rs:24	mpsc channel	§2.2 AsyncQueue	n/a	let (tx, rx) = mpsc::unbounded_channel::<UiControlPlanePrompt>();
+crates/coding-agent/src/control_plane_prompt.rs:28	oneshot	§2.2 withResolvers	n/a	let (decision_tx, decision_rx) = oneshot::channel();
+crates/coding-agent/src/control_plane_prompt.rs:40	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/coding-agent/src/debug.rs:14	mpsc channel	§2.2 AsyncQueue	n/a	use tokio::sync::mpsc::UnboundedSender;
+crates/coding-agent/src/debug.rs:34	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/debug.rs:323	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/debug.rs:346	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/export.rs:107	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("create exports dir {}", parent.display()))?;
+crates/coding-agent/src/export.rs:112	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("write {}", dest.display()))?;
+crates/coding-agent/src/extensions.rs:146	panic!	§2.4 invariant()	allocation-guard	panic!("oops")
+crates/coding-agent/src/extensions.rs:156	unwrap	§2.4 invariant()	allocation-guard	let cwd = std::env::current_dir().unwrap();
+crates/coding-agent/src/goal.rs:426	expect	§2.4 invariant()	allocation-guard	.expect("decision");
+crates/coding-agent/src/history.rs:88	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/history.rs:104	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/history.rs:119	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/history.rs:130	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/hooks.rs:308	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/hooks.rs:444	anyhow context	§2.4 Error{cause}	precondition-guard	let child = cmd.spawn().map_err(|e| anyhow::anyhow!("spawn: {e}"))?;
+crates/coding-agent/src/hooks.rs:452	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/coding-agent/src/hooks.rs:485	anyhow context	§2.4 Error{cause}	precondition-guard	HookOutcome::Completed(Err(e)) => Err(anyhow::anyhow!(e)),
+crates/coding-agent/src/hooks.rs:540	select!	§2.2 selectN+abort	n/a	let resp = tokio::select! {
+crates/coding-agent/src/hooks.rs:911	unwrap	§2.4 invariant()	allocation-guard	cwd: std::env::current_dir().unwrap(),
+crates/coding-agent/src/hooks.rs:953	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/hooks.rs:966	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/hooks.rs:986	unwrap	§2.4 invariant()	allocation-guard	let body = tokio::fs::read_to_string(out).await.unwrap();
+crates/coding-agent/src/hooks.rs:992	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/hooks.rs:1008	unwrap	§2.4 invariant()	allocation-guard	let body = tokio::fs::read_to_string(out).await.unwrap();
+crates/coding-agent/src/hooks.rs:1014	unwrap	§2.4 invariant()	allocation-guard	let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+crates/coding-agent/src/hooks.rs:1015	unwrap	§2.4 invariant()	allocation-guard	let addr = listener.local_addr().unwrap();
+crates/coding-agent/src/hooks.rs:1018	tokio::spawn	§2.2 detach()	n/a	let server = tokio::spawn(async move {
+crates/coding-agent/src/hooks.rs:1021	unwrap	§2.4 invariant()	allocation-guard	let n = sock.read(&mut buf).await.unwrap();
+crates/coding-agent/src/hooks.rs:1045	unwrap	§2.4 invariant()	allocation-guard	server.await.unwrap();
+crates/coding-agent/src/hooks.rs:1053	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/hooks.rs:1139	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/images.rs:35	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("read image {}", path.display()))?;
+crates/coding-agent/src/images.rs:51	anyhow context	§2.4 Error{cause}	precondition-guard	anyhow::anyhow!(
+crates/coding-agent/src/images.rs:114	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/images.rs:119	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&p, bytes).unwrap();
+crates/coding-agent/src/images.rs:120	unwrap	§2.4 invariant()	allocation-guard	let img = load_one(&p).await.unwrap();
+crates/coding-agent/src/images.rs:124	unwrap	§2.4 invariant()	allocation-guard	let from_bytes = load_bytes("clipboard", bytes).unwrap();
+crates/coding-agent/src/images.rs:131	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/images.rs:133	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&p, b"hello").unwrap();
+crates/coding-agent/src/inbox.rs:40	Mutex	§2.2 await-in-critical-section test	n/a	static WRITE_LOCK: Mutex<()> = Mutex::new(());
+crates/coding-agent/src/inbox.rs:73	anyhow context	§2.4 Error{cause}	precondition-guard	std::fs::create_dir_all(parent).with_context(|| format!("create {}", parent.display()))?;
+crates/coding-agent/src/inbox.rs:81	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("open {}", path.display()))?;
+crates/coding-agent/src/inbox.rs:83	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("append {}", path.display()))?;
+crates/coding-agent/src/inbox.rs:92	anyhow context	§2.4 Error{cause}	precondition-guard	Err(err) => return Err(err).with_context(|| format!("read {}", path.display())),
+crates/coding-agent/src/inbox.rs:156	anyhow context	§2.4 Error{cause}	precondition-guard	std::fs::write(path, out).with_context(|| format!("write {}", path.display()))
+crates/coding-agent/src/inbox.rs:164	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/inbox.rs:181	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/inbox.rs:189	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/inbox.rs:193	unwrap	§2.4 invariant()	allocation-guard	let entries = list_new(&path).unwrap();
+crates/coding-agent/src/inbox.rs:199	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/inbox.rs:200	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/inbox.rs:205	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/inbox.rs:209	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(dismiss_all_new(&path).unwrap(), 1);
+crates/coding-agent/src/inbox.rs:212	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(list(&path).unwrap().len(), 2);
+crates/coding-agent/src/inbox.rs:219	unwrap	§2.4 invariant()	allocation-guard	let entry = append(&path, "cron:j", &long, "t", "s").unwrap();
+crates/coding-agent/src/inbox.rs:231	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/inbox.rs:232	unwrap	§2.4 invariant()	allocation-guard	writeln!(f, "{{not json").unwrap();
+crates/coding-agent/src/inbox.rs:234	unwrap	§2.4 invariant()	allocation-guard	append(&path, "cron:j", "after corruption", "t2", "s").unwrap();
+crates/coding-agent/src/inbox.rs:235	unwrap	§2.4 invariant()	allocation-guard	let entries = list(&path).unwrap();
+crates/coding-agent/src/local_models.rs:130	anyhow context	§2.4 Error{cause}	precondition-guard	let text = std::fs::read_to_string(path).with_context(|| format!("read {}", path.display()
+crates/coding-agent/src/local_models.rs:132	anyhow context	§2.4 Error{cause}	precondition-guard	serde_json::from_str(&text).with_context(|| format!("parse {}", path.display()))?;
+crates/coding-agent/src/local_models.rs:150	Mutex	§2.2 await-in-critical-section test	n/a	fn env_lock() -> &'static TokioMutex<()> {
+crates/coding-agent/src/local_models.rs:151	Mutex	§2.2 await-in-critical-section test	n/a	static LOCK: OnceLock<TokioMutex<()>> = OnceLock::new();
+crates/coding-agent/src/local_models.rs:233	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths(&[]).unwrap();
+crates/coding-agent/src/local_models.rs:236	expect	§2.4 invariant()	allocation-guard	.expect("ds4 default model registered");
+crates/coding-agent/src/local_models.rs:242	unwrap	§2.4 invariant()	allocation-guard	crate::model::auto_detect_model(Some("ds4"), Some("deepseek-v4-flash")).unwrap();
+crates/coding-agent/src/local_models.rs:246	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:257	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:259	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths(&[path]).unwrap();
+crates/coding-agent/src/local_models.rs:262	expect	§2.4 invariant()	allocation-guard	.expect("ds4 model registered");
+crates/coding-agent/src/local_models.rs:275	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths(&[]).unwrap();
+crates/coding-agent/src/local_models.rs:278	expect	§2.4 invariant()	allocation-guard	.expect("ds4 model registered");
+crates/coding-agent/src/local_models.rs:291	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths_with_base_url(&[], Some("http://127.0.0.1:9999/v1")).unwrap();
+crates/coding-agent/src/local_models.rs:294	expect	§2.4 invariant()	allocation-guard	.expect("ds4 model registered");
+crates/coding-agent/src/local_models.rs:305	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:316	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:318	unwrap	§2.4 invariant()	allocation-guard	let loaded = load_all_from_paths(&[path]).unwrap();
+crates/coding-agent/src/local_models.rs:324	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:335	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:347	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:357	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:359	unwrap	§2.4 invariant()	allocation-guard	let loaded = load_all_from_paths(&[user, project]).unwrap();
+crates/coding-agent/src/local_models.rs:369	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:371	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&bad, r#"{ "models": [ { "provider": "broken" } ] }"#).unwrap();
+crates/coding-agent/src/local_models.rs:395	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:401	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:402	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths(&[path]).unwrap();
+crates/coding-agent/src/local_models.rs:404	unwrap	§2.4 invariant()	allocation-guard	let model = pie_ai::get_model(&pie_ai::Provider::from(provider), id).unwrap();
+crates/coding-agent/src/local_models.rs:420	panic!	§2.4 invariant()	allocation-guard	panic!("provider error: {:?}", error.error_message);
+crates/coding-agent/src/local_models.rs:446	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:452	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:453	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths(&[path]).unwrap();
+crates/coding-agent/src/local_models.rs:455	unwrap	§2.4 invariant()	allocation-guard	let model = pie_ai::get_model(&pie_ai::Provider::from(provider), id).unwrap();
+crates/coding-agent/src/local_models.rs:489	panic!	§2.4 invariant()	allocation-guard	panic!("provider error: {:?}", error.error_message);
+crates/coding-agent/src/local_models.rs:506	unwrap	§2.4 invariant()	allocation-guard	let _pie_dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:522	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:528	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:529	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths(&[path]).unwrap();
+crates/coding-agent/src/local_models.rs:531	unwrap	§2.4 invariant()	allocation-guard	let model = pie_ai::get_model(&pie_ai::Provider::from(provider), id).unwrap();
+crates/coding-agent/src/local_models.rs:537	panic!	§2.4 invariant()	allocation-guard	panic!("provider error: {:?}", error.error_message);
+crates/coding-agent/src/local_models.rs:542	unwrap	§2.4 invariant()	allocation-guard	let request = request_rx.await.unwrap();
+crates/coding-agent/src/local_models.rs:561	unwrap	§2.4 invariant()	allocation-guard	let _pie_dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:593	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/local_models.rs:599	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/local_models.rs:600	unwrap	§2.4 invariant()	allocation-guard	load_all_from_paths(&[path]).unwrap();
+crates/coding-agent/src/local_models.rs:602	unwrap	§2.4 invariant()	allocation-guard	let model = pie_ai::get_model(&pie_ai::Provider::from(provider), id).unwrap();
+crates/coding-agent/src/local_models.rs:611	expect	§2.4 invariant()	allocation-guard	let error = error.expect("expected provider error");
+crates/coding-agent/src/local_models.rs:631	unwrap	§2.4 invariant()	allocation-guard	let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+crates/coding-agent/src/local_models.rs:632	unwrap	§2.4 invariant()	allocation-guard	let addr = listener.local_addr().unwrap();
+crates/coding-agent/src/local_models.rs:633	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/local_models.rs:634	unwrap	§2.4 invariant()	allocation-guard	let (mut socket, _) = listener.accept().await.unwrap();
+crates/coding-agent/src/local_models.rs:636	unwrap	§2.4 invariant()	allocation-guard	let _ = socket.read(&mut buf).await.unwrap();
+crates/coding-agent/src/local_models.rs:640	unwrap	§2.4 invariant()	allocation-guard	socket.write_all(response.as_bytes()).await.unwrap();
+crates/coding-agent/src/local_models.rs:645	oneshot	§2.2 withResolvers	n/a	async fn serve_once_capture_request(body: &'static str) -> (String, oneshot::Receiver<Stri
+crates/coding-agent/src/local_models.rs:646	unwrap	§2.4 invariant()	allocation-guard	let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+crates/coding-agent/src/local_models.rs:647	unwrap	§2.4 invariant()	allocation-guard	let addr = listener.local_addr().unwrap();
+crates/coding-agent/src/local_models.rs:648	oneshot	§2.2 withResolvers	n/a	let (tx, rx) = oneshot::channel();
+crates/coding-agent/src/local_models.rs:649	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/local_models.rs:650	unwrap	§2.4 invariant()	allocation-guard	let (mut socket, _) = listener.accept().await.unwrap();
+crates/coding-agent/src/local_models.rs:652	unwrap	§2.4 invariant()	allocation-guard	let n = socket.read(&mut buf).await.unwrap();
+crates/coding-agent/src/local_models.rs:658	unwrap	§2.4 invariant()	allocation-guard	socket.write_all(response.as_bytes()).await.unwrap();
+crates/coding-agent/src/lsp.rs:55	Mutex	§2.2 await-in-critical-section test	n/a	stdin: AsyncMutex<ChildStdin>,
+crates/coding-agent/src/lsp.rs:57	oneshot	§2.2 withResolvers	n/a	inflight: Arc<Mutex<HashMap<u64, oneshot::Sender<serde_json::Value>>>>,
+crates/coding-agent/src/lsp.rs:57	Mutex	§2.2 await-in-critical-section test	n/a	inflight: Arc<Mutex<HashMap<u64, oneshot::Sender<serde_json::Value>>>>,
+crates/coding-agent/src/lsp.rs:58	Mutex	§2.2 await-in-critical-section test	n/a	diagnostics: Arc<Mutex<HashMap<String, Vec<Diagnostic>>>>,
+crates/coding-agent/src/lsp.rs:59	mpsc channel	§2.2 AsyncQueue	n/a	diag_tx: mpsc::UnboundedSender<(String, Vec<Diagnostic>)>,
+crates/coding-agent/src/lsp.rs:60	mpsc channel	§2.2 AsyncQueue	n/a	diag_rx: AsyncMutex<mpsc::UnboundedReceiver<(String, Vec<Diagnostic>)>>,
+crates/coding-agent/src/lsp.rs:60	Mutex	§2.2 await-in-critical-section test	n/a	diag_rx: AsyncMutex<mpsc::UnboundedReceiver<(String, Vec<Diagnostic>)>>,
+crates/coding-agent/src/lsp.rs:61	Mutex	§2.2 await-in-critical-section test	n/a	child: AsyncMutex<Option<Child>>,
+crates/coding-agent/src/lsp.rs:76	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("spawn LSP server {cmd}"))?;
+crates/coding-agent/src/lsp.rs:80	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("LSP child has no stdin"))?;
+crates/coding-agent/src/lsp.rs:84	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("LSP child has no stdout"))?;
+crates/coding-agent/src/lsp.rs:88	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("LSP child has no stderr"))?;
+crates/coding-agent/src/lsp.rs:90	oneshot	§2.2 withResolvers	n/a	let inflight: Arc<Mutex<HashMap<u64, oneshot::Sender<serde_json::Value>>>> =
+crates/coding-agent/src/lsp.rs:90	Mutex	§2.2 await-in-critical-section test	n/a	let inflight: Arc<Mutex<HashMap<u64, oneshot::Sender<serde_json::Value>>>> =
+crates/coding-agent/src/lsp.rs:92	Mutex	§2.2 await-in-critical-section test	n/a	let diagnostics: Arc<Mutex<HashMap<String, Vec<Diagnostic>>>> =
+crates/coding-agent/src/lsp.rs:94	mpsc channel	§2.2 AsyncQueue	n/a	let (diag_tx, diag_rx) = mpsc::unbounded_channel::<(String, Vec<Diagnostic>)>();
+crates/coding-agent/src/lsp.rs:100	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/lsp.rs:140	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/lsp.rs:176	Notify	§2.2 Signal	n/a	// Notify the server we're ready.
+crates/coding-agent/src/lsp.rs:238	oneshot	§2.2 withResolvers	n/a	let (tx, rx) = oneshot::channel();
+crates/coding-agent/src/lsp.rs:245	anyhow context	§2.4 Error{cause}	precondition-guard	return Err(anyhow!("LSP server error: {err}"));
+crates/coding-agent/src/lsp.rs:252	anyhow context	§2.4 Error{cause}	precondition-guard	Ok(Err(_)) => Err(anyhow!("LSP response channel closed")),
+crates/coding-agent/src/lsp.rs:255	anyhow context	§2.4 Error{cause}	precondition-guard	Err(anyhow!(
+crates/coding-agent/src/lsp.rs:303	anyhow context	§2.4 Error{cause}	precondition-guard	let len = content_length.ok_or_else(|| anyhow!("LSP frame missing Content-Length"))?;
+crates/coding-agent/src/lsp_supervisor.rs:47	Mutex	§2.2 await-in-critical-section test	n/a	clients: Mutex<HashMap<String, Arc<OnceCell<Arc<LspClient>>>>>,
+crates/coding-agent/src/lsp_supervisor.rs:48	Mutex	§2.2 await-in-critical-section test	n/a	open_files: Mutex<HashMap<String, ()>>,
+crates/coding-agent/src/main.rs:220	anyhow context	§2.4 Error{cause}	precondition-guard	let cwd = std::env::current_dir().context("getting cwd")?;
+crates/coding-agent/src/main.rs:265	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("no session matches id {id}"))?
+crates/coding-agent/src/main.rs:267	anyhow context	§2.4 Error{cause}	precondition-guard	session::newest_path(repo).await?.with_context(|| {
+crates/coding-agent/src/main.rs:462	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("read {}", root.display()))?;
+crates/coding-agent/src/main.rs:535	spawn_blocking	§2.2 plain-async	n/a	let choice = tokio::task::spawn_blocking(move || resume_picker::pick_blocking(&rows))
+crates/coding-agent/src/main.rs:537	anyhow context	§2.4 Error{cause}	precondition-guard	.context("resume picker task")??;
+crates/coding-agent/src/main.rs:605	mpsc channel	§2.2 AsyncQueue	n/a	let (feed_tx, feed_rx) = tokio::sync::mpsc::unbounded_channel::<ui::FeedUpdate>();
+crates/coding-agent/src/main.rs:857	mpsc channel	§2.2 AsyncQueue	n/a	let (main_run_tx, main_run_rx) = tokio::sync::mpsc::unbounded_channel::<String>();
+crates/coding-agent/src/main.rs:1140	spawn_blocking	§2.2 plain-async	n/a	tokio::task::spawn_blocking(move || {
+crates/coding-agent/src/main.rs:1145	anyhow context	§2.4 Error{cause}	precondition-guard	.context("read api key without echo")
+crates/coding-agent/src/main.rs:1148	anyhow context	§2.4 Error{cause}	precondition-guard	.context("login prompt task")?
+crates/coding-agent/src/main.rs:1318	expect	§2.4 invariant()	allocation-guard	let bare = Cli::try_parse_from(["pie", "--resume"]).expect("bare --resume parses");
+crates/coding-agent/src/main.rs:1324	expect	§2.4 invariant()	allocation-guard	Cli::try_parse_from(["pie", "--resume", "019ea2fd"]).expect("--resume with id");
+crates/coding-agent/src/main.rs:1329	expect	§2.4 invariant()	allocation-guard	Cli::try_parse_from(["pie", "--resume", "aaa", "--resume-id", "bbb"]).expect("both");
+crates/coding-agent/src/main.rs:1334	expect	§2.4 invariant()	allocation-guard	Cli::try_parse_from(["pie", "--resume", "--web"]).expect("flag not swallowed");
+crates/coding-agent/src/main.rs:1340	expect	§2.4 invariant()	allocation-guard	let none = Cli::try_parse_from(["pie"]).expect("no flags");
+crates/coding-agent/src/main.rs:1425	unwrap	§2.4 invariant()	allocation-guard	validate_base_url_override(&cli).unwrap();
+crates/coding-agent/src/main.rs:1452	unwrap	§2.4 invariant()	allocation-guard	output.unwrap(),
+crates/coding-agent/src/main.rs:1457	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected command: {other:?}"),
+crates/coding-agent/src/main.rs:1484	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/main.rs:1535	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/main.rs:1551	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/mcp_loader.rs:226	anyhow context	§2.4 Error{cause}	precondition-guard	anyhow::anyhow!("McpClient::take_notifications returned None — receiver already consumed")
+crates/coding-agent/src/mcp_loader.rs:249	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow::anyhow!("stdio MCP server '{}' missing command", s.name))?;
+crates/coding-agent/src/mcp_loader.rs:266	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow::anyhow!("streamable_http MCP server '{}' missing endpoint", s.name)
+crates/coding-agent/src/mcp_loader.rs:320	anyhow context	§2.4 Error{cause}	precondition-guard	.map_err(|e| anyhow::anyhow!("failed to load local credential store: {e}; {recovery}"))?;
+crates/coding-agent/src/mcp_loader.rs:337	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow::anyhow!("bearer auth requires token_keychain_ref"))?;
+crates/coding-agent/src/mcp_loader.rs:341	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow::anyhow!("configured bearer credential was not found; {recovery}"))?
+crates/coding-agent/src/mcp_loader.rs:438	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/mcp_loader.rs:473	panic!	§2.4 invariant()	allocation-guard	Ok(_) => panic!("streamable_http with command/args should fail"),
+crates/coding-agent/src/mcp_loader.rs:501	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/mentions.rs:143	block_on	§2.2 async-to-root	n/a	async fn expand_reads_files_and_falls_back_to_error_block_on_missing() {
+crates/coding-agent/src/mentions.rs:144	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/mentions.rs:146	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&p, "hi there").unwrap();
+crates/coding-agent/src/mentions.rs:162	unwrap	§2.4 invariant()	allocation-guard	let dir = TempDir::new().unwrap();
+crates/coding-agent/src/model.rs:78	expect	§2.4 invariant()	allocation-guard	.expect("embedded model catalog is never empty")
+crates/coding-agent/src/model.rs:165	unwrap	§2.4 invariant()	allocation-guard	let resolved = auto_detect_model(Some(&provider.0), Some(id)).unwrap();
+crates/coding-agent/src/model_picker.rs:250	expect	§2.4 invariant()	allocation-guard	.expect("embedded anthropic models present");
+crates/coding-agent/src/model_picker.rs:260	expect	§2.4 invariant()	allocation-guard	.expect("embedded openai models present");
+crates/coding-agent/src/oauth.rs:91	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("bind 127.0.0.1:{}", self.redirect_port))?;
+crates/coding-agent/src/oauth.rs:123	anyhow context	§2.4 Error{cause}	precondition-guard	.map_err(|_| anyhow!("OAuth callback timed out after {timeout:?}"))?
+crates/coding-agent/src/oauth.rs:124	anyhow context	§2.4 Error{cause}	precondition-guard	.map_err(|e| anyhow!("OAuth callback read failed: {e}"))?;
+crates/coding-agent/src/oauth.rs:125	anyhow context	§2.4 Error{cause}	precondition-guard	let code = result.0.ok_or_else(|| anyhow!("callback missing `code`"))?;
+crates/coding-agent/src/oauth.rs:128	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("callback missing `state`"))?;
+crates/coding-agent/src/oauth.rs:148	anyhow context	§2.4 Error{cause}	precondition-guard	return Err(anyhow!(
+crates/coding-agent/src/oauth.rs:173	anyhow context	§2.4 Error{cause}	precondition-guard	return Err(anyhow!(
+crates/coding-agent/src/oauth.rs:193	u128	§2.1 bigint/site-specific	n/a	let pid = std::process::id() as u128;
+crates/coding-agent/src/otlp.rs:47	Mutex	§2.2 await-in-critical-section test	n/a	pending: Mutex<Vec<Value>>,
+crates/coding-agent/src/otlp.rs:50	Mutex	§2.2 await-in-critical-section test	n/a	open: Mutex<HashMap<u64, OpenSpan>>,
+crates/coding-agent/src/otlp.rs:56	u128	§2.1 bigint/site-specific	n/a	start_ns: u128,
+crates/coding-agent/src/otlp.rs:69	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/otlp.rs:117	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/otlp.rs:137	u128	§2.1 bigint/site-specific	n/a	fn now_ns() -> u128 {
+crates/coding-agent/src/otlp.rs:197	tokio::spawn	§2.2 detach()	n/a	// (No tokio::spawn here — we're inside a sync trait method.)
+crates/coding-agent/src/resume_picker.rs:156	spawn_blocking	§2.2 plain-async	n/a	/// `spawn_blocking`. The caller must have verified stdin/stdout are TTYs.
+crates/coding-agent/src/resume_picker.rs:191	anyhow context	§2.4 Error{cause}	precondition-guard	match crossterm::event::read().context("read picker key")? {
+crates/coding-agent/src/resume_picker.rs:220	anyhow context	§2.4 Error{cause}	precondition-guard	crossterm::terminal::enable_raw_mode().context("enable raw mode for session picker")?;
+crates/coding-agent/src/session_archive.rs:122	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("read session {}", session_path.display()))?;
+crates/coding-agent/src/session_archive.rs:170	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("create {}", parent.display()))?;
+crates/coding-agent/src/session_archive.rs:177	spawn_blocking	§2.2 plain-async	n/a	tokio::task::spawn_blocking(move || -> Result<()> {
+crates/coding-agent/src/session_archive.rs:188	anyhow context	§2.4 Error{cause}	precondition-guard	tar.finish().context("finish session archive")?;
+crates/coding-agent/src/session_archive.rs:214	spawn_blocking	§2.2 plain-async	n/a	let files = tokio::task::spawn_blocking(move || read_archive(&archive_path)).await??;
+crates/coding-agent/src/session_archive.rs:217	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("session archive is missing manifest.json"))?;
+crates/coding-agent/src/session_archive.rs:220	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("session archive is missing session.jsonl"))?;
+crates/coding-agent/src/session_archive.rs:223	anyhow context	§2.4 Error{cause}	precondition-guard	serde_json::from_slice(manifest_bytes).context("parse session archive manifest")?;
+crates/coding-agent/src/session_archive.rs:231	anyhow context	§2.4 Error{cause}	precondition-guard	let session_text = std::str::from_utf8(session_bytes).context("session.jsonl is not UTF-8"
+crates/coding-agent/src/session_archive.rs:274	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("create {}", repo.root().display()))?;
+crates/coding-agent/src/session_archive.rs:330	anyhow context	§2.4 Error{cause}	precondition-guard	std::fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+crates/coding-agent/src/session_archive.rs:332	anyhow context	§2.4 Error{cause}	precondition-guard	serde_json::from_str(&text).context("parse trigger sidecar")?;
+crates/coding-agent/src/session_archive.rs:340	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("write {}", path.display()))?;
+crates/coding-agent/src/session_archive.rs:346	anyhow context	§2.4 Error{cause}	precondition-guard	std::fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+crates/coding-agent/src/session_archive.rs:347	anyhow context	§2.4 Error{cause}	precondition-guard	let mut file: CronJobsFile = toml::from_str(&text).context("parse cron sidecar")?;
+crates/coding-agent/src/session_archive.rs:355	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("write {}", path.display()))?;
+crates/coding-agent/src/session_archive.rs:369	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("session transcript is empty"))?;
+crates/coding-agent/src/session_archive.rs:371	anyhow context	§2.4 Error{cause}	precondition-guard	serde_json::from_str(header).context("parse session metadata")?;
+crates/coding-agent/src/session_archive.rs:384	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("parse session entry line {}", idx + 2))?;
+crates/coding-agent/src/session_archive.rs:460	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("write {}", temp_path.display()))?;
+crates/coding-agent/src/session_archive.rs:465	anyhow context	§2.4 Error{cause}	precondition-guard	.context("validate imported session")?;
+crates/coding-agent/src/session_archive.rs:469	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("write {}", path.display()))?;
+crates/coding-agent/src/session_archive.rs:473	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("rename into {}", session_path.display()))
+crates/coding-agent/src/session_archive.rs:497	anyhow context	§2.4 Error{cause}	precondition-guard	anyhow!(
+crates/coding-agent/src/session_archive.rs:502	anyhow context	§2.4 Error{cause}	precondition-guard	anyhow::Error::new(err).context(format!("create {}", path.display()))
+crates/coding-agent/src/session_archive.rs:516	anyhow context	§2.4 Error{cause}	precondition-guard	Err(err) => Err(err).with_context(|| format!("read {}", path.display())),
+crates/coding-agent/src/session_archive.rs:530	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("append {path}"))?;
+crates/coding-agent/src/session_archive.rs:535	anyhow context	§2.4 Error{cause}	precondition-guard	let file = File::open(path).with_context(|| format!("open {}", path.display()))?;
+crates/coding-agent/src/session_archive.rs:538	anyhow context	§2.4 Error{cause}	precondition-guard	for entry in archive.entries().context("read session archive")? {
+crates/coding-agent/src/session_archive.rs:539	anyhow context	§2.4 Error{cause}	precondition-guard	let entry = entry.context("read archive entry")?;
+crates/coding-agent/src/session_archive.rs:543	anyhow context	§2.4 Error{cause}	precondition-guard	let path = entry.path().context("read archive entry path")?;
+crates/coding-agent/src/session_archive.rs:547	anyhow context	§2.4 Error{cause}	precondition-guard	.ok_or_else(|| anyhow!("session archive contains non-UTF-8 path"))?
+crates/coding-agent/src/session_archive.rs:559	anyhow context	§2.4 Error{cause}	precondition-guard	.context("read archive file")?;
+crates/coding-agent/src/session_archive.rs:584	anyhow context	§2.4 Error{cause}	precondition-guard	serde_json::from_slice(bytes).context("parse trigger sidecar")?;
+crates/coding-agent/src/session_archive.rs:592	anyhow context	§2.4 Error{cause}	precondition-guard	let text = std::str::from_utf8(bytes).context("cron sidecar is not UTF-8")?;
+crates/coding-agent/src/session_archive.rs:593	anyhow context	§2.4 Error{cause}	precondition-guard	let mut file: CronJobsFile = toml::from_str(text).context("parse cron sidecar")?;
+crates/coding-agent/src/session_archive.rs:618	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:621	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&source_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:622	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&dest_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:627	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:634	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:635	unwrap	§2.4 invariant()	allocation-guard	let source_meta = source.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session_archive.rs:636	unwrap	§2.4 invariant()	allocation-guard	let source_path = PathBuf::from(source_meta["path"].as_str().unwrap());
+crates/coding-agent/src/session_archive.rs:654	unwrap	§2.4 invariant()	allocation-guard	serde_json::to_string_pretty(&trigger_file).unwrap(),
+crates/coding-agent/src/session_archive.rs:657	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:676	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::write(&cron_path, toml::to_string_pretty(&cron_file).unwrap())
+crates/coding-agent/src/session_archive.rs:678	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:681	unwrap	§2.4 invariant()	allocation-guard	let export = export_session(&source_path, &archive, false).await.unwrap();
+crates/coding-agent/src/session_archive.rs:689	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:695	unwrap	§2.4 invariant()	allocation-guard	let imported_session = dest_repo.open(&imported.session_path).await.unwrap();
+crates/coding-agent/src/session_archive.rs:700	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:701	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(meta["id"].as_str().unwrap(), imported.session_id);
+crates/coding-agent/src/session_archive.rs:702	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(meta["cwd"].as_str().unwrap(), dest_cwd.to_string_lossy());
+crates/coding-agent/src/session_archive.rs:704	unwrap	§2.4 invariant()	allocation-guard	meta["path"].as_str().unwrap(),
+crates/coding-agent/src/session_archive.rs:711	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:713	unwrap	§2.4 invariant()	allocation-guard	serde_json::from_str(&imported_triggers).unwrap();
+crates/coding-agent/src/session_archive.rs:722	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:723	unwrap	§2.4 invariant()	allocation-guard	let imported_cron_file: CronJobsFile = toml::from_str(&imported_cron).unwrap();
+crates/coding-agent/src/session_archive.rs:734	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:737	unwrap	§2.4 invariant()	allocation-guard	let archive_files = read_archive(&excluded_archive).unwrap();
+crates/coding-agent/src/session_archive.rs:747	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:762	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:779	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:781	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&source_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:786	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:790	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:794	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:795	unwrap	§2.4 invariant()	allocation-guard	let source_meta = source.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session_archive.rs:796	unwrap	§2.4 invariant()	allocation-guard	let source_path = PathBuf::from(source_meta["path"].as_str().unwrap());
+crates/coding-agent/src/session_archive.rs:799	unwrap	§2.4 invariant()	allocation-guard	export_session(&source_path, &archive, false).await.unwrap();
+crates/coding-agent/src/session_archive.rs:810	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:812	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&source_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:817	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:821	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:825	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:826	unwrap	§2.4 invariant()	allocation-guard	source.move_to(Some(&first_id), None).await.unwrap();
+crates/coding-agent/src/session_archive.rs:827	unwrap	§2.4 invariant()	allocation-guard	let source_meta = source.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session_archive.rs:828	unwrap	§2.4 invariant()	allocation-guard	let source_path = PathBuf::from(source_meta["path"].as_str().unwrap());
+crates/coding-agent/src/session_archive.rs:831	unwrap	§2.4 invariant()	allocation-guard	export_session(&source_path, &archive, false).await.unwrap();
+crates/coding-agent/src/session_archive.rs:838	unwrap	§2.4 invariant()	allocation-guard	let session_text = tokio::fs::read_to_string(&source_path).await.unwrap();
+crates/coding-agent/src/session_archive.rs:844	unwrap	§2.4 invariant()	allocation-guard	.unwrap(),
+crates/coding-agent/src/session_archive.rs:846	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:855	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:858	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&source_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:859	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&dest_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:864	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:868	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:869	unwrap	§2.4 invariant()	allocation-guard	let source_meta = source.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session_archive.rs:870	unwrap	§2.4 invariant()	allocation-guard	let source_path = PathBuf::from(source_meta["path"].as_str().unwrap());
+crates/coding-agent/src/session_archive.rs:873	unwrap	§2.4 invariant()	allocation-guard	export_session(&source_path, &archive, false).await.unwrap();
+crates/coding-agent/src/session_archive.rs:874	unwrap	§2.4 invariant()	allocation-guard	let mut files = read_archive(&archive).unwrap();
+crates/coding-agent/src/session_archive.rs:876	unwrap	§2.4 invariant()	allocation-guard	serde_json::from_slice(files.get(MANIFEST_PATH).unwrap()).unwrap();
+crates/coding-agent/src/session_archive.rs:878	unwrap	§2.4 invariant()	allocation-guard	let manifest_bytes = serde_json::to_vec_pretty(&manifest).unwrap();
+crates/coding-agent/src/session_archive.rs:902	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&source_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:907	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:911	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:912	unwrap	§2.4 invariant()	allocation-guard	let source_meta = source.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session_archive.rs:913	unwrap	§2.4 invariant()	allocation-guard	let source_path = PathBuf::from(source_meta["path"].as_str().unwrap());
+crates/coding-agent/src/session_archive.rs:918	unwrap	§2.4 invariant()	allocation-guard	serde_json::to_string_pretty(&trigger_file).unwrap(),
+crates/coding-agent/src/session_archive.rs:921	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:927	unwrap	§2.4 invariant()	allocation-guard	toml::to_string_pretty(&cron_file).unwrap(),
+crates/coding-agent/src/session_archive.rs:930	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:933	unwrap	§2.4 invariant()	allocation-guard	let export = export_session(&source_path, &archive, false).await.unwrap();
+crates/coding-agent/src/session_archive.rs:971	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:973	unwrap	§2.4 invariant()	allocation-guard	let mode = std::fs::metadata(&archive).unwrap().permissions().mode();
+crates/coding-agent/src/session_archive.rs:979	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:983	unwrap	§2.4 invariant()	allocation-guard	source_repo.list().await.unwrap().pop().unwrap()
+crates/coding-agent/src/session_archive.rs:990	unwrap	§2.4 invariant()	allocation-guard	let original = tokio::fs::read(&archive).await.unwrap();
+crates/coding-agent/src/session_archive.rs:999	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:1002	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&dest_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1006	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1008	unwrap	§2.4 invariant()	allocation-guard	let session = dest_repo.open(&imported.session_path).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1009	unwrap	§2.4 invariant()	allocation-guard	let meta = session.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session_archive.rs:1022	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:1033	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&dest_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1037	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1042	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1043	unwrap	§2.4 invariant()	allocation-guard	let trigger_file: DynamicTriggerFile = serde_json::from_str(&triggers).unwrap();
+crates/coding-agent/src/session_archive.rs:1048	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1053	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1067	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1068	unwrap	§2.4 invariant()	allocation-guard	let cron_file: CronJobsFile = toml::from_str(&cron).unwrap();
+crates/coding-agent/src/session_archive.rs:1069	unwrap	§2.4 invariant()	allocation-guard	let job_on = cron_file.jobs.iter().find(|j| j.id == "job-on").unwrap();
+crates/coding-agent/src/session_archive.rs:1070	unwrap	§2.4 invariant()	allocation-guard	let job_off = cron_file.jobs.iter().find(|j| j.id == "job-off").unwrap();
+crates/coding-agent/src/session_archive.rs:1080	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:1082	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&root).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1087	unwrap	§2.4 invariant()	allocation-guard	let session = staging.create("/tmp").await.unwrap();
+crates/coding-agent/src/session_archive.rs:1088	unwrap	§2.4 invariant()	allocation-guard	let meta = session.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session_archive.rs:1089	unwrap	§2.4 invariant()	allocation-guard	let content = tokio::fs::read_to_string(meta["path"].as_str().unwrap())
+crates/coding-agent/src/session_archive.rs:1091	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1098	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&bad_sidecar).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1114	unwrap	§2.4 invariant()	allocation-guard	!tokio::fs::try_exists(&session_path).await.unwrap(),
+crates/coding-agent/src/session_archive.rs:1117	unwrap	§2.4 invariant()	allocation-guard	assert!(!tokio::fs::try_exists(&temp_path).await.unwrap());
+crates/coding-agent/src/session_archive.rs:1119	unwrap	§2.4 invariant()	allocation-guard	!tokio::fs::try_exists(&good_sidecar).await.unwrap(),
+crates/coding-agent/src/session_archive.rs:1126	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:1137	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&dest_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1141	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1151	expect	§2.4 invariant()	allocation-guard	.expect("activation rewrites sidecars");
+crates/coding-agent/src/session_archive.rs:1157	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1158	unwrap	§2.4 invariant()	allocation-guard	let trigger_file: DynamicTriggerFile = serde_json::from_str(&triggers).unwrap();
+crates/coding-agent/src/session_archive.rs:1163	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1168	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1175	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1176	unwrap	§2.4 invariant()	allocation-guard	let cron_file: CronJobsFile = toml::from_str(&cron).unwrap();
+crates/coding-agent/src/session_archive.rs:1182	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session_archive.rs:1190	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session_archive.rs:1197	unwrap	§2.4 invariant()	allocation-guard	let temp = tempfile::tempdir().unwrap();
+crates/coding-agent/src/session_archive.rs:1200	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&dest_cwd).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1204	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session_archive.rs:1205	unwrap	§2.4 invariant()	allocation-guard	let mut dir = tokio::fs::read_dir(dest_repo.root()).await.unwrap();
+crates/coding-agent/src/session_archive.rs:1206	unwrap	§2.4 invariant()	allocation-guard	while let Some(entry) = dir.next_entry().await.unwrap() {
+crates/coding-agent/src/session_archive.rs:1213	unwrap	§2.4 invariant()	allocation-guard	let files = read_archive(path).unwrap();
+crates/coding-agent/src/session_archive.rs:1214	unwrap	§2.4 invariant()	allocation-guard	serde_json::from_slice(files.get(MANIFEST_PATH).unwrap()).unwrap()
+crates/coding-agent/src/session_archive.rs:1218	unwrap	§2.4 invariant()	allocation-guard	let file = std::fs::File::create(path).unwrap();
+crates/coding-agent/src/session_archive.rs:1221	unwrap	§2.4 invariant()	allocation-guard	append_bytes(&mut tar, archive_path, bytes).unwrap();
+crates/coding-agent/src/session_archive.rs:1223	unwrap	§2.4 invariant()	allocation-guard	tar.finish().unwrap();
+crates/coding-agent/src/skills_state.rs:258	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/skills_state.rs:261	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/skills_state.rs:264	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/skills_state.rs:271	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/skills_state.rs:275	unwrap	§2.4 invariant()	allocation-guard	save(dir.path(), &state).await.unwrap();
+crates/coding-agent/src/skills_state.rs:290	unwrap	§2.4 invariant()	allocation-guard	let mut entries = tokio::fs::read_dir(dir.path()).await.unwrap();
+crates/coding-agent/src/skills_state.rs:292	unwrap	§2.4 invariant()	allocation-guard	while let Some(e) = entries.next_entry().await.unwrap() {
+crates/coding-agent/src/skills_state.rs:300	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/skills_state.rs:307	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/skills_state.rs:310	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/skills_state.rs:320	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/skills_state.rs:323	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/spinner.rs:7	tokio::spawn	§2.2 detach()	n/a	//! 1. **Render frame 0 synchronously inside `start()`.** `tokio::spawn` only queues the
+crates/coding-agent/src/spinner.rs:57	Mutex	§2.2 await-in-critical-section test	n/a	pub buf: Arc<Mutex<Vec<u8>>>,
+crates/coding-agent/src/spinner.rs:154	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/tui.rs:34	Mutex	§2.2 await-in-critical-section test	n/a	state: Arc<Mutex<RenderState>>,
+crates/coding-agent/src/session/mod.rs:90	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("no session matches id {id}"))?
+crates/coding-agent/src/session/mod.rs:93	unwrap	§2.4 invariant()	allocation-guard	files.last().cloned().unwrap()
+crates/coding-agent/src/session/mod.rs:168	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("no session matches id {id}"))?;
+crates/coding-agent/src/session/mod.rs:174	anyhow context	§2.4 Error{cause}	precondition-guard	Err(e) => return Err(e).with_context(|| format!("delete {}", trigger_sidecar.display())),
+crates/coding-agent/src/session/mod.rs:180	anyhow context	§2.4 Error{cause}	precondition-guard	Err(e) => return Err(e).with_context(|| format!("delete {}", cron_sidecar.display())),
+crates/coding-agent/src/session/mod.rs:186	anyhow context	§2.4 Error{cause}	precondition-guard	Err(e) => return Err(e).with_context(|| format!("delete {}", endpoint_sidecar.display())),
+crates/coding-agent/src/session/mod.rs:359	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:370	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session/mod.rs:375	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session/mod.rs:385	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(cron_sidecar_path(&session_path), "not toml [").unwrap();
+crates/coding-agent/src/session/mod.rs:386	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(trigger_sidecar_path(&session_path), "{oops").unwrap();
+crates/coding-agent/src/session/mod.rs:415	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:417	unwrap	§2.4 invariant()	allocation-guard	let older = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:418	unwrap	§2.4 invariant()	allocation-guard	let older_meta = older.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session/mod.rs:419	unwrap	§2.4 invariant()	allocation-guard	let older_path = PathBuf::from(older_meta["path"].as_str().unwrap());
+crates/coding-agent/src/session/mod.rs:420	unwrap	§2.4 invariant()	allocation-guard	let older_id = older_meta["id"].as_str().unwrap().to_string();
+crates/coding-agent/src/session/mod.rs:422	unwrap	§2.4 invariant()	allocation-guard	let newer = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:424	unwrap	§2.4 invariant()	allocation-guard	newer.storage().get_metadata_json().await.unwrap()["path"]
+crates/coding-agent/src/session/mod.rs:426	unwrap	§2.4 invariant()	allocation-guard	.unwrap(),
+crates/coding-agent/src/session/mod.rs:436	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(cron_sidecar_path(&older_path), "[[jobs]]\nenabled = true\n").unwrap();
+crates/coding-agent/src/session/mod.rs:439	expect	§2.4 invariant()	allocation-guard	.expect("enabled automation in the older session must be surfaced");
+crates/coding-agent/src/session/mod.rs:456	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session/mod.rs:466	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:480	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session/mod.rs:482	unwrap	§2.4 invariant()	allocation-guard	let session = resume(&repo, Some("metadata")).await.unwrap();
+crates/coding-agent/src/session/mod.rs:483	unwrap	§2.4 invariant()	allocation-guard	let meta = session.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session/mod.rs:492	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:496	unwrap	§2.4 invariant()	allocation-guard	let older = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:501	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:504	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:509	unwrap	§2.4 invariant()	allocation-guard	let newer = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:514	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:517	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:521	unwrap	§2.4 invariant()	allocation-guard	let picked = resume(&repo, None).await.unwrap();
+crates/coding-agent/src/session/mod.rs:526	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:529	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:539	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:553	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/session/mod.rs:555	unwrap	§2.4 invariant()	allocation-guard	let deleted = delete_by_id(&repo, "metadata").await.unwrap();
+crates/coding-agent/src/session/mod.rs:575	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:577	unwrap	§2.4 invariant()	allocation-guard	let created = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:578	unwrap	§2.4 invariant()	allocation-guard	let metadata = created.storage().get_metadata_json().await.unwrap();
+crates/coding-agent/src/session/mod.rs:579	unwrap	§2.4 invariant()	allocation-guard	let session_id = metadata.get("id").and_then(|v| v.as_str()).unwrap();
+crates/coding-agent/src/session/mod.rs:580	unwrap	§2.4 invariant()	allocation-guard	let session_path = metadata.get("path").and_then(|v| v.as_str()).unwrap();
+crates/coding-agent/src/session/mod.rs:584	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&expected_trigger, "{\"version\":1,\"rules\":[]}").unwrap();
+crates/coding-agent/src/session/mod.rs:585	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&expected_cron, "[[jobs]]\n").unwrap();
+crates/coding-agent/src/session/mod.rs:586	unwrap	§2.4 invariant()	allocation-guard	let resumed = resume(&repo, Some(session_id)).await.unwrap();
+crates/coding-agent/src/session/mod.rs:591	unwrap	§2.4 invariant()	allocation-guard	.unwrap(),
+crates/coding-agent/src/session/mod.rs:597	unwrap	§2.4 invariant()	allocation-guard	.unwrap(),
+crates/coding-agent/src/session/mod.rs:604	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:606	unwrap	§2.4 invariant()	allocation-guard	let first = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:607	unwrap	§2.4 invariant()	allocation-guard	let second = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:609	unwrap	§2.4 invariant()	allocation-guard	let first_path = cron_sidecar_path_for_session(&first, &repo).await.unwrap();
+crates/coding-agent/src/session/mod.rs:610	unwrap	§2.4 invariant()	allocation-guard	let second_path = cron_sidecar_path_for_session(&second, &repo).await.unwrap();
+crates/coding-agent/src/session/mod.rs:613	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&first_path, "[[jobs]]\n").unwrap();
+crates/coding-agent/src/session/mod.rs:632	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:634	unwrap	§2.4 invariant()	allocation-guard	let session = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:639	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:642	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:644	unwrap	§2.4 invariant()	allocation-guard	let session_path = repo.list().await.unwrap().pop().unwrap();
+crates/coding-agent/src/session/mod.rs:646	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&endpoint_path, "{\"version\":1,\"endpoints\":[]}").unwrap();
+crates/coding-agent/src/session/mod.rs:648	unwrap	§2.4 invariant()	allocation-guard	let deleted = delete_by_id(&repo, &id).await.unwrap();
+crates/coding-agent/src/session/mod.rs:656	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/session/mod.rs:658	unwrap	§2.4 invariant()	allocation-guard	let session = repo.create("/cwd").await.unwrap();
+crates/coding-agent/src/session/mod.rs:663	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:666	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/session/mod.rs:668	unwrap	§2.4 invariant()	allocation-guard	let session_path = repo.list().await.unwrap().pop().unwrap();
+crates/coding-agent/src/session/mod.rs:671	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&trigger_path, "{}").unwrap();
+crates/coding-agent/src/session/mod.rs:672	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&cron_path, "[[jobs]]\n").unwrap();
+crates/coding-agent/src/session/mod.rs:674	unwrap	§2.4 invariant()	allocation-guard	let deleted = delete_by_id(&repo, &id).await.unwrap();
+crates/coding-agent/src/tools/bash.rs:176	tokio::spawn	§2.2 detach()	n/a	let drain_handle = tokio::spawn(async move {
+crates/coding-agent/src/tools/bash.rs:214	select!	§2.2 selectN+abort	n/a	let (kr, code) = tokio::select! {
+crates/coding-agent/src/tools/bash.rs:222	unwrap	§2.4 invariant()	allocation-guard	KillReason::TimedOut { secs: timeout_secs.unwrap() },
+crates/coding-agent/src/tools/bash.rs:342	expect	§2.4 invariant()	allocation-guard	.expect("bash tool execute should not error on timeout");
+crates/coding-agent/src/tools/bash.rs:350	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text content"),
+crates/coding-agent/src/tools/bash.rs:408	expect	§2.4 invariant()	allocation-guard	.expect("bash tool execute should not error on timeout");
+crates/coding-agent/src/tools/bash.rs:450	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/tools/bash.rs:463	expect	§2.4 invariant()	allocation-guard	.expect("bash tool should not error on cancellation");
+crates/coding-agent/src/tools/bash.rs:471	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text content"),
+crates/coding-agent/src/tools/bash.rs:501	expect	§2.4 invariant()	allocation-guard	.expect("bash tool must not hang on high-volume stderr")
+crates/coding-agent/src/tools/bash.rs:502	expect	§2.4 invariant()	allocation-guard	.expect("execute returned error");
+crates/coding-agent/src/tools/bash.rs:510	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text content"),
+crates/coding-agent/src/tools/bash.rs:533	expect	§2.4 invariant()	allocation-guard	.expect("simple echo should not error");
+crates/coding-agent/src/tools/bash.rs:536	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text content"),
+crates/coding-agent/src/tools/bash.rs:552	tokio::spawn	§2.2 detach()	n/a	handles.push(tokio::spawn(async move {
+crates/coding-agent/src/tools/bash.rs:563	expect	§2.4 invariant()	allocation-guard	h.await.expect("task join").expect("execute should succeed");
+crates/coding-agent/src/tools/edit.rs:139	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/edit.rs:141	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&p, "hello world\nfoo bar\n").unwrap();
+crates/coding-agent/src/tools/edit.rs:145	unwrap	§2.4 invariant()	allocation-guard	json!({ "path": p.to_str().unwrap(), "old_string": "hello", "new_string": "hey" }),
+crates/coding-agent/src/tools/edit.rs:150	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/edit.rs:151	unwrap	§2.4 invariant()	allocation-guard	let body = std::fs::read_to_string(&p).unwrap();
+crates/coding-agent/src/tools/edit.rs:157	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/edit.rs:159	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&p, "foo\nfoo\n").unwrap();
+crates/coding-agent/src/tools/edit.rs:164	unwrap	§2.4 invariant()	allocation-guard	json!({ "path": p.to_str().unwrap(), "old_string": "foo", "new_string": "bar" }),
+crates/coding-agent/src/tools/edit.rs:174	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/edit.rs:176	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(&p, "foo\nfoo\nfoo\n").unwrap();
+crates/coding-agent/src/tools/edit.rs:181	unwrap	§2.4 invariant()	allocation-guard	"path": p.to_str().unwrap(),
+crates/coding-agent/src/tools/edit.rs:190	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/edit.rs:191	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(std::fs::read_to_string(&p).unwrap(), "bar\nbar\nbar\n");
+crates/coding-agent/src/tools/find.rs:61	spawn_blocking	§2.2 plain-async	n/a	let result = tokio::task::spawn_blocking(move || -> Result<FindOutput, String> {
+crates/coding-agent/src/tools/find.rs:92	spawn_blocking	§2.2 plain-async	n/a	.map_err(|e| AgentToolError::from(format!("spawn_blocking: {e}")))?;
+crates/coding-agent/src/tools/find.rs:149	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/find.rs:150	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join("a.rs"), "").unwrap();
+crates/coding-agent/src/tools/find.rs:151	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join("b.txt"), "").unwrap();
+crates/coding-agent/src/tools/find.rs:152	unwrap	§2.4 invariant()	allocation-guard	std::fs::create_dir(dir.path().join("sub")).unwrap();
+crates/coding-agent/src/tools/find.rs:153	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join("sub/c.rs"), "").unwrap();
+crates/coding-agent/src/tools/find.rs:159	unwrap	§2.4 invariant()	allocation-guard	json!({ "glob": "*.rs", "path": dir.path().to_str().unwrap() }),
+crates/coding-agent/src/tools/find.rs:164	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/find.rs:167	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/find.rs:176	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/find.rs:178	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join(format!("{i}.rs")), "").unwrap();
+crates/coding-agent/src/tools/find.rs:185	unwrap	§2.4 invariant()	allocation-guard	json!({ "glob": "*.rs", "path": dir.path().to_str().unwrap(), "limit": 2 }),
+crates/coding-agent/src/tools/find.rs:190	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/find.rs:193	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/find.rs:199	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(r.details["paths"].as_array().unwrap().len(), 2);
+crates/coding-agent/src/tools/find.rs:204	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/find.rs:206	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join(format!("{i:03}.rs")), "").unwrap();
+crates/coding-agent/src/tools/find.rs:213	unwrap	§2.4 invariant()	allocation-guard	json!({ "glob": "*.rs", "path": dir.path().to_str().unwrap() }),
+crates/coding-agent/src/tools/find.rs:218	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/find.rs:222	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/find.rs:229	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(r.details["paths"].as_array().unwrap().len(), DEFAULT_LIMIT);
+crates/coding-agent/src/tools/git.rs:84	select!	§2.2 selectN+abort	n/a	let output = tokio::select! {
+crates/coding-agent/src/tools/grep.rs:65	spawn_blocking	§2.2 plain-async	n/a	// Walk synchronously inside spawn_blocking so .gitignore + sibling files are honored
+crates/coding-agent/src/tools/grep.rs:71	spawn_blocking	§2.2 plain-async	n/a	let result = tokio::task::spawn_blocking(move || -> Result<Vec<MatchOut>, String> {
+crates/coding-agent/src/tools/grep.rs:123	spawn_blocking	§2.2 plain-async	n/a	.map_err(|e| AgentToolError::from(format!("spawn_blocking: {e}")))?;
+crates/coding-agent/src/tools/grep.rs:222	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/grep.rs:223	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join("a.txt"), "hello world\nfoo bar\n").unwrap();
+crates/coding-agent/src/tools/grep.rs:224	unwrap	§2.4 invariant()	allocation-guard	std::fs::create_dir(dir.path().join("sub")).unwrap();
+crates/coding-agent/src/tools/grep.rs:225	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join("sub/b.txt"), "another hello\n").unwrap();
+crates/coding-agent/src/tools/grep.rs:231	unwrap	§2.4 invariant()	allocation-guard	json!({ "pattern": "hello", "path": dir.path().to_str().unwrap() }),
+crates/coding-agent/src/tools/grep.rs:236	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/grep.rs:239	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/grep.rs:247	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/grep.rs:249	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join("a.txt"), long_line).unwrap();
+crates/coding-agent/src/tools/grep.rs:255	unwrap	§2.4 invariant()	allocation-guard	json!({ "pattern": "needle", "path": dir.path().to_str().unwrap() }),
+crates/coding-agent/src/tools/grep.rs:260	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/grep.rs:263	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/grep.rs:274	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/tools/grep.rs:276	unwrap	§2.4 invariant()	allocation-guard	std::fs::write(dir.path().join("a.txt"), long_line).unwrap();
+crates/coding-agent/src/tools/grep.rs:282	unwrap	§2.4 invariant()	allocation-guard	json!({ "pattern": "NEEDLE", "path": dir.path().to_str().unwrap() }),
+crates/coding-agent/src/tools/grep.rs:287	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/grep.rs:290	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/install_skill.rs:330	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type", rename_all = "snake_case")]
+crates/coding-agent/src/tools/install_skill.rs:414	select!	§2.2 selectN+abort	n/a	let mut resp = tokio::select! {
+crates/coding-agent/src/tools/install_skill.rs:427	select!	§2.2 selectN+abort	n/a	let chunk = tokio::select! {
+crates/coding-agent/src/tools/install_skill.rs:853	expect	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().expect("tempdir");
+crates/coding-agent/src/tools/install_skill.rs:880	expect	§2.4 invariant()	allocation-guard	// `Debug`, so use `is_ok()` + assert instead of `.expect(...)`.
+crates/coding-agent/src/tools/install_skill.rs:914	expect	§2.4 invariant()	allocation-guard	.expect("preview should succeed");
+crates/coding-agent/src/tools/install_skill.rs:924	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/install_skill.rs:953	panic!	§2.4 invariant()	allocation-guard	panic!("expected typed error");
+crates/coding-agent/src/tools/install_skill.rs:973	panic!	§2.4 invariant()	allocation-guard	panic!("expected typed error");
+crates/coding-agent/src/tools/install_skill.rs:986	expect	§2.4 invariant()	allocation-guard	.expect("https alias should decode");
+crates/coding-agent/src/tools/install_skill.rs:990	panic!	§2.4 invariant()	allocation-guard	_ => panic!("https alias should decode as Source::Url"),
+crates/coding-agent/src/tools/install_skill.rs:1036	expect	§2.4 invariant()	allocation-guard	.expect("large skill preview should succeed");
+crates/coding-agent/src/tools/install_skill.rs:1043	panic!	§2.4 invariant()	allocation-guard	_ => panic!("expected text"),
+crates/coding-agent/src/tools/install_skill.rs:1049	unwrap	§2.4 invariant()	allocation-guard	let preview_details = serde_json::to_string(&preview.details).unwrap();
+crates/coding-agent/src/tools/install_skill.rs:1087	expect	§2.4 invariant()	allocation-guard	.expect("missing description should preview with warning");
+crates/coding-agent/src/tools/install_skill.rs:1094	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/tools/install_skill.rs:1105	expect	§2.4 invariant()	allocation-guard	.expect("missing description should install with fallback");
+crates/coding-agent/src/tools/install_skill.rs:1111	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/tools/install_skill.rs:1119	expect	§2.4 invariant()	allocation-guard	.expect("SKILL.md was written");
+crates/coding-agent/src/tools/install_skill.rs:1150	expect	§2.4 invariant()	allocation-guard	.expect("recoverable description should preview with warning");
+crates/coding-agent/src/tools/install_skill.rs:1156	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/tools/install_skill.rs:1178	expect	§2.4 invariant()	allocation-guard	.expect("block scalar oversized description should install with fallback");
+crates/coding-agent/src/tools/install_skill.rs:1184	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/tools/install_skill.rs:1192	expect	§2.4 invariant()	allocation-guard	.expect("SKILL.md was written");
+crates/coding-agent/src/tools/install_skill.rs:1216	expect	§2.4 invariant()	allocation-guard	.expect("unknown frontmatter fields should be ignored");
+crates/coding-agent/src/tools/install_skill.rs:1219	unwrap	§2.4 invariant()	allocation-guard	assert_eq!(preview.details["warnings"].as_array().unwrap().len(), 0);
+crates/coding-agent/src/tools/install_skill.rs:1233	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/install_skill.rs:1243	expect	§2.4 invariant()	allocation-guard	.expect("preview ok");
+crates/coding-agent/src/tools/install_skill.rs:1255	panic!	§2.4 invariant()	allocation-guard	panic!("expected typed error");
+crates/coding-agent/src/tools/install_skill.rs:1268	expect	§2.4 invariant()	allocation-guard	.expect("idempotent preview ok");
+crates/coding-agent/src/tools/install_skill.rs:1287	expect	§2.4 invariant()	allocation-guard	.expect("install ok");
+crates/coding-agent/src/tools/install_skill.rs:1293	expect	§2.4 invariant()	allocation-guard	.expect("SKILL.md was written");
+crates/coding-agent/src/tools/install_skill.rs:1326	expect	§2.4 invariant()	allocation-guard	.expect("install ok");
+crates/coding-agent/src/tools/install_skill.rs:1330	expect	§2.4 invariant()	allocation-guard	let entries = session.entries().await.expect("read session entries");
+crates/coding-agent/src/tools/install_skill.rs:1337	expect	§2.4 invariant()	allocation-guard	let data = custom.expect("skill_install audit entry must be written");
+crates/coding-agent/src/tools/install_skill.rs:1357	unwrap	§2.4 invariant()	allocation-guard	let serialized = serde_json::to_string(&data).unwrap();
+crates/coding-agent/src/tools/install_skill.rs:1387	panic!	§2.4 invariant()	allocation-guard	panic!("InstallSkill must always Prompt; got {cls:?}");
+crates/coding-agent/src/tools/install_skill.rs:1408	panic!	§2.4 invariant()	allocation-guard	panic!("InstallSkill must always Prompt; got {cls:?}");
+crates/coding-agent/src/tools/install_skill.rs:1425	unwrap	§2.4 invariant()	allocation-guard	let serialized = serde_json::to_string(&reference).unwrap();
+crates/coding-agent/src/tools/install_skill.rs:1447	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/install_skill.rs:1451	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/install_skill.rs:1452	unwrap	§2.4 invariant()	allocation-guard	let mut rd = tokio::fs::read_dir(target.parent().unwrap()).await.unwrap();
+crates/coding-agent/src/tools/install_skill.rs:1454	unwrap	§2.4 invariant()	allocation-guard	while let Some(e) = rd.next_entry().await.unwrap() {
+crates/coding-agent/src/tools/mcp_adapter.rs:134	mpsc channel	§2.2 AsyncQueue	n/a	tx: AsyncMutex<mpsc::UnboundedSender<String>>,
+crates/coding-agent/src/tools/mcp_adapter.rs:134	Mutex	§2.2 await-in-critical-section test	n/a	tx: AsyncMutex<mpsc::UnboundedSender<String>>,
+crates/coding-agent/src/tools/mcp_adapter.rs:135	mpsc channel	§2.2 AsyncQueue	n/a	rx: AsyncMutex<mpsc::UnboundedReceiver<String>>,
+crates/coding-agent/src/tools/mcp_adapter.rs:135	Mutex	§2.2 await-in-critical-section test	n/a	rx: AsyncMutex<mpsc::UnboundedReceiver<String>>,
+crates/coding-agent/src/tools/mcp_adapter.rs:154	mpsc channel	§2.2 AsyncQueue	n/a	let (a_tx, b_rx) = mpsc::unbounded_channel();
+crates/coding-agent/src/tools/mcp_adapter.rs:155	mpsc channel	§2.2 AsyncQueue	n/a	let (b_tx, a_rx) = mpsc::unbounded_channel();
+crates/coding-agent/src/tools/mcp_adapter.rs:174	Mutex	§2.2 await-in-critical-section test	n/a	seen: Arc<AsyncMutex<Vec<serde_json::Value>>>,
+crates/coding-agent/src/tools/mcp_adapter.rs:210	Mutex	§2.2 await-in-critical-section test	n/a	let seen: Arc<AsyncMutex<Vec<serde_json::Value>>> = Arc::new(AsyncMutex::new(Vec::new()));
+crates/coding-agent/src/tools/mcp_adapter.rs:211	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(run_never_reply_server(server_side, seen.clone()));
+crates/coding-agent/src/tools/mcp_adapter.rs:214	unwrap	§2.4 invariant()	allocation-guard	client.initialize("pie-test").await.unwrap();
+crates/coding-agent/src/tools/mcp_adapter.rs:227	tokio::spawn	§2.2 detach()	n/a	let exec = tokio::spawn(async move {
+crates/coding-agent/src/tools/mcp_adapter.rs:238	expect	§2.4 invariant()	allocation-guard	.expect("adapter must return within seconds when cancel fires")
+crates/coding-agent/src/tools/mcp_adapter.rs:239	expect	§2.4 invariant()	allocation-guard	.expect("join");
+crates/coding-agent/src/tools/mcp_adapter.rs:248	panic!	§2.4 invariant()	allocation-guard	AgentToolError::Other(e) => panic!("expected Message(\"cancelled\"), got Other({e})"),
+crates/coding-agent/src/tools/remove_skill.rs:370	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::create_dir_all(&dir).await.unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:373	unwrap	§2.4 invariant()	allocation-guard	tokio::fs::write(&path, content).await.unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:454	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:464	expect	§2.4 invariant()	allocation-guard	.expect("preview ok");
+crates/coding-agent/src/tools/remove_skill.rs:473	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:483	expect	§2.4 invariant()	allocation-guard	.expect("remove ok");
+crates/coding-agent/src/tools/remove_skill.rs:497	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:507	panic!	§2.4 invariant()	allocation-guard	panic!("typed error")
+crates/coding-agent/src/tools/remove_skill.rs:517	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:531	panic!	§2.4 invariant()	allocation-guard	panic!("typed error")
+crates/coding-agent/src/tools/remove_skill.rs:541	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:546	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:555	expect	§2.4 invariant()	allocation-guard	.expect("remove ok");
+crates/coding-agent/src/tools/remove_skill.rs:567	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:577	expect	§2.4 invariant()	allocation-guard	.expect("remove ok");
+crates/coding-agent/src/tools/remove_skill.rs:579	unwrap	§2.4 invariant()	allocation-guard	let entries = harness.session().entries().await.unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:586	expect	§2.4 invariant()	allocation-guard	let data = audit.expect("skill_control_plane audit written");
+crates/coding-agent/src/tools/remove_skill.rs:590	unwrap	§2.4 invariant()	allocation-guard	let s = serde_json::to_string(&data).unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:599	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/remove_skill.rs:606	panic!	§2.4 invariant()	allocation-guard	panic!("typed error")
+crates/coding-agent/src/tools/set_skill_state.rs:413	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:422	expect	§2.4 invariant()	allocation-guard	.expect("preview ok");
+crates/coding-agent/src/tools/set_skill_state.rs:432	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:444	expect	§2.4 invariant()	allocation-guard	.expect("apply ok");
+crates/coding-agent/src/tools/set_skill_state.rs:459	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:471	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:499	panic!	§2.4 invariant()	allocation-guard	other => panic!("enable must classify as Prompt, got {other:?}"),
+crates/coding-agent/src/tools/set_skill_state.rs:516	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:529	expect	§2.4 invariant()	allocation-guard	.expect("execute(enable) must succeed once the prompt-gate stopgap is lifted");
+crates/coding-agent/src/tools/set_skill_state.rs:540	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:549	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:561	expect	§2.4 invariant()	allocation-guard	.expect("apply ok");
+crates/coding-agent/src/tools/set_skill_state.rs:563	unwrap	§2.4 invariant()	allocation-guard	let entries = harness.session().entries().await.unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:570	expect	§2.4 invariant()	allocation-guard	let data = audit.expect("skill_control_plane audit written");
+crates/coding-agent/src/tools/set_skill_state.rs:577	unwrap	§2.4 invariant()	allocation-guard	let s = serde_json::to_string(&data).unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:586	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:596	panic!	§2.4 invariant()	allocation-guard	panic!("typed error")
+crates/coding-agent/src/tools/set_skill_state.rs:603	unwrap	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().unwrap();
+crates/coding-agent/src/tools/set_skill_state.rs:617	panic!	§2.4 invariant()	allocation-guard	panic!("typed error")
+crates/coding-agent/src/tools/skill.rs:196	expect	§2.4 invariant()	allocation-guard	let result = execute(&tool, "alpha").await.expect("hit should succeed");
+crates/coding-agent/src/tools/skill.rs:199	panic!	§2.4 invariant()	allocation-guard	panic!("expected text content");
+crates/coding-agent/src/tools/skill.rs:216	panic!	§2.4 invariant()	allocation-guard	panic!("expected Message error");
+crates/coding-agent/src/tools/skill.rs:235	panic!	§2.4 invariant()	allocation-guard	panic!("expected Message error");
+crates/coding-agent/src/tools/skill.rs:256	panic!	§2.4 invariant()	allocation-guard	panic!("expected Message error");
+crates/coding-agent/src/tools/skill.rs:272	panic!	§2.4 invariant()	allocation-guard	panic!("expected Message error, not a panic");
+crates/coding-agent/src/tools/skill.rs:289	panic!	§2.4 invariant()	allocation-guard	panic!("expected Message error");
+crates/coding-agent/src/tools/skill_builder.rs:423	expect	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().expect("tempdir");
+crates/coding-agent/src/tools/skill_builder.rs:482	expect	§2.4 invariant()	allocation-guard	.expect("render");
+crates/coding-agent/src/tools/skill_builder.rs:491	expect	§2.4 invariant()	allocation-guard	let parsed = parse_and_validate_skill_md(&rendered).expect("rendered skill must load");
+crates/coding-agent/src/tools/skill_builder.rs:504	expect	§2.4 invariant()	allocation-guard	.expect("render");
+crates/coding-agent/src/tools/skill_builder.rs:517	expect	§2.4 invariant()	allocation-guard	.expect("render");
+crates/coding-agent/src/tools/skill_builder.rs:519	expect	§2.4 invariant()	allocation-guard	.expect("description with yaml specials must stay loadable");
+crates/coding-agent/src/tools/skill_builder.rs:546	panic!	§2.4 invariant()	allocation-guard	other => panic!("confirm must prompt, got {other:?}"),
+crates/coding-agent/src/tools/skill_builder.rs:554	panic!	§2.4 invariant()	allocation-guard	other => panic!("confirm must prompt, got {other:?}"),
+crates/coding-agent/src/tools/skill_builder.rs:565	expect	§2.4 invariant()	allocation-guard	.expect("preview should succeed");
+crates/coding-agent/src/tools/skill_builder.rs:574	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/tools/skill_builder.rs:590	expect	§2.4 invariant()	allocation-guard	.expect("build should succeed");
+crates/coding-agent/src/tools/skill_builder.rs:599	unwrap	§2.4 invariant()	allocation-guard	let on_disk = std::fs::read_to_string(dir.path().join("alpha/SKILL.md")).unwrap();
+crates/coding-agent/src/tools/skill_builder.rs:618	unwrap	§2.4 invariant()	allocation-guard	std::fs::read_dir(dir.path()).unwrap().next().is_none(),
+crates/coding-agent/src/tools/skill_builder.rs:628	unwrap	§2.4 invariant()	allocation-guard	execute(&tool, build_args("alpha", true)).await.unwrap();
+crates/coding-agent/src/tools/skill_builder.rs:639	expect	§2.4 invariant()	allocation-guard	let result = execute(&tool, changed).await.expect("overwrite succeeds");
+crates/coding-agent/src/tools/skill_builder.rs:641	unwrap	§2.4 invariant()	allocation-guard	let on_disk = std::fs::read_to_string(dir.path().join("alpha/SKILL.md")).unwrap();
+crates/coding-agent/src/tools/skill_builder.rs:658	unwrap	§2.4 invariant()	allocation-guard	let result = execute(&tool, build_args("alpha", false)).await.unwrap();
+crates/coding-agent/src/tools/task.rs:113	Mutex	§2.2 await-in-critical-section test	n/a	let final_text: Arc<Mutex<String>> = Arc::new(Mutex::new(String::new()));
+crates/coding-agent/src/tools/task.rs:142	tokio::spawn	§2.2 detach()	n/a	let watcher = tokio::spawn(async move {
+crates/coding-agent/src/tools/web_fetch.rs:63	select!	§2.2 selectN+abort	n/a	let mut resp = tokio::select! {
+crates/coding-agent/src/tools/web_fetch.rs:123	select!	§2.2 selectN+abort	n/a	let chunk_result = tokio::select! {
+crates/coding-agent/src/tools/web_fetch.rs:168	expect	§2.4 invariant()	allocation-guard	.expect("loop index must be at a char boundary");
+crates/coding-agent/src/tools/web_fetch.rs:175	expect	§2.4 invariant()	allocation-guard	.expect("loop index must be at a char boundary");
+crates/coding-agent/src/tools/web_search.rs:121	select!	§2.2 selectN+abort	n/a	let resp = tokio::select! {
+crates/coding-agent/src/tools/web_search.rs:212	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/feed.rs:42	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "kind", rename_all = "snake_case")]
+crates/coding-agent/src/ui/feed.rs:76	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "kind", rename_all = "snake_case")]
+crates/coding-agent/src/ui/feed.rs:843	unwrap	§2.4 invariant()	allocation-guard	let idx_answer = rendered.find("answer").unwrap();
+crates/coding-agent/src/ui/feed.rs:844	unwrap	§2.4 invariant()	allocation-guard	let idx_after = rendered.find("after tool").unwrap();
+crates/coding-agent/src/ui/feed.rs:934	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/feed.rs:939	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/kernel.rs:18	tokio::spawn	§2.2 detach()	n/a	/// Running this as a local future (not `tokio::spawn`) sidesteps the `Send` bound:
+crates/coding-agent/src/ui/kernel.rs:33	expect	§2.4 invariant()	allocation-guard	fut.as_mut().expect("turn future present").await
+crates/coding-agent/src/ui/listener.rs:13	mpsc channel	§2.2 AsyncQueue	n/a	use tokio::sync::mpsc::UnboundedSender;
+crates/coding-agent/src/ui/listener.rs:96	Mutex	§2.2 await-in-critical-section test	n/a	let quiet: Arc<Mutex<HashSet<String>>> = Arc::new(Mutex::new(HashSet::new()));
+crates/coding-agent/src/ui/listener.rs:106	Mutex	§2.2 await-in-critical-section test	n/a	quiet: &Mutex<HashSet<String>>,
+crates/coding-agent/src/ui/listener.rs:357	panic!	§2.4 invariant()	allocation-guard	panic!("expected one tool progress update");
+crates/coding-agent/src/ui/listener.rs:377	panic!	§2.4 invariant()	allocation-guard	panic!("expected one tool end update");
+crates/coding-agent/src/ui/listener.rs:396	panic!	§2.4 invariant()	allocation-guard	panic!("expected one tool end update");
+crates/coding-agent/src/ui/listener.rs:414	panic!	§2.4 invariant()	allocation-guard	panic!("expected one tool start update");
+crates/coding-agent/src/ui/listener.rs:428	expect	§2.4 invariant()	allocation-guard	.expect("skills reload must produce a feed update");
+crates/coding-agent/src/ui/listener.rs:444	expect	§2.4 invariant()	allocation-guard	.expect("start event should render");
+crates/coding-agent/src/ui/listener.rs:447	panic!	§2.4 invariant()	allocation-guard	panic!("expected plain update");
+crates/coding-agent/src/ui/listener.rs:469	expect	§2.4 invariant()	allocation-guard	.expect("debug mode should render dynamic periodic checks");
+crates/coding-agent/src/ui/listener.rs:472	panic!	§2.4 invariant()	allocation-guard	panic!("expected plain update");
+crates/coding-agent/src/ui/listener.rs:491	expect	§2.4 invariant()	allocation-guard	.expect("completion should render");
+crates/coding-agent/src/ui/listener.rs:494	panic!	§2.4 invariant()	allocation-guard	panic!("expected plain update");
+crates/coding-agent/src/ui/listener.rs:512	expect	§2.4 invariant()	allocation-guard	.expect("continue should render");
+crates/coding-agent/src/ui/listener.rs:515	panic!	§2.4 invariant()	allocation-guard	panic!("expected plain update");
+crates/coding-agent/src/ui/listener.rs:561	panic!	§2.4 invariant()	allocation-guard	panic!("dynamic no-match poll completion should update poll status");
+crates/coding-agent/src/ui/listener.rs:579	panic!	§2.4 invariant()	allocation-guard	panic!("expected poll status");
+crates/coding-agent/src/ui/listener.rs:613	expect	§2.4 invariant()	allocation-guard	.expect("matched trigger result should render");
+crates/coding-agent/src/ui/listener.rs:615	panic!	§2.4 invariant()	allocation-guard	panic!("expected plain update");
+crates/coding-agent/src/ui/listener.rs:630	expect	§2.4 invariant()	allocation-guard	.expect("deduped state should render");
+crates/coding-agent/src/ui/listener.rs:633	panic!	§2.4 invariant()	allocation-guard	panic!("expected plain update");
+crates/coding-agent/src/ui/mod.rs:57	mpsc channel	§2.2 AsyncQueue	n/a	use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
+crates/coding-agent/src/ui/mod.rs:192	mpsc channel	§2.2 AsyncQueue	n/a	let (relay_prompt_tx, relay_prompt_rx) = tokio::sync::mpsc::unbounded_channel();
+crates/coding-agent/src/ui/mod.rs:193	mpsc channel	§2.2 AsyncQueue	n/a	let (relay_abort_tx, relay_abort_rx) = tokio::sync::mpsc::unbounded_channel();
+crates/coding-agent/src/ui/mod.rs:194	mpsc channel	§2.2 AsyncQueue	n/a	let (relay_resolve_tx, relay_resolve_rx) = tokio::sync::mpsc::unbounded_channel();
+crates/coding-agent/src/ui/mod.rs:195	mpsc channel	§2.2 AsyncQueue	n/a	let (relay_model_tx, relay_model_rx) = tokio::sync::mpsc::unbounded_channel();
+crates/coding-agent/src/ui/mod.rs:374	expect	§2.4 invariant()	allocation-guard	let mut feed_rx = self.feed_rx.take().expect("feed_rx taken once");
+crates/coding-agent/src/ui/mod.rs:375	expect	§2.4 invariant()	allocation-guard	let mut main_run_rx = self.main_run_rx.take().expect("main_run_rx taken once");
+crates/coding-agent/src/ui/mod.rs:380	expect	§2.4 invariant()	allocation-guard	.expect("relay_prompt_rx taken once");
+crates/coding-agent/src/ui/mod.rs:384	expect	§2.4 invariant()	allocation-guard	.expect("relay_abort_rx taken once");
+crates/coding-agent/src/ui/mod.rs:388	expect	§2.4 invariant()	allocation-guard	.expect("relay_resolve_rx taken once");
+crates/coding-agent/src/ui/mod.rs:392	expect	§2.4 invariant()	allocation-guard	.expect("relay_model_rx taken once");
+crates/coding-agent/src/ui/mod.rs:402	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/coding-agent/src/ui/mod.rs:578	oneshot	§2.2 withResolvers	n/a	let (responder, _discarded) = tokio::sync::oneshot::channel();
+crates/coding-agent/src/ui/mod.rs:2022	expect	§2.4 invariant()	allocation-guard	let mut feed_rx = self.feed_rx.take().expect("feed_rx");
+crates/coding-agent/src/ui/mod.rs:2023	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(async move {
+crates/coding-agent/src/ui/mod.rs:2154	expect	§2.4 invariant()	allocation-guard	.expect("control prompt redaction regex must compile")
+crates/coding-agent/src/ui/mod.rs:2332	Mutex	§2.2 await-in-critical-section test	n/a	static TRIGGER_REGISTRY_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+crates/coding-agent/src/ui/mod.rs:2347	mpsc channel	§2.2 AsyncQueue	n/a	let (_ftx, feed_rx) = tokio::sync::mpsc::unbounded_channel();
+crates/coding-agent/src/ui/mod.rs:2348	mpsc channel	§2.2 AsyncQueue	n/a	let (_mtx, main_run_rx) = tokio::sync::mpsc::unbounded_channel();
+crates/coding-agent/src/ui/mod.rs:2382	unwrap	§2.4 invariant()	allocation-guard	crate::clipboard_image::encode_rgba_clipboard_image(1, 1, vec![255, 0, 0, 255]).unwrap()
+crates/coding-agent/src/ui/mod.rs:2435	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2436	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2446	expect	§2.4 invariant()	allocation-guard	let user_row = user_row.expect("feed user row");
+crates/coding-agent/src/ui/mod.rs:2460	unwrap	§2.4 invariant()	allocation-guard	let status_row = lines.iter().position(|l| l.contains("pie ·")).unwrap();
+crates/coding-agent/src/ui/mod.rs:2472	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2473	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2490	unwrap	§2.4 invariant()	allocation-guard	let _guard = TRIGGER_REGISTRY_TEST_LOCK.lock().unwrap();
+crates/coding-agent/src/ui/mod.rs:2506	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/mod.rs:2512	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2513	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2558	unwrap	§2.4 invariant()	allocation-guard	let _guard = TRIGGER_REGISTRY_TEST_LOCK.lock().unwrap();
+crates/coding-agent/src/ui/mod.rs:2574	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2575	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2594	unwrap	§2.4 invariant()	allocation-guard	let _guard = TRIGGER_REGISTRY_TEST_LOCK.lock().unwrap();
+crates/coding-agent/src/ui/mod.rs:2607	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2608	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2637	unwrap	§2.4 invariant()	allocation-guard	let _guard = TRIGGER_REGISTRY_TEST_LOCK.lock().unwrap();
+crates/coding-agent/src/ui/mod.rs:2652	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2653	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2674	unwrap	§2.4 invariant()	allocation-guard	let _guard = TRIGGER_REGISTRY_TEST_LOCK.lock().unwrap();
+crates/coding-agent/src/ui/mod.rs:2684	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/mod.rs:2687	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2688	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2703	unwrap	§2.4 invariant()	allocation-guard	let _guard = TRIGGER_REGISTRY_TEST_LOCK.lock().unwrap();
+crates/coding-agent/src/ui/mod.rs:2709	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/mod.rs:2712	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2713	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2724	unwrap	§2.4 invariant()	allocation-guard	let _guard = TRIGGER_REGISTRY_TEST_LOCK.lock().unwrap();
+crates/coding-agent/src/ui/mod.rs:2731	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/mod.rs:2734	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2735	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2838	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2839	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:2880	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/mod.rs:2891	expect	§2.4 invariant()	allocation-guard	let goal = app.latest_goal.as_ref().expect("goal state");
+crates/coding-agent/src/ui/mod.rs:2907	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:2908	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:3026	panic!	§2.4 invariant()	allocation-guard	panic!("expected queued user prompt");
+crates/coding-agent/src/ui/mod.rs:3074	oneshot	§2.2 withResolvers	n/a	let (tx, mut rx) = oneshot::channel();
+crates/coding-agent/src/ui/mod.rs:3091	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:3092	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/mod.rs:3106	expect	§2.4 invariant()	allocation-guard	let decision = rx.try_recv().expect("deny decision should be sent");
+crates/coding-agent/src/ui/mod.rs:3111	panic!	§2.4 invariant()	allocation-guard	other => panic!("expected deny decision, got {other:?}"),
+crates/coding-agent/src/ui/mod.rs:3126	oneshot	§2.2 withResolvers	n/a	let (tx, mut rx) = oneshot::channel();
+crates/coding-agent/src/ui/mod.rs:3147	expect	§2.4 invariant()	allocation-guard	let decision = rx.try_recv().expect("allow decision should be sent");
+crates/coding-agent/src/ui/mod.rs:3159	block_on	§2.2 async-to-root	n/a	let decision = futures::executor::block_on(hook(
+crates/coding-agent/src/ui/mod.rs:3176	panic!	§2.4 invariant()	allocation-guard	other => panic!("expected deny, got {other:?}"),
+crates/coding-agent/src/ui/mod.rs:3183	block_on	§2.2 async-to-root	n/a	let decision = futures::executor::block_on(hook(
+crates/coding-agent/src/ui/mod.rs:3212	unwrap	§2.4 invariant()	allocation-guard	write_enter_tui_commands(&mut enter).unwrap();
+crates/coding-agent/src/ui/mod.rs:3213	unwrap	§2.4 invariant()	allocation-guard	let enter = String::from_utf8(enter).unwrap();
+crates/coding-agent/src/ui/mod.rs:3222	unwrap	§2.4 invariant()	allocation-guard	write_leave_tui_commands(&mut leave).unwrap();
+crates/coding-agent/src/ui/mod.rs:3223	unwrap	§2.4 invariant()	allocation-guard	let leave = String::from_utf8(leave).unwrap();
+crates/coding-agent/src/ui/mod.rs:3294	expect	§2.4 invariant()	allocation-guard	.expect("user row");
+crates/coding-agent/src/ui/mod.rs:3298	expect	§2.4 invariant()	allocation-guard	.expect("assistant row");
+crates/coding-agent/src/ui/mod.rs:3352	unwrap	§2.4 invariant()	allocation-guard	app.model_picker.as_ref().unwrap().level,
+crates/coding-agent/src/ui/mod.rs:3362	unwrap	§2.4 invariant()	allocation-guard	app.model_picker.as_ref().unwrap().level,
+crates/coding-agent/src/ui/mod.rs:3378	unwrap	§2.4 invariant()	allocation-guard	let model = app.kernel.harness().agent().state().model.clone().unwrap();
+crates/coding-agent/src/ui/mod.rs:3403	unwrap	§2.4 invariant()	allocation-guard	let mut terminal = Terminal::new(backend).unwrap();
+crates/coding-agent/src/ui/mod.rs:3404	unwrap	§2.4 invariant()	allocation-guard	terminal.draw(|f| app.render(f)).unwrap();
+crates/coding-agent/src/ui/relay.rs:34	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type", rename_all = "snake_case")]
+crates/coding-agent/src/ui/relay.rs:49	serde tagged enum	§2.1 discriminated-union	n/a	#[serde(tag = "type", rename_all = "snake_case")]
+crates/coding-agent/src/ui/relay.rs:90	mpsc channel	§2.2 AsyncQueue	n/a	snapshot_tx: mpsc::UnboundedSender<WebSnapshot>,
+crates/coding-agent/src/ui/relay.rs:92	Mutex	§2.2 await-in-critical-section test	n/a	shared: Arc<Mutex<RelayShared>>,
+crates/coding-agent/src/ui/relay.rs:158	anyhow context	§2.4 Error{cause}	precondition-guard	qrcode::QrCode::new(url.as_bytes()).map_err(|e| anyhow::anyhow!("qr encode: {e}"))?;
+crates/coding-agent/src/ui/relay.rs:172	mpsc channel	§2.2 AsyncQueue	n/a	prompt_tx: mpsc::UnboundedSender<String>,
+crates/coding-agent/src/ui/relay.rs:173	mpsc channel	§2.2 AsyncQueue	n/a	abort_tx: mpsc::UnboundedSender<()>,
+crates/coding-agent/src/ui/relay.rs:174	mpsc channel	§2.2 AsyncQueue	n/a	resolve_tx: mpsc::UnboundedSender<bool>,
+crates/coding-agent/src/ui/relay.rs:175	mpsc channel	§2.2 AsyncQueue	n/a	model_tx: mpsc::UnboundedSender<String>,
+crates/coding-agent/src/ui/relay.rs:182	mpsc channel	§2.2 AsyncQueue	n/a	let (snapshot_tx, snapshot_rx) = mpsc::unbounded_channel();
+crates/coding-agent/src/ui/relay.rs:190	tokio::spawn	§2.2 detach()	n/a	tokio::spawn(relay_task(
+crates/coding-agent/src/ui/relay.rs:214	mpsc channel	§2.2 AsyncQueue	n/a	mut snapshot_rx: mpsc::UnboundedReceiver<WebSnapshot>,
+crates/coding-agent/src/ui/relay.rs:215	mpsc channel	§2.2 AsyncQueue	n/a	prompt_tx: mpsc::UnboundedSender<String>,
+crates/coding-agent/src/ui/relay.rs:216	mpsc channel	§2.2 AsyncQueue	n/a	abort_tx: mpsc::UnboundedSender<()>,
+crates/coding-agent/src/ui/relay.rs:217	mpsc channel	§2.2 AsyncQueue	n/a	resolve_tx: mpsc::UnboundedSender<bool>,
+crates/coding-agent/src/ui/relay.rs:218	mpsc channel	§2.2 AsyncQueue	n/a	model_tx: mpsc::UnboundedSender<String>,
+crates/coding-agent/src/ui/relay.rs:220	Mutex	§2.2 await-in-critical-section test	n/a	shared: Arc<Mutex<RelayShared>>,
+crates/coding-agent/src/ui/relay.rs:227	select!	§2.2 selectN+abort	n/a	let connect = tokio::select! {
+crates/coding-agent/src/ui/relay.rs:236	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/coding-agent/src/ui/relay.rs:249	expect	§2.4 invariant()	allocation-guard	.expect("hello frame serializes");
+crates/coding-agent/src/ui/relay.rs:262	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/coding-agent/src/ui/relay.rs:265	expect	§2.4 invariant()	allocation-guard	.expect("shutdown frame serializes");
+crates/coding-agent/src/ui/relay.rs:361	unwrap	§2.4 invariant()	allocation-guard	agent_ws_url("https://pie.0xfefe.me", "tok123").unwrap(),
+crates/coding-agent/src/ui/relay.rs:365	unwrap	§2.4 invariant()	allocation-guard	agent_ws_url("http://127.0.0.1:8787/", "tok123").unwrap(),
+crates/coding-agent/src/ui/relay.rs:389	expect	§2.4 invariant()	allocation-guard	.expect("urls of this shape must encode");
+crates/coding-agent/src/ui/relay.rs:413	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/relay.rs:416	unwrap	§2.4 invariant()	allocation-guard	let prompt: WorkerFrame = serde_json::from_str(r#"{"type":"prompt","text":"hi"}"#).unwrap(
+crates/coding-agent/src/ui/relay.rs:418	unwrap	§2.4 invariant()	allocation-guard	let viewers: WorkerFrame = serde_json::from_str(r#"{"type":"viewers","count":3}"#).unwrap(
+crates/coding-agent/src/ui/relay.rs:420	unwrap	§2.4 invariant()	allocation-guard	let abort: WorkerFrame = serde_json::from_str(r#"{"type":"abort"}"#).unwrap();
+crates/coding-agent/src/ui/relay.rs:423	unwrap	§2.4 invariant()	allocation-guard	serde_json::from_str(r#"{"type":"control_plane_resolve","approve":true}"#).unwrap();
+crates/coding-agent/src/ui/relay.rs:427	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:34	mpsc channel	§2.2 AsyncQueue	n/a	commands: mpsc::UnboundedSender<WebCommand>,
+crates/coding-agent/src/ui/web.rs:35	broadcast	§2.2 event-bus	n/a	snapshots: broadcast::Sender<WebSnapshot>,
+crates/coding-agent/src/ui/web.rs:36	Mutex	§2.2 await-in-critical-section test	n/a	latest: Arc<Mutex<WebSnapshot>>,
+crates/coding-agent/src/ui/web.rs:221	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("bind web ui on {addr}"))?;
+crates/coding-agent/src/ui/web.rs:224	mpsc channel	§2.2 AsyncQueue	n/a	let (command_tx, mut command_rx) = mpsc::unbounded_channel::<WebCommand>();
+crates/coding-agent/src/ui/web.rs:225	broadcast	§2.2 event-bus	n/a	let (snapshot_tx, _) = broadcast::channel::<WebSnapshot>(128);
+crates/coding-agent/src/ui/web.rs:235	tokio::spawn	§2.2 detach()	n/a	let mut server_task = tokio::spawn(async move { server.await });
+crates/coding-agent/src/ui/web.rs:242	expect	§2.4 invariant()	allocation-guard	let mut feed_rx = self.feed_rx.take().expect("feed_rx taken once");
+crates/coding-agent/src/ui/web.rs:243	expect	§2.4 invariant()	allocation-guard	let mut main_run_rx = self.main_run_rx.take().expect("main_run_rx taken once");
+crates/coding-agent/src/ui/web.rs:248	expect	§2.4 invariant()	allocation-guard	.expect("relay_prompt_rx taken once");
+crates/coding-agent/src/ui/web.rs:252	expect	§2.4 invariant()	allocation-guard	.expect("relay_abort_rx taken once");
+crates/coding-agent/src/ui/web.rs:256	expect	§2.4 invariant()	allocation-guard	.expect("relay_resolve_rx taken once");
+crates/coding-agent/src/ui/web.rs:260	expect	§2.4 invariant()	allocation-guard	.expect("relay_model_rx taken once");
+crates/coding-agent/src/ui/web.rs:266	select!	§2.2 selectN+abort	n/a	tokio::select! {
+crates/coding-agent/src/ui/web.rs:649	Mutex	§2.2 await-in-critical-section test	n/a	latest: &Arc<Mutex<WebSnapshot>>,
+crates/coding-agent/src/ui/web.rs:650	broadcast	§2.2 event-bus	n/a	snapshots: &broadcast::Sender<WebSnapshot>,
+crates/coding-agent/src/ui/web.rs:695	broadcast	§2.2 event-bus	n/a	Err(broadcast::error::RecvError::Lagged(_)) => continue,
+crates/coding-agent/src/ui/web.rs:696	broadcast	§2.2 event-bus	n/a	Err(broadcast::error::RecvError::Closed) => return None,
+crates/coding-agent/src/ui/web.rs:825	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("decode {label}"))?;
+crates/coding-agent/src/ui/web.rs:836	anyhow context	§2.4 Error{cause}	precondition-guard	.with_context(|| format!("parse --web-host `{host}` as an IP address"))?,
+crates/coding-agent/src/ui/web.rs:850	anyhow context	§2.4 Error{cause}	precondition-guard	command.spawn().context("spawn system browser")?;
+crates/coding-agent/src/ui/web.rs:901	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:908	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:932	expect	§2.4 invariant()	allocation-guard	let first = lines.first().expect("first line");
+crates/coding-agent/src/ui/web.rs:946	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:968	mpsc channel	§2.2 AsyncQueue	n/a	let (command_tx, mut command_rx) = mpsc::unbounded_channel::<WebCommand>();
+crates/coding-agent/src/ui/web.rs:969	broadcast	§2.2 event-bus	n/a	let (snapshot_tx, _) = broadcast::channel::<WebSnapshot>(16);
+crates/coding-agent/src/ui/web.rs:990	unwrap	§2.4 invariant()	allocation-guard	let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+crates/coding-agent/src/ui/web.rs:991	unwrap	§2.4 invariant()	allocation-guard	let addr = listener.local_addr().unwrap();
+crates/coding-agent/src/ui/web.rs:992	tokio::spawn	§2.2 detach()	n/a	let server = tokio::spawn(async move {
+crates/coding-agent/src/ui/web.rs:995	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1004	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1007	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1017	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1020	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1022	unwrap	§2.4 invariant()	allocation-guard	match command_rx.recv().await.unwrap() {
+crates/coding-agent/src/ui/web.rs:1027	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected command: {other:?}"),
+crates/coding-agent/src/ui/web.rs:1041	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1044	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1046	unwrap	§2.4 invariant()	allocation-guard	match command_rx.recv().await.unwrap() {
+crates/coding-agent/src/ui/web.rs:1052	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected command: {other:?}"),
+crates/coding-agent/src/ui/web.rs:1059	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1062	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1064	unwrap	§2.4 invariant()	allocation-guard	match command_rx.recv().await.unwrap() {
+crates/coding-agent/src/ui/web.rs:1066	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected command: {other:?}"),
+crates/coding-agent/src/ui/web.rs:1074	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1077	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1079	unwrap	§2.4 invariant()	allocation-guard	match command_rx.recv().await.unwrap() {
+crates/coding-agent/src/ui/web.rs:1081	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected command: {other:?}"),
+crates/coding-agent/src/ui/web.rs:1089	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1092	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1094	unwrap	§2.4 invariant()	allocation-guard	match command_rx.recv().await.unwrap() {
+crates/coding-agent/src/ui/web.rs:1096	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected command: {other:?}"),
+crates/coding-agent/src/ui/web.rs:1104	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1107	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1109	unwrap	§2.4 invariant()	allocation-guard	match command_rx.recv().await.unwrap() {
+crates/coding-agent/src/ui/web.rs:1111	panic!	§2.4 invariant()	allocation-guard	other => panic!("unexpected command: {other:?}"),
+crates/coding-agent/src/ui/web.rs:1119	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1122	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1130	unwrap	§2.4 invariant()	allocation-guard	let response = client.get(format!("{base}/events")).send().await.unwrap();
+crates/coding-agent/src/ui/web.rs:1148	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/ui/web.rs:1151	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1152	unwrap	§2.4 invariant()	allocation-guard	.unwrap()
+crates/coding-agent/src/ui/web.rs:1153	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/cron.rs:72	Mutex	§2.2 await-in-critical-section test	n/a	inner: Arc<Mutex<CronRegistryState>>,
+crates/coding-agent/src/triggers/cron.rs:622	Mutex	§2.2 await-in-critical-section test	n/a	status: Arc<Mutex<NotificationHookStatus>>,
+crates/coding-agent/src/triggers/cron.rs:1371	unwrap	§2.4 invariant()	allocation-guard	let expr = CronExpression::parse("*/15 9-17 * * 1,7").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1389	unwrap	§2.4 invariant()	allocation-guard	let expr = CronExpression::parse("5 * * * *").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1390	unwrap	§2.4 invariant()	allocation-guard	let base = Utc.with_ymd_and_hms(2026, 5, 26, 22, 5, 0).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1391	unwrap	§2.4 invariant()	allocation-guard	let next = expr.next_after(base).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1399	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/triggers/cron.rs:1402	unwrap	§2.4 invariant()	allocation-guard	registry.load_from_path(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1403	unwrap	§2.4 invariant()	allocation-guard	let job = registry.add_job("*/10 * * * *", "say hello").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1404	unwrap	§2.4 invariant()	allocation-guard	registry.set_job_enabled(&job.id, false).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1407	unwrap	§2.4 invariant()	allocation-guard	reloaded.load_from_path(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1457	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/triggers/cron.rs:1461	unwrap	§2.4 invariant()	allocation-guard	path.file_name().unwrap().to_str().unwrap(),
+crates/coding-agent/src/triggers/cron.rs:1464	unwrap	§2.4 invariant()	allocation-guard	write_loop_state(&path, &"x".repeat(5000)).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1465	unwrap	§2.4 invariant()	allocation-guard	let read = read_loop_state(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1472	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/triggers/cron.rs:1476	unwrap	§2.4 invariant()	allocation-guard	registry.load_from_path(&sidecar).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1479	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/cron.rs:1482	unwrap	§2.4 invariant()	allocation-guard	let since = Utc.with_ymd_and_hms(2026, 5, 26, 22, 0, 0).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1483	unwrap	§2.4 invariant()	allocation-guard	let now = Utc.with_ymd_and_hms(2026, 5, 26, 22, 1, 5).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1485	unwrap	§2.4 invariant()	allocation-guard	let trace_id = due[0].0.running_trace_id.clone().unwrap();
+crates/coding-agent/src/triggers/cron.rs:1500	unwrap	§2.4 invariant()	allocation-guard	let entries = crate::inbox::list_new(&inbox_path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1511	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/triggers/cron.rs:1514	unwrap	§2.4 invariant()	allocation-guard	registry.load_from_path(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1515	unwrap	§2.4 invariant()	allocation-guard	let since = Utc.with_ymd_and_hms(2026, 5, 26, 22, 0, 0).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1516	unwrap	§2.4 invariant()	allocation-guard	let now = Utc.with_ymd_and_hms(2026, 5, 26, 22, 1, 5).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1523	unwrap	§2.4 invariant()	allocation-guard	registry.add_job("0 0 1 1 *", "yearly job").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1524	unwrap	§2.4 invariant()	allocation-guard	std::fs::remove_file(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1529	unwrap	§2.4 invariant()	allocation-guard	registry.add_job("* * * * *", "every minute").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1536	unwrap	§2.4 invariant()	allocation-guard	let dir = tempdir().unwrap();
+crates/coding-agent/src/triggers/cron.rs:1539	unwrap	§2.4 invariant()	allocation-guard	registry.load_from_path(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1540	unwrap	§2.4 invariant()	allocation-guard	let job = registry.add_job("* * * * *", "say hello").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1541	unwrap	§2.4 invariant()	allocation-guard	let since = Utc.with_ymd_and_hms(2026, 5, 26, 22, 0, 0).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1542	unwrap	§2.4 invariant()	allocation-guard	let now = Utc.with_ymd_and_hms(2026, 5, 26, 22, 1, 5).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1547	unwrap	§2.4 invariant()	allocation-guard	reloaded.load_from_path(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1557	unwrap	§2.4 invariant()	allocation-guard	let persisted = read_jobs_file(&path).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1577	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/cron.rs:1580	unwrap	§2.4 invariant()	allocation-guard	let summary = record.payload_summary.unwrap();
+crates/coding-agent/src/triggers/cron.rs:1589	unwrap	§2.4 invariant()	allocation-guard	let job = registry.add_job("* * * * *", "do work").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1590	unwrap	§2.4 invariant()	allocation-guard	let since = Utc.with_ymd_and_hms(2026, 5, 26, 22, 0, 0).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1591	unwrap	§2.4 invariant()	allocation-guard	let now = Utc.with_ymd_and_hms(2026, 5, 26, 22, 1, 5).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1597	unwrap	§2.4 invariant()	allocation-guard	let later = Utc.with_ymd_and_hms(2026, 5, 26, 22, 2, 5).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1606	unwrap	§2.4 invariant()	allocation-guard	registry.add_job("* * * * *", "do work").unwrap();
+crates/coding-agent/src/triggers/cron.rs:1607	unwrap	§2.4 invariant()	allocation-guard	let since = Utc.with_ymd_and_hms(2026, 5, 26, 22, 0, 0).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1608	unwrap	§2.4 invariant()	allocation-guard	let now = Utc.with_ymd_and_hms(2026, 5, 26, 22, 1, 5).unwrap();
+crates/coding-agent/src/triggers/cron.rs:1613	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/cron.rs:1632	unwrap	§2.4 invariant()	allocation-guard	let job = registry.add_job("* * * * *", "run tests").unwrap();
+crates/coding-agent/src/triggers/dynamic.rs:61	Mutex	§2.2 await-in-critical-section test	n/a	inner: Arc<Mutex<DynamicTriggerRegistryState>>,
+crates/coding-agent/src/triggers/dynamic.rs:263	Mutex	§2.2 await-in-critical-section test	n/a	status: Arc<Mutex<NotificationHookStatus>>,
+crates/coding-agent/src/triggers/dynamic.rs:1227	panic!	§2.4 invariant()	allocation-guard	panic!("NewTrigger must always Prompt, got {cls:?} for args {args}");
+crates/coding-agent/src/triggers/dynamic.rs:1251	expect	§2.4 invariant()	allocation-guard	let parsed = parse_trigger_rule(spec).expect("parse");
+crates/coding-agent/src/triggers/dynamic.rs:1261	expect	§2.4 invariant()	allocation-guard	let parsed = parse_trigger_rule("when a build finishes, run cargo test").expect("parse");
+crates/coding-agent/src/triggers/dynamic.rs:1271	expect	§2.4 invariant()	allocation-guard	let parsed = parse_trigger_rule(&spec).expect("parse");
+crates/coding-agent/src/triggers/dynamic.rs:1285	expect	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().expect("tempdir");
+crates/coding-agent/src/triggers/dynamic.rs:1288	expect	§2.4 invariant()	allocation-guard	registry.load_from_path(&path).expect("load empty");
+crates/coding-agent/src/triggers/dynamic.rs:1291	expect	§2.4 invariant()	allocation-guard	.expect("add");
+crates/coding-agent/src/triggers/dynamic.rs:1294	expect	§2.4 invariant()	allocation-guard	reloaded.load_from_path(&path).expect("reload");
+crates/coding-agent/src/triggers/dynamic.rs:1300	expect	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().expect("tempdir");
+crates/coding-agent/src/triggers/dynamic.rs:1305	expect	§2.4 invariant()	allocation-guard	registry_a.load_from_path(&path_a).expect("load a");
+crates/coding-agent/src/triggers/dynamic.rs:1308	expect	§2.4 invariant()	allocation-guard	.expect("add");
+crates/coding-agent/src/triggers/dynamic.rs:1311	expect	§2.4 invariant()	allocation-guard	registry_b.load_from_path(&path_b).expect("load b");
+crates/coding-agent/src/triggers/dynamic.rs:1315	expect	§2.4 invariant()	allocation-guard	reloaded_a.load_from_path(&path_a).expect("reload a");
+crates/coding-agent/src/triggers/dynamic.rs:1322	expect	§2.4 invariant()	allocation-guard	let dir = tempfile::tempdir().expect("tempdir");
+crates/coding-agent/src/triggers/dynamic.rs:1325	expect	§2.4 invariant()	allocation-guard	registry.load_from_path(&path).expect("load empty");
+crates/coding-agent/src/triggers/dynamic.rs:1328	expect	§2.4 invariant()	allocation-guard	.expect("add");
+crates/coding-agent/src/triggers/dynamic.rs:1330	expect	§2.4 invariant()	allocation-guard	let removed = registry.remove_rule(&rule.id).expect("remove");
+crates/coding-agent/src/triggers/dynamic.rs:1334	expect	§2.4 invariant()	allocation-guard	reloaded.load_from_path(&path).expect("reload");
+crates/coding-agent/src/triggers/dynamic.rs:1343	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1347	expect	§2.4 invariant()	allocation-guard	.expect("mark fired");
+crates/coding-agent/src/triggers/dynamic.rs:1362	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1366	expect	§2.4 invariant()	allocation-guard	.expect("mark fired");
+crates/coding-agent/src/triggers/dynamic.rs:1381	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1384	expect	§2.4 invariant()	allocation-guard	.expect("mark fired");
+crates/coding-agent/src/triggers/dynamic.rs:1388	expect	§2.4 invariant()	allocation-guard	.expect("enable")
+crates/coding-agent/src/triggers/dynamic.rs:1389	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1412	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1414	mpsc channel	§2.2 AsyncQueue	n/a	let (sink, mut rx) = tokio::sync::mpsc::unbounded_channel();
+crates/coding-agent/src/triggers/dynamic.rs:1416	tokio::spawn	§2.2 detach()	n/a	let task = tokio::spawn(async move { hook.run(sink).await });
+crates/coding-agent/src/triggers/dynamic.rs:1419	expect	§2.4 invariant()	allocation-guard	.expect("hook should emit")
+crates/coding-agent/src/triggers/dynamic.rs:1420	expect	§2.4 invariant()	allocation-guard	.expect("trigger");
+crates/coding-agent/src/triggers/dynamic.rs:1439	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1505	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1570	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/dynamic.rs:1625	expect	§2.4 invariant()	allocation-guard	.expect("rule");
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:58	mpsc channel	§2.2 AsyncQueue	n/a	use tokio::sync::mpsc::UnboundedReceiver;
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:76	Mutex	§2.2 await-in-critical-section test	n/a	/// Receiver of normalized server pushes. `Mutex<Option<...>>` so `run` can `.take()` it
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:80	Mutex	§2.2 await-in-critical-section test	n/a	rx: Mutex<Option<UnboundedReceiver<McpServerNotification>>>,
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:84	Mutex	§2.2 await-in-critical-section test	n/a	status: Arc<Mutex<NotificationHookStatus>>,
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:111	Mutex	§2.2 await-in-critical-section test	n/a	fn debug_status_handle(&self) -> Arc<Mutex<NotificationHookStatus>> {
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:403	mpsc channel	§2.2 AsyncQueue	n/a	mpsc::UnboundedSender<McpServerNotification>,
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:404	mpsc channel	§2.2 AsyncQueue	n/a	mpsc::UnboundedReceiver<Trigger>,
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:405	Mutex	§2.2 await-in-critical-section test	n/a	Arc<Mutex<NotificationHookStatus>>,
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:408	mpsc channel	§2.2 AsyncQueue	n/a	let (note_tx, note_rx) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:409	mpsc channel	§2.2 AsyncQueue	n/a	let (trig_tx, trig_rx) = mpsc::unbounded_channel::<Trigger>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:413	tokio::spawn	§2.2 detach()	n/a	let handle = tokio::spawn(async move { hook_for_task.run(trig_tx).await });
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:425	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:426	expect	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.expect("trigger should arrive");
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:456	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:461	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:462	unwrap	§2.4 invariant()	allocation-guard	let t1 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:463	unwrap	§2.4 invariant()	allocation-guard	let t2 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:481	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:482	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:499	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:500	unwrap	§2.4 invariant()	allocation-guard	let t1 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:511	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:512	unwrap	§2.4 invariant()	allocation-guard	let t2 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:529	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:530	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:563	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:573	panic!	§2.4 invariant()	allocation-guard	panic!(
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:608	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:609	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:622	mpsc channel	§2.2 AsyncQueue	n/a	let (note_tx_a, note_rx_a) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:623	mpsc channel	§2.2 AsyncQueue	n/a	let (trig_tx_a, mut trig_rx_a) = mpsc::unbounded_channel::<Trigger>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:626	tokio::spawn	§2.2 detach()	n/a	let handle_a = tokio::spawn(async move { driver_a.run(trig_tx_a).await });
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:628	mpsc channel	§2.2 AsyncQueue	n/a	let (note_tx_b, note_rx_b) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:629	mpsc channel	§2.2 AsyncQueue	n/a	let (trig_tx_b, mut trig_rx_b) = mpsc::unbounded_channel::<Trigger>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:632	tokio::spawn	§2.2 detach()	n/a	let handle_b = tokio::spawn(async move { driver_b.run(trig_tx_b).await });
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:639	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:642	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:648	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:654	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:660	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:666	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:672	unwrap	§2.4 invariant()	allocation-guard	a_keys.push(trig_rx_a.recv().await.unwrap().idempotency_key);
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:676	unwrap	§2.4 invariant()	allocation-guard	b_keys.push(trig_rx_b.recv().await.unwrap().idempotency_key);
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:717	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:723	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:729	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:734	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:740	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:742	unwrap	§2.4 invariant()	allocation-guard	let t1 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:743	unwrap	§2.4 invariant()	allocation-guard	let t2 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:744	unwrap	§2.4 invariant()	allocation-guard	let t3 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:745	unwrap	§2.4 invariant()	allocation-guard	let t4 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:746	unwrap	§2.4 invariant()	allocation-guard	let t5 = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:797	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:798	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:829	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:830	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:859	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:860	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:890	expect	§2.4 invariant()	allocation-guard	.expect("custom notification with dedup key should map");
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:914	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:915	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:936	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:937	unwrap	§2.4 invariant()	allocation-guard	let trigger = rx.recv().await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:966	mpsc channel	§2.2 AsyncQueue	n/a	let (note_tx, note_rx) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:967	mpsc channel	§2.2 AsyncQueue	n/a	let (trig_tx, trig_rx) = mpsc::unbounded_channel::<Trigger>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:970	tokio::spawn	§2.2 detach()	n/a	let handle = tokio::spawn(async move { hook_clone.run(trig_tx).await });
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:977	unwrap	§2.4 invariant()	allocation-guard	.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:978	unwrap	§2.4 invariant()	allocation-guard	let err = handle.await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:991	mpsc channel	§2.2 AsyncQueue	n/a	let (note_tx, note_rx) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:992	mpsc channel	§2.2 AsyncQueue	n/a	let (trig_tx, _trig_rx) = mpsc::unbounded_channel::<Trigger>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:995	tokio::spawn	§2.2 detach()	n/a	let handle = tokio::spawn(async move { hook_clone.run(trig_tx).await });
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:998	unwrap	§2.4 invariant()	allocation-guard	let result = handle.await.unwrap();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:1004	panic!	§2.4 invariant()	allocation-guard	other => panic!("expected Disconnected, got {other:?}"),
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:1012	mpsc channel	§2.2 AsyncQueue	n/a	let (note_tx, note_rx) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:1013	mpsc channel	§2.2 AsyncQueue	n/a	let (trig_tx, _trig_rx) = mpsc::unbounded_channel::<Trigger>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:1016	tokio::spawn	§2.2 detach()	n/a	let handle = tokio::spawn(async move { hook_first.run(trig_tx).await });
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:1021	mpsc channel	§2.2 AsyncQueue	n/a	let (trig_tx2, _trig_rx2) = mpsc::unbounded_channel::<Trigger>();
+crates/coding-agent/src/triggers/mcp_notification_hook.rs:1029	mpsc channel	§2.2 AsyncQueue	n/a	let (_tx, rx) = mpsc::unbounded_channel::<McpServerNotification>();
+crates/coding-agent/src/triggers/mod.rs:11	mpsc channel	§2.2 AsyncQueue	n/a	//! `mpsc::unbounded_channel` receiver).

@@ -1,0 +1,514 @@
+fn_name	evidence_kind	evidence	anchor
+agent/src/agent.rs::abort@159	existing-test	packages/agent/test/agent.test.ts:242	expect(receivedSignal?.aborted).toBe(true);
+agent/src/agent.rs::continue_@182	existing-test	packages/agent/test/agent.test.ts:378	await expect(agent.continue()).rejects.toThrow(
+agent/src/agent.rs::convert_to_llm@207	not-portable	Structural difference: upstream's convert_to_llm is a method on Agent. Here the optional hook AgentOptions.convertToLlm carries it, and the default implementation defaultConvertToLlm at packages/agent/src/agent.ts:33 is **module-private** (applied at agent.ts:223 as `options.convertToLlm ?? defaultConvertToLlm`), so there is no entry point on the public surface.	
+agent/src/agent.rs::drain@90	new-test	packages/agent/test/ported/batch-c.test.ts:90	expect(agent.hasQueuedMessages()).toBe(false);
+agent/src/agent.rs::enqueue@86	new-test	packages/agent/test/ported/batch-c.test.ts:72	expect(agent.hasQueuedMessages()).toBe(true);
+agent/src/agent.rs::enqueue_follow_up@154	not-portable	Named differently here: upstream's enqueue_follow_up is Agent.followUp(message) (agent.ts:290). Nothing is missing, the name differs; the queue implementation is shared with enqueue (agent.ts:141), and the behavioral evidence is on that row.	
+agent/src/agent.rs::has_items@104	new-test	packages/agent/test/ported/batch-c.test.ts:32	expect([agent.state.isStreaming, agent.hasQueuedMessages()])
+agent/src/agent.rs::is_streaming@146	existing-test	packages/coding-agent/test/ui/kernel.test.ts:234	expect(kernel.isStreaming()).toBe(false);
+agent/src/agent.rs::new@79	new-test	packages/agent/test/ported/batch-c.test.ts:26	expect(new Agent().state.messages).toEqual([]);
+agent/src/agent.rs::prompt@171	existing-test	packages/agent/test/ported/agent-loop.test.ts:54	expect(events[0]).toBe("agent_start");
+agent/src/agent.rs::state@142	new-test	packages/agent/test/ported/batch-c.test.ts:52	expect(Object.keys(new Agent().state)).toEqual(expect.arrayC
+agent/src/agent.rs::subscribe@130	existing-test	packages/agent/test/ported/agent-loop.test.ts:54	expect(events[0]).toBe("agent_start");
+agent/src/harness/agent_harness.rs::continue_@1732	existing-test	packages/agent/test/harness/agent-harness.test.ts:1414	expect(response.content).toEqual([{ type: "text", text: "con
+agent/src/harness/agent_harness.rs::evaluate@560	existing-test	packages/agent/test/ported/harness-e2e.test.ts:2529	expect(policy.evaluate("bash", args).type).toBe("deny");
+agent/src/harness/agent_harness.rs::force_compact@1946	not-portable	No implementation of that name here: forceCompact has no hits under packages. Forced compaction goes through a direct call to compact(preparation, model, key) (compaction.ts), with no wrapper on the harness.	
+agent/src/harness/agent_harness.rs::move_to@1616	existing-test	packages/agent/test/ported/session-storage.test.ts:92	expect(await reopened.getLeafId()).toBe(idC);
+agent/src/harness/agent_harness.rs::prompt@1684	existing-test	packages/agent/test/harness/agent-harness-stream.test.ts:70	expect(capturedOptions).toMatchObject({
+agent/src/harness/agent_harness.rs::prompt_from_template@1662	existing-test	packages/agent/test/ported/harness-e2e.test.ts:318	expect(hasInterpolated, `expected interpolated user message;
+agent/src/harness/agent_harness.rs::prompt_with_images@1695	not-portable	No such implementation here: `promptWithImages` has no hits anywhere under packages/*/src; the only occurrence of the name is a string inside a mock in ui-retry-prompt.test.ts. Image input goes through prompt's attachments parameter, with no separate entry point. This is a real capability gap, not a naming difference.	
+agent/src/harness/agent_harness.rs::rehydrate_from_session@1639	existing-test	packages/agent/test/ported/harness-e2e.test.ts:340	expect(ctx.thinkingLevel).toBe("high");
+agent/src/harness/agent_harness.rs::reload_skills_from_disk@1538	existing-test	packages/agent/test/ported/harness-e2e.test.ts:2581	expect(result.skills).toHaveLength(2);
+agent/src/harness/agent_harness.rs::run_evaluator@1974	existing-test	packages/agent/test/harness/agent-harness.test.ts:1454	expect(capturedToolCount).toBe(0);
+agent/src/harness/agent_harness.rs::set_compaction_settings@1566	not-portable	Present here, but with no separate test surface: setCompactionSettings (agent-harness.ts:1954) only stores the settings on the harness, and every effect of it is observed through shouldCompact and compact, which each already have evidence. A test written for it alone could only assert that what went in comes back out — a tautology — so this is recorded as not portable rather than padded.	
+agent/src/harness/agent_harness.rs::set_model@1593	existing-test	packages/agent/test/ported/harness-e2e.test.ts:295	expect(entries.some((e) => e.type === "model_change" && e.mo
+agent/src/harness/agent_harness.rs::set_thinking_level@1601	existing-test	packages/agent/test/harness/agent-harness.test.ts:422	expect(captured).toEqual([
+agent/src/harness/compaction/compaction.rs::compact@635	existing-test	packages/agent/test/harness/compaction.test.ts:285	expect(result.summary).toBe("");
+agent/src/harness/compaction/compaction.rs::estimate_context_tokens@166	existing-test	packages/agent/test/harness/compaction.test.ts:358	expect(estimateContextTokens([createUserMessage("no usage")]
+agent/src/harness/compaction/compaction.rs::find_cut_point@246	existing-test	packages/agent/test/harness/compaction.test.ts:198	expect(findCutPoint([thinking, modelChange], 0, 2, 1)).toEqual({
+agent/src/harness/compaction/compaction.rs::generate_summary@506	existing-test	packages/agent/test/harness/compaction.test.ts:693	expect(fauxCalls).toBe(1);
+agent/src/harness/compaction/compaction.rs::should_compact@192	existing-test	packages/agent/test/harness/compaction.test.ts:170	expect(shouldCompact(80001, 100000, settings)).toBe(true);
+agent/src/harness/cost.rs::new@43	existing-test	packages/agent/test/harness/cost.test.ts:27	expect(snapshot.tokens.input).toBe(200);
+agent/src/harness/cost.rs::record@60	existing-test	packages/agent/test/harness/cost.test.ts:27	expect(snapshot.tokens.input).toBe(200);
+agent/src/harness/cost.rs::reset@54	existing-test	packages/agent/test/harness/cost.test.ts:40	expect(tracker.snapshot().tokens.input).toBe(0);
+agent/src/harness/cost.rs::snapshot@49	existing-test	packages/agent/test/harness/cost.test.ts:27	expect(snapshot.tokens.input).toBe(200);
+agent/src/harness/cost.rs::total_cost@25	existing-test	packages/agent/test/harness/cost.test.ts:31	expect(totalCost(snapshot)).toBeCloseTo(0.0033, 9);
+agent/src/harness/env/native.rs::current@31	not-portable	Named differently here: upstream's NativeEnv::current is the public cwd field on NodeExecutionEnv (nodejs.ts:215), not a method. Its behavioral evidence is the NodeExecutionEnv constructor case in the phase 3 calibration batch, where the cwd is remembered and relative paths are anchored to it.	
+agent/src/harness/env/native.rs::new@27	new-test	packages/agent/test/ported/calibration-batch.test.ts:68	expect(env.cwd).toBe(dir);
+agent/src/harness/notification_hook.rs::pending@135	new-test	packages/agent/test/ported/batch-c.test.ts:147	expect(notificationHookStatusPending().state).toEqual({ kind
+agent/src/harness/permission.rs::default_for_coding_agent@78	existing-test	packages/agent/test/harness/permission.test.ts:21	expect(decision.type, `false positive on ${JSON.stringify(cm
+agent/src/harness/permission.rs::evaluate@101	existing-test	packages/agent/test/harness/permission.test.ts:21	expect(decision.type, `false positive on ${JSON.stringify(cm
+agent/src/harness/prompt_templates.rs::interpolate@36	existing-test	packages/agent/test/harness/prompt-templates.test.ts:154	expect(PromptTemplateRegistry.interpolate(template, { who: "
+agent/src/harness/prompt_templates.rs::new@23	existing-test	packages/agent/test/harness/prompt-templates.test.ts:168	expect(registry.list()).toEqual([a, b]);
+agent/src/harness/session/jsonl_repo.rs::create@30	existing-test	packages/coding-agent/test/session-dir-purity.test.ts:95	
+agent/src/harness/session/jsonl_repo.rs::delete@74	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:203	
+agent/src/harness/session/jsonl_repo.rs::list@56	existing-test	packages/agent/test/ported/session-storage.test.ts:60	expect(files).toHaveLength(1);
+agent/src/harness/session/jsonl_repo.rs::open@42	existing-test	packages/agent/test/harness/repo.test.ts:17	expect(await repo.open(metadata)).toBe(session);
+agent/src/harness/session/jsonl_storage.rs::create@29	existing-test	packages/coding-agent/test/session-dir-purity.test.ts:94	
+agent/src/harness/session/jsonl_storage.rs::open@69	existing-test	packages/agent/test/harness/storage.test.ts:154	await expect(JsonlSessionStorage.open(env, filePath)).reject
+agent/src/harness/session/memory_repo.rs::create@24	existing-test	packages/agent/test/harness/repo.test.ts:18	expect((await repo.list()).map((info) => info.id)).toEqual([
+agent/src/harness/session/memory_repo.rs::delete_by_id@39	existing-test	packages/agent/test/harness/repo.test.ts:24	await expect(repo.open(metadata)).rejects.toThrow("Session n
+agent/src/harness/session/repo_utils.rs::create_session_id@11	new-test	packages/coding-agent/test/ported/batch-a.test.ts:26	expect(createSessionId()).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-
+agent/src/harness/session/repo_utils.rs::create_timestamp@15	new-test	packages/coding-agent/test/ported/batch-a.test.ts:43	expect(createTimestamp()).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:
+agent/src/harness/session/repo_utils.rs::get_entries_to_fork@38	existing-test	packages/agent/test/harness/repo-utils.test.ts:42	expect(entries.map((entry) => entry.id)).toEqual(["root", "c
+agent/src/harness/session/session.rs::append_compaction@484	existing-test	packages/agent/test/harness/session.test.ts:66	expect(context.messages[0]?.role).toBe("compactionSummary");
+agent/src/harness/session/session.rs::append_custom@507	existing-test	packages/coding-agent/test/session-manager/tree-traversal.test.ts:118	expect(customEntry).toBeDefined();
+agent/src/harness/session/session.rs::append_label@524	existing-test	packages/agent/test/harness/session.test.ts:104	await expect(session.appendLabel("missing", "checkpoint")).rejects.toThrow("Entry missing not found");
+agent/src/harness/session/session.rs::append_message@440	existing-test	packages/agent/test/harness/session.test.ts:22	expect(context.messages.map((message) => message.role)).toEq
+agent/src/harness/session/session.rs::append_model_change@467	existing-test	packages/agent/test/harness/session.test.ts:32	expect(context.model).toEqual({ provider: "openai", modelId:
+agent/src/harness/session/session.rs::append_session_name@545	existing-test	packages/agent/test/harness/session.test.ts:96	expect(entries.some((entry) => entry.type === "session_info"
+agent/src/harness/session/session.rs::append_thinking_level_change@452	existing-test	packages/agent/test/harness/session.test.ts:31	expect(context.thinkingLevel).toBe("high");
+agent/src/harness/session/session.rs::branch@398	existing-test	packages/agent/test/ported/harness-e2e.test.ts:617	expect(triggerPresent, "session.getBranch must still enumera
+agent/src/harness/session/session.rs::build_context@409	existing-test	packages/agent/test/harness/session.test.ts:22	expect(context.messages.map((message) => message.role)).toEq
+agent/src/harness/session/session.rs::entries@394	existing-test	packages/agent/test/harness/session.test.ts:95	expect(entries.some((entry) => entry.type === "label")).toBe
+agent/src/harness/session/session.rs::get_entry@245	existing-test	packages/agent/test/harness/session.test.ts:76	expect(summaryEntry).toMatchObject({ type: "branch_summary",
+agent/src/harness/session/session.rs::label@414	existing-test	packages/agent/test/harness/storage.test.ts:117	expect(await storage.getLabel("entry-1")).toBe("checkpoint")
+agent/src/harness/session/session.rs::leaf_id@386	new-test	packages/agent/test/ported/calibration-batch.test.ts:39	expect(await session.getLeafId()).toBe(firstId);
+agent/src/harness/session/session.rs::move_to@561	existing-test	packages/agent/test/harness/session.test.ts:43	expect(branch.map((entry) => entry.id)).toContain(user1);
+agent/src/harness/session/session.rs::session_name@418	existing-test	packages/agent/test/harness/session.test.ts:98	expect(await session.getSessionName()).toBe("name");
+agent/src/harness/session/uuid.rs::uuidv7@6	existing-test	packages/agent/test/harness/session-uuid.test.ts:34	expect(first).toBe("01234567-89ab-7fff-bfff-f91122334455");
+agent/src/harness/skills.rs::format_skill_invocation@23	existing-test	packages/agent/test/harness/resource-formatting.test.ts:14	
+agent/src/harness/system_prompt.rs::format_skills_for_system_prompt@18	existing-test	packages/agent/test/harness/system-prompt.test.ts:30	
+agent/src/harness/trigger_runtime.rs::config@176	existing-test	packages/agent/test/harness/trigger-runtime.test.ts:98	expect(runtime.config.dedupWindowMs).toBe(MAX_DEDUP_WINDOW_MS);
+agent/src/harness/trigger_runtime.rs::evaluate@191	existing-test	packages/agent/test/harness/trigger-runtime.test.ts:43	expect(outcome).toEqual({ type: "accept" });
+agent/src/harness/trigger_runtime.rs::new@139	existing-test	packages/agent/test/harness/trigger-runtime.test.ts:44	expect(runtime.dedupEntryCount()).toBe(1);
+agent/src/harness/trigger_runtime.rs::record_follow_up_hop@252	existing-test	packages/agent/test/harness/trigger-runtime.test.ts:93	expect(suppressed).toEqual({ type: "cycleSuppressed", hopCou
+agent/src/harness/trigger_runtime.rs::snapshot@164	existing-test	packages/agent/test/harness/trigger-runtime.test.ts:145	expect(snap.acceptedTotal).toBe(3);
+agent/src/harness/trigger_runtime.rs::with_config@145	not-portable	No implementation of that name here: `withConfig` has no hits under packages/*/src. TriggerRuntime takes its configuration through the constructor (`new TriggerRuntime(config)`), with no builder-style with_config.	
+agent/src/harness/trigger.rs::is_terminal@210	existing-test	packages/agent/test/harness/trigger.test.ts:110	expect(isTriggerStateTerminal("received")).toBe(false);
+agent/src/harness/trigger.rs::received_from@269	existing-test	packages/agent/test/harness/trigger.test.ts:132	expect(record.state).toBe("received");
+agent/src/harness/types.rs::label@256	existing-test	packages/coding-agent/test/ported/trigger-wiring.test.ts:227	expect(subsystem.hooks.map((hook) => hook.label())).toEqual(
+agent/src/harness/types.rs::new@52	new-test	packages/agent/test/ported/batch-c.test.ts:117	expect([err.code, err.message, err.path, err.name]).toEqual(
+agent/src/harness/types.rs::new@83	new-test	packages/agent/test/ported/batch-c.test.ts:128	expect([err.code, err.message, err.name]).toEqual(["timeout"
+agent/src/types.rs::as_audit_str@472	not-portable	No implementation of that name here: asAuditStr has no hits. Audit strings are assembled at the call site, never factored into a method on the type.	
+agent/src/types.rs::as_str@71	not-portable	No implementation of that name here: asStr has no hits. Upstream uses it to turn an enum into its wire string; the corresponding type here is a literal union such as GoalStatus, where the string is the value itself and no conversion function is needed.	
+agent/src/types.rs::default_convert_to_llm@650	not-portable	No export of that name here: defaultConvertToLlm has no hits in types.ts. The default for converting messages into LLM format is inlined in Agent's prompt path and overridden by AgentOptions.convertToLlm, with no named, testable entry point.	
+agent/src/types.rs::default_stream_fn@544	not-portable	Structural difference: upstream has a named factory, `default_stream_fn() -> Arc::new(pie_ai::stream_simple)`. Here packages/agent/src/agent.ts:225 applies the same default inline as `options.streamFn ?? streamSimple`, where streamSimple comes from @pie/ai, so there is no corresponding named factory to test.	
+ai/src/api_registry.rs::clear_api_providers@91	existing-test	packages/ai/test/ported/oracle-inline-core.test.ts:132	expect(getApiProvider(RACE_API as never)).toBeUndefined();
+ai/src/api_registry.rs::get_api_provider@77	existing-test	packages/ai/test/ported/oracle-inline-core.test.ts:113	expect(handle).toBeDefined();
+ai/src/api_registry.rs::register_api_provider@60	existing-test	packages/ai/test/ported/oracle-inline-core.test.ts:113	expect(handle).toBeDefined();
+ai/src/api_registry.rs::stream@25	existing-test	packages/ai/test/api-registry-error-streams.test.ts:75	expect(() => handle!.stream(testModel("other-api"), { messag
+ai/src/api_registry.rs::stream_simple@34	existing-test	packages/ai/test/ported/oracle-inline-core.test.ts:138	expect(doneModel).toBe("simple");
+ai/src/api_registry.rs::unregister_api_providers@85	existing-test	packages/ai/test/ported/oracle-inline-core.test.ts:116	expect(getApiProvider(RACE_API as never)).toBeUndefined();
+ai/src/bedrock_anthropic.rs::new@35	not-portable	No constructor of that name here: the Anthropic adaptation for Bedrock is carried by baseUrl routing in anthropic.ts, with no separate bedrock_anthropic client class.	
+ai/src/bedrock_provider.rs::from_env@27	existing-test	packages/ai/test/bedrock-endpoint-resolution.test.ts:105	
+ai/src/bedrock_provider.rs::invoke@44	existing-test	packages/ai/test/bedrock-usage-and-stop-reason.test.ts:106	
+ai/src/env_api_keys.rs::env_var_names@45	existing-test	packages/ai/test/env-api-keys.test.ts:60	expect(envVarNames("ds4")).toEqual(["DS4_API_KEY"]);
+ai/src/env_api_keys.rs::get_env_api_key@30	existing-test	packages/ai/test/env-api-keys.test.ts:35	
+ai/src/event_stream.rs::content_type@56	not-portable	A real capability gap: the AWS `application/vnd.amazon.eventstream` binary frame path was not ported at all. packages/ai/src/event-stream.ts **does not exist** (the similarly named utils/event-stream.ts corresponds to a different upstream file, utils/event_stream.rs, and is a general EventStream abstraction unrelated to binary frames). A repo-wide grep for `vnd.amazon.eventstream` and `crc32` finds nothing, and bedrock-provider.ts is a 6-line placeholder.	
+ai/src/event_stream.rs::crc32@213	not-portable	A real capability gap: as above — crc32 frame validation belongs to the AWS eventstream binary parser. Grepping `crc32` under packages/ai/src finds nothing, packages/ai/src/event-stream.ts does not exist, and bedrock-provider.ts is a 6-line placeholder module.	
+ai/src/event_stream.rs::event_type@53	not-portable	A real capability gap: as above — reading the `:event-type` header belongs to AWS binary frame parsing. packages/ai/src/event-stream.ts does not exist, and bedrock-provider.ts is 6 lines that export a bedrockProviderModule placeholder.	
+ai/src/images_api_registry.rs::generate@13	not-portable	Named differently here: upstream's generate is ImagesApiProvider.generateImages, wrapped by wrapGenerateImages at registration (images-api-registry.ts:44).	
+ai/src/images_api_registry.rs::get_images_api_provider@35	new-test	packages/ai/test/ported/batch-d.test.ts:35	expect(getImagesApiProvider("never-registered-api" as never)
+ai/src/images_api_registry.rs::register_images_api_provider@27	new-test	packages/ai/test/ported/batch-d.test.ts:31	expect(getImagesApiProvider(api)?.api).toBe(api);
+ai/src/images.rs::images@6	existing-test	packages/coding-agent/test/block-images.test.ts:66	expect(result.content.length).toBeGreaterThanOrEqual(1);
+ai/src/providers/cloudflare.rs::resolve_cloudflare_base_url@30	existing-test	packages/ai/test/cloudflare-base-url-placeholder.test.ts:40	expect(resolveCloudflareBaseUrl(modelWithBase("https://examp
+ai/src/providers/faux.rs::faux_assistant_message@71	existing-test	packages/ai/test/faux-provider.test.ts:42	expect(response.content).toEqual([{ type: "text", text: "hel
+ai/src/providers/faux.rs::faux_text@47	existing-test	packages/ai/test/faux-provider.test.ts:62	expect(response.content).toEqual([
+ai/src/providers/faux.rs::faux_tool_call@59	existing-test	packages/ai/test/faux-provider.test.ts:62	expect(response.content).toEqual([
+ai/src/providers/images/openrouter.rs::generate@9	existing-test	packages/ai/test/openrouter-images.test.ts:87	expect(output.output[1]).toMatchObject({ type: "image", mimeType
+ai/src/providers/transform_messages.rs::transform_messages@73	existing-test	packages/ai/test/transform-messages-oracle-parity.test.ts:61	expect(out).toHaveLength(1);
+ai/src/session_resources.rs::cleanup_session_resources@6	new-test	packages/ai/test/ported/session-resources-batch-h.test.ts:96	expect(seen, "callbacks after the throwing one still have to run").toEqual(
+ai/src/sigv4.rs::sign@41	dissolved-dependency	manifest: dissolved:adopted-@aws-sdk/signature-v4	
+ai/src/types.rs::as_str@48	not-portable	No implementation of that name here: asStr has no hits, the same shape as agent/src/types.rs::as_str. The corresponding type here is a literal union, where the string is the value itself.	
+ai/src/types.rs::is_terminal@539	not-portable	No implementation of that name here: isTerminal has no hits, the same shape as agent/src/harness/trigger.rs::is_terminal. Terminal states are decided by callers comparing the stopReason literal directly.	
+ai/src/types.rs::known@23	not-portable	Structural difference: upstream enumerates known apis and providers through a `known()` predicate. Here packages/ai/src/types.ts expresses the same sets as the literal unions KnownApi, KnownProvider and KnownImagesApi — the type system rejects anything that is not a known value at compile time, so there is no runtime predicate to call.	
+ai/src/types.rs::text@269	not-portable	Structural difference: upstream has a ContentBlock::text constructor. Here the object is built literally as `{ type: "text", text }` — TextContent in packages/ai/src/types.ts is an interface, not a constructor, and wrapping a string into a text block needs no named function in TypeScript. The other constructor of the same name is at text@288.	
+ai/src/types.rs::text@288	not-portable	Structural difference: upstream has two text constructors in types.rs (@269 and @288, in impl blocks for different types — the roster keys carry upstream line numbers precisely to tell them apart). Both are built as object literals here, since TextContent and TextSignatureV1 in packages/ai/src/types.ts are interfaces rather than constructors.	
+ai/src/utils/abort.rs::push_aborted@116	not-portable	No implementation of that name here: pushAborted has no hits. The empty assistant entry written on abort goes through the path declared as D13 (see intentional-divergences.md), with no separate push_aborted helper.	
+ai/src/utils/abort.rs::sleep_or_abort@44	not-portable	Named differently here: sleepOrAbort is implemented under packages/ai/src but exports no testable entry point; the abort response during retry backoff is covered by retry.ts's behavior as a whole, where sendWithRetry already has evidence.	
+ai/src/utils/aws_eventstream.rs::new@33	not-portable	A real capability gap: the constructor of the AWS eventstream parser. The probe finds no corresponding file under packages/ at all; Bedrock support here amounts to the 6-line placeholder module packages/ai/src/bedrock-provider.ts.	
+ai/src/utils/event_stream.rs::close@54	new-test	packages/ai/test/ported/batch-d.test.ts:129	await expect(stream.result()).resolves.toBe("closed-explicit
+ai/src/utils/event_stream.rs::create_assistant_message_event_stream@105	existing-test	packages/ai/test/event-stream.test.ts:160	expect(await stream.result()).toBe(msg);
+ai/src/utils/event_stream.rs::is_closed@49	new-test	packages/ai/test/ported/batch-d.test.ts:117	expect(seen).toEqual([1, 2]);
+ai/src/utils/event_stream.rs::new@71	new-test	packages/ai/test/ported/batch-d.test.ts:103	expect(await stream.result()).toBe("empty");
+ai/src/utils/event_stream.rs::push@32	existing-test	packages/ai/test/event-stream.test.ts:61	expect(events).toHaveLength(2);
+ai/src/utils/event_stream.rs::result@87	existing-test	packages/ai/test/event-stream.test.ts:74	expect(finalMsg).toBeDefined();
+ai/src/utils/hash.rs::short_hash@11	existing-test	packages/ai/test/hash.test.ts:11	expect(shortHash("hello")).toBe(shortHash("hello"));
+ai/src/utils/headers.rs::merge_headers@10	not-portable	Not exported here: mergeHeaders is a module-private function at providers/anthropic.ts:227 and is not on the public surface. Its behavior is covered indirectly by the anthropic user-agent and header tests, but nothing points at it directly.	
+ai/src/utils/node_http_proxy.rs::build_client@19	not-portable	No implementation of that name here: buildClient has no hits. The proxy client is constructed directly from undici's ProxyAgent (node-http-proxy.ts), without upstream's build_client wrapper.	
+ai/src/utils/oauth/anthropic.rs::build_authorize_url@34	not-portable	No export of that name here: buildAuthorizeUrl has no hits. The authorize URL is assembled inline inside the oauth flow, and its byte-for-byte agreement with upstream is held by the assertions in packages/ai/test/anthropic-oauth.test.ts as a whole — that test's title says exactly that.	
+ai/src/utils/oauth/anthropic.rs::exchange_authorization_code@75	existing-test	packages/ai/test/anthropic-oauth.test.ts:72	
+ai/src/utils/oauth/anthropic.rs::login@143	existing-test	packages/ai/test/anthropic-oauth.test.ts:155	
+ai/src/utils/oauth/anthropic.rs::refresh@107	existing-test	packages/ai/test/anthropic-oauth.test.ts:265	
+ai/src/utils/oauth/github_copilot.rs::login@6	existing-test	packages/ai/test/github-copilot-oauth.test.ts:53	
+ai/src/utils/oauth/github_copilot.rs::refresh@10	existing-test	packages/ai/test/github-copilot-oauth.test.ts:48	
+ai/src/utils/oauth/openai_codex.rs::login@6	oracle-stub	Upstream openai_codex.rs:6-8 returns Err("openai-codex OAuth not yet implemented"); there is no upstream behavior to compare against.	
+ai/src/utils/oauth/openai_codex.rs::refresh@10	existing-test	packages/ai/test/openai-codex-oauth.test.ts:27	
+ai/src/utils/overflow.rs::is_context_overflow@69	existing-test	packages/ai/test/context-overflow.test.ts:105	expect(isContextOverflow(result.response, model.contextWindo
+ai/src/utils/retry.rs::send_with_retry@42	existing-test	packages/ai/test/retry.test.ts:135	expect(response.status).toBe(200);
+ai/src/utils/sse.rs::new@29	not-portable	Named differently here: the SSE parser is the class at mcp/src/http.ts:200, constructed through capBytes. It lives outside the ai package and has no entry point corresponding one-to-one with upstream's sse.rs::new.	
+ai/src/utils/validation.rs::validate@22	new-test	packages/ai/test/ported/batch-d.test.ts:77	expect(() => validateToolCall([tool], { id: "1", name: "nope
+ai/src/vertex_adc.rs::build_jwt@96	existing-test	packages/ai/test/vertex-adc.test.ts:145	expect(header).toEqual({ alg: "RS256", typ: "JWT" });
+ai/src/vertex_adc.rs::fetch_access_token@117	existing-test	packages/ai/test/vertex-adc.test.ts:235	
+ai/src/vertex_adc.rs::load_service_account@81	existing-test	packages/ai/test/vertex-adc.test.ts:82	
+ai/src/vertex_provider.rs::from_env@31	existing-test	packages/ai/test/google-vertex-token-resolution.test.ts:210	
+ai/src/vertex_provider.rs::invoke@57	existing-test	packages/ai/test/google-vertex-oracle-parity.test.ts:80	
+coding-agent/src/agent_session.rs::harness@74	existing-test	packages/coding-agent/test/ui/kernel.test.ts:146	expect(kernelWith(stub).harness()).toBe(stub.asHarness);
+coding-agent/src/agent_session.rs::is_retryable_error@57	existing-test	packages/coding-agent/test/ported/session-archive-batch-d.test.ts:196	expect(isRetryableErrorMessage(retryable), `${retryable} should be retryable`).toBe(true);
+coding-agent/src/agent_session.rs::new@69	existing-test	packages/coding-agent/test/agent-session-concurrent.test.ts:140	expect(session.isStreaming).toBe(true);
+coding-agent/src/agent_session.rs::prompt@87	existing-test	packages/coding-agent/test/agent-session-branching.test.ts:98	expect(userMessages[0].text).toBe("Say hello");
+coding-agent/src/agent_session.rs::subscribe@80	existing-test	packages/coding-agent/test/agent-session-retry.test.ts:143	expect(events).toEqual(["start:1", "end:success=true"]);
+coding-agent/src/bug_report.rs::build@41	existing-test	packages/coding-agent/test/bug-report.test.ts:60	
+coding-agent/src/bug_report.rs::default_dest@24	existing-test	packages/coding-agent/test/bug-report.test.ts:104	expect(defaultDest(NOW)).toBe(join(dir, "bug-reports", "20260804T025906Z.txt"));
+coding-agent/src/bug_report.rs::redact@115	existing-test	packages/coding-agent/test/bug-report.test.ts:60	expect(r).not.toContain("sk-abcdefghij");
+coding-agent/src/builtin_skills.rs::available_builtin_names@50	existing-test	packages/coding-agent/test/builtin-skills.test.ts:19	expect(names).toEqual(sorted);
+coding-agent/src/builtin_skills.rs::merge_with_user_project@196	existing-test	packages/coding-agent/test/builtin-skills.test.ts:118	expect(merged).toHaveLength(1);
+coding-agent/src/builtin_skills.rs::parse_builtin_skills_config@215	existing-test	packages/coding-agent/test/builtin-skills.test.ts:153	expect(parseBuiltinSkillsConfig(text)).toEqual(["karpathy-gu
+coding-agent/src/builtin_skills.rs::resolve_builtins@74	existing-test	packages/coding-agent/test/builtin-skill-wiring.test.ts:97	expect(names(loader)[0]).toBe("karpathy-guidelines");
+coding-agent/src/clipboard_image.rs::read_clipboard@26	existing-test	packages/coding-agent/test/clipboard-paste.test.ts:136	expect(paste.kind).toBe("image");
+coding-agent/src/commands.rs::set_sink@33	not-portable	No implementation of that name here: setSink has no hits. The sink for command output is injected through the closure in emitCommandLine (slash-dispatch.ts); there is no global sink to set.	
+coding-agent/src/config.rs::base_dir@10	new-test	packages/coding-agent/test/ported/calibration-batch.test.ts:184	expect(getAgentDir()).toBe(dir);
+coding-agent/src/config.rs::cwd_hash@33	not-portable	Present here, but with no test surface: cwdHash is implemented and no assertion anywhere covers it, and its observable consequence — which subdirectory a session lands in — is already held by the assertions in session-dir-purity.test.ts. A unit test could only assert that the same cwd yields the same string, which restates the implementation.	
+coding-agent/src/config.rs::memory_dir@27	existing-test	packages/coding-agent/test/config-paths.test.ts:21	expect(getMemoryDir()).toBe(join(getAgentDir(), "memory"));
+coding-agent/src/config.rs::parse_relay_base_url@64	existing-test	packages/coding-agent/test/config-paths.test.ts:85	expect(parseRelayBaseUrl("")).toBe(DEFAULT_RELAY_BASE_URL);
+coding-agent/src/config.rs::parse_trigger_poll_interval_secs@44	existing-test	packages/coding-agent/test/config-paths.test.ts:58	expect(parseTriggerPollIntervalSecs(text)).toBe(15);
+coding-agent/src/config.rs::relay_base_url@79	existing-test	packages/coding-agent/test/config-paths.test.ts:196	await expect(relayBaseUrl()).resolves.toBe(DEFAULT_RELAY_BAS
+coding-agent/src/config.rs::sessions_dir_for_cwd@21	not-portable	No export of that name here: sessionsDirForCwd has no hits. The session directory is assembled inline from getSessionsDir() plus a cwd hash subdirectory (session-manager.ts), without upstream's standalone function.	
+coding-agent/src/export.rs::default_export_path@99	existing-test	packages/coding-agent/test/export.test.ts:169	expect(path).toBe(join(tempAgentDir, "exports", "session-abc
+coding-agent/src/export.rs::render@14	existing-test	packages/coding-agent/test/ported/export-e2e.test.ts:106	
+coding-agent/src/export.rs::render_context@19	existing-test	packages/coding-agent/test/ported/export-e2e.test.ts:107	
+coding-agent/src/export.rs::save@103	existing-test	packages/coding-agent/test/ported/export-e2e.test.ts:94	
+coding-agent/src/extensions.rs::init_all@71	existing-test	packages/coding-agent/test/extensions-registry.test.ts:83	expect(r.initAll(ctx()).banners).toEqual(["hello: ready"]);
+coding-agent/src/extensions.rs::iter@65	existing-test	packages/coding-agent/test/extensions-registry.test.ts:145	expect([...r.iter()].map((e) => e.name())).toEqual(["hello",
+coding-agent/src/extensions.rs::new@55	existing-test	packages/coding-agent/test/extensions-registry.test.ts:59	expect(out.banners.length).toBe(1);
+coding-agent/src/extensions.rs::register@61	existing-test	packages/coding-agent/test/extensions-registry.test.ts:59	expect(out.banners.length).toBe(1);
+coding-agent/src/goal.rs::active@55	existing-test	packages/coding-agent/test/ported/goal.test.ts:176	expect(isGoalActive({ ...base, status: "pursuing" })).toBe(t
+coding-agent/src/goal.rs::as_str@32	new-test	packages/coding-agent/test/ported/calibration-batch.test.ts:263	expect(activeOnes, "pursuing, paused and budget_limited all have to be active").toEqual(
+coding-agent/src/goal.rs::clear@109	existing-test	packages/coding-agent/test/ported/goal.test.ts:163	expect(cleared).toMatchObject({ condition: "", status: "clea
+coding-agent/src/goal.rs::current@69	existing-test	packages/coding-agent/test/ported/commands-e2e.test.ts:603	expect(await current(asGoalHarness(harness))).toBeUndefined(
+coding-agent/src/goal.rs::pause@86	existing-test	packages/coding-agent/test/ported/goal.test.ts:148	await expect(pause(harness)).rejects.toThrow("no active goal
+coding-agent/src/goal.rs::resume@96	existing-test	packages/coding-agent/test/ported/goal.test.ts:149	await expect(resume(harness)).rejects.toThrow("no paused goa
+coding-agent/src/goal.rs::set@74	existing-test	packages/coding-agent/test/ported/commands-e2e.test.ts:557	expect(outcome.kind, `expected RunAgentPrompt, got ${JSON.st
+coding-agent/src/goal.rs::stop_hook@223	existing-test	packages/coding-agent/test/ported/goal.test.ts:196	expect(decision.action).toEqual({ kind: "pause", reason: "go
+coding-agent/src/history.rs::append@56	existing-test	packages/coding-agent/test/history.test.ts:28	expect(h.entries()).toEqual(["first", "second", "third"]);
+coding-agent/src/history.rs::default_path@22	existing-test	packages/coding-agent/test/history.test.ts:127	expect(HistoryStore.defaultPath().endsWith("history")).toBe(true);
+coding-agent/src/history.rs::entries@39	existing-test	packages/coding-agent/test/history.test.ts:28	expect(h.entries()).toEqual(["first", "second", "third"]);
+coding-agent/src/history.rs::is_empty@49	existing-test	packages/coding-agent/test/history.test.ts:64	expect(h.isEmpty()).toBe(true);
+coding-agent/src/history.rs::len@44	new-test	packages/coding-agent/test/ported/batch-a.test.ts:72	expect(HistoryStore.loadFrom(path).length).toBe(3);
+coding-agent/src/history.rs::load@18	existing-test	packages/coding-agent/test/history.test.ts:133	expect(() => HistoryStore.load()).not.toThrow();
+coding-agent/src/history.rs::load_from@26	existing-test	packages/coding-agent/test/history.test.ts:28	expect(h.entries()).toEqual(["first", "second", "third"]);
+coding-agent/src/history.rs::save@72	existing-test	packages/coding-agent/test/history.test.ts:32	
+coding-agent/src/hooks.rs::handle_event@315	existing-test	packages/coding-agent/test/hooks.test.ts:270	expect(body).toBe("tool_end bash ");
+coding-agent/src/hooks.rs::handle_harness_event@322	not-portable	No implementation of that name here: handleHarnessEvent has no hits. Harness events go straight into handleEvent (hooks.ts), with no separate harness branch entry point.	
+coding-agent/src/hooks.rs::is_empty@286	existing-test	packages/coding-agent/test/hooks.test.ts:194	expect(loaded.runner.isEmpty()).toBe(true);
+coding-agent/src/hooks.rs::len@290	not-portable	Present here, but with no separate assertion: the observable consequence of HookRunner.len() coincides with isEmpty(), which already has evidence at hooks.test.ts:194. A test for len alone could only assert the count, from the same source.	
+coding-agent/src/images.rs::infer_mime@15	existing-test	packages/coding-agent/test/image-attachments.test.ts:34	expect(inferMime(new Uint8Array(Buffer.concat([PNG_HEADER, Buffer.from("0000more")])))).toBe("image/png");
+coding-agent/src/images.rs::load_all@66	existing-test	packages/coding-agent/test/image-attachments.test.ts:122	await expect(loadAllImages(paths)).rejects.toThrow(
+coding-agent/src/images.rs::load_bytes@41	not-portable	No implementation of that name here: loadBytes has no hits. Reading bytes is inlined in loadAllImages (image-convert.ts), with no separate export.	
+coding-agent/src/images.rs::load_one@32	not-portable	No implementation of that name here: loadOne has no hits. Loading a single image is likewise inlined in the loop inside loadAllImages.	
+coding-agent/src/inbox.rs::append@47	existing-test	packages/coding-agent/test/ported/inbox.test.ts:39	
+coding-agent/src/inbox.rs::default_inbox_path@42	new-test	packages/coding-agent/test/ported/batch-b.test.ts:144	expect(path.endsWith("inbox.jsonl")).toBe(true);
+coding-agent/src/inbox.rs::dismiss_all_new@132	existing-test	packages/coding-agent/test/ported/inbox.test.ts:52	expect(dismissAllNew(path)).toBe(1);
+coding-agent/src/inbox.rs::list@88	existing-test	packages/coding-agent/test/ported/inbox.test.ts:55	expect(list(path).length).toBe(2);
+coding-agent/src/inbox.rs::list_new@101	existing-test	packages/coding-agent/test/ported/inbox.test.ts:42	expect(entries.length).toBe(2);
+coding-agent/src/inbox.rs::new_count@110	existing-test	packages/coding-agent/test/ported/inbox.test.ts:34	expect(newCount(path)).toBe(0); // missing file counts as ze
+coding-agent/src/inbox.rs::set_status@115	existing-test	packages/coding-agent/test/ported/inbox.test.ts:47	expect(claimed).toBeDefined();
+coding-agent/src/local_models.rs::load_all@25	existing-test	packages/coding-agent/test/local-models.test.ts:337	expect(loaded.models.map((m) => m.baseUrl)).not.toContain("h
+coding-agent/src/logging.rs::init@27	existing-test	packages/coding-agent/test/logging.test.ts:111	
+coding-agent/src/lsp.rs::did_open@183	existing-test	packages/coding-agent/test/lsp.test.ts:337	expect(pushed?.uri).toBe(uri);
+coding-agent/src/lsp.rs::initialize@163	existing-test	packages/coding-agent/test/lsp.test.ts:324	expect(initResult).toEqual({ capabilities: {} });
+coding-agent/src/lsp.rs::spawn@69	existing-test	packages/coding-agent/test/lsp.test.ts:324	expect(initResult).toEqual({ capabilities: {} });
+coding-agent/src/markdown.rs::new@121	existing-test	packages/tui/test/markdown.test.ts:61	assert.ok(plainLines.some((line) => line.includes("    - Nested 1.1")));
+coding-agent/src/markdown.rs::render_line@20	existing-test	packages/tui/test/markdown-stream.test.ts:16	
+coding-agent/src/markdown.rs::render_line@124	existing-test	packages/tui/test/markdown-stream.test.ts:16	
+coding-agent/src/mentions.rs::expand@26	existing-test	packages/coding-agent/test/mentions.test.ts:109	expect(result.prompt).toBe("just a regular prompt");
+coding-agent/src/model_picker.rs::back@138	existing-test	packages/coding-agent/test/model-picker.test.ts:216	expect(p.back()).toBe(false); // back to providers…
+coding-agent/src/model_picker.rs::down@101	existing-test	packages/coding-agent/test/model-picker.test.ts:208	expect(p.enter()).toBe("anthropic:claude-opus-4-8");
+coding-agent/src/model_picker.rs::enter@109	existing-test	packages/coding-agent/test/model-picker.test.ts:205	expect(p.enter()).toBeUndefined(); // descend into anthropic
+coding-agent/src/model_picker.rs::new@81	existing-test	packages/coding-agent/test/model-picker.test.ts:205	expect(p.enter()).toBeUndefined(); // descend into anthropic
+coding-agent/src/model_picker.rs::up@97	existing-test	packages/coding-agent/test/model-picker.test.ts:226	expect(p.cursor).toBe(0);
+coding-agent/src/model_picker.rs::view@150	existing-test	packages/coding-agent/test/model-picker.test.ts:315	
+coding-agent/src/model.rs::auto_detect_model@23	existing-test	packages/coding-agent/test/local-models-registry-wiring.test.ts:99	expect(model.provider).toBe("ds4");
+coding-agent/src/model.rs::credential_less_default@74	existing-test	packages/coding-agent/test/ported/model-detect.test.ts:21	
+coding-agent/src/oauth.rs::authorize_url@62	existing-test	packages/coding-agent/test/oauth.test.ts:122	
+coding-agent/src/oauth.rs::await_callback@86	existing-test	packages/coding-agent/test/oauth.test.ts:199	
+coding-agent/src/oauth.rs::exchange_code@158	existing-test	packages/coding-agent/test/oauth.test.ts:298	
+coding-agent/src/oauth.rs::refresh_token@135	existing-test	packages/coding-agent/test/oauth.test.ts:360	
+coding-agent/src/otlp.rs::try_layer@30	existing-test	packages/coding-agent/test/otlp.test.ts:43	expect(tryLayer()).toBeUndefined();
+coding-agent/src/readline.rs::from_registry@19	not-portable	Named differently here: upstream's from_registry was folded into SlashCompleter.fromRegistryAndSkills (readline.ts:155); the single-argument version does not exist separately. Its behavioral evidence is on the from_registry_and_skills row.	
+coding-agent/src/readline.rs::from_registry_and_skills@23	existing-test	packages/coding-agent/test/readline.test.ts:66	expect(c.matches("/d")).toContain("/db9");
+coding-agent/src/readline.rs::matches@43	existing-test	packages/coding-agent/test/readline.test.ts:35	expect(m).toContain("/help");
+coding-agent/src/resume_picker.rs::pick_blocking@157	not-portable	No implementation of that name here: pickBlocking has no hits. Upstream uses a blocking TUI picker; session selection here goes through a non-blocking interactive picker in main.ts, promise-shaped, with no blocking variant.	
+coding-agent/src/session_archive.rs::activate_imported@321	existing-test	packages/coding-agent/test/session-archive.test.ts:247	
+coding-agent/src/session_archive.rs::default_export_path@360	existing-test	packages/coding-agent/test/session-archive.test.ts:415	expect(defaultExportPath("/some/cwd", "0199abcd-ef01-7234-80
+coding-agent/src/session_archive.rs::export_session@115	existing-test	packages/coding-agent/test/session-archive.test.ts:188	
+coding-agent/src/session_archive.rs::import_session@202	existing-test	packages/coding-agent/test/session-archive.test.ts:175	
+coding-agent/src/session/mod.rs::any_enabled@249	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:81	expect(automationCountsAnyEnabled(counts)).toBe(true);
+coding-agent/src/session/mod.rs::automation_counts@295	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:65	expect(isAutomationCountsEmpty(counts)).toBe(true);
+coding-agent/src/session/mod.rs::automation_elsewhere_hint@315	existing-test	packages/coding-agent/test/session-dir-purity.test.ts:78	expect(hint).toBeUndefined();
+coding-agent/src/session/mod.rs::badge@255	new-test	packages/coding-agent/test/ported/calibration-batch.test.ts:214	expect(automationCountsBadge({ cronEnabled: 2, triggerEnabled: 1, cronTotal: 2, triggerTotal: 1 })).toBe(
+coding-agent/src/session/mod.rs::create@77	existing-test	packages/coding-agent/test/rpc.test.ts:255	expect(state.messageCount).toBe(0);
+coding-agent/src/session/mod.rs::cron_sidecar_path@30	new-test	packages/coding-agent/test/ported/batch-a.test.ts:105	expect(cronSidecarPath("/tmp/sessions/abc.jsonl")).toBe("/tm
+coding-agent/src/session/mod.rs::cron_sidecar_path_for_session@60	not-portable	No implementation of that name here: `cronSidecarPathForSession` has no hits under packages/*/src. Only cronSidecarPath(sessionPath) exists; deriving a sidecar path from a session id is left to the caller on this side.	
+coding-agent/src/session/mod.rs::delete_by_id@164	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:202	
+coding-agent/src/session/mod.rs::endpoint_sidecar_path@55	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:49	expect(endpointSidecarPath(path)).toBe(join("/tmp", "session
+coding-agent/src/session/mod.rs::find_path_by_id@222	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:153	expect(findSessionPathById(tempDir, id)).toBe(path);
+coding-agent/src/session/mod.rs::is_empty@245	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:65	expect(isAutomationCountsEmpty(counts)).toBe(true);
+coding-agent/src/session/mod.rs::list_entries@100	existing-test	packages/coding-agent/test/session-manager/file-operations.test.ts:40	expect(loadEntriesFromFile(file)).toEqual([]);
+coding-agent/src/session/mod.rs::newest_path@228	existing-test	packages/coding-agent/test/session-manager/pie-session-helpers.test.ts:173	expect(() => resolveResumeSessionPath(tempDir)).toThrow(`no 
+coding-agent/src/session/mod.rs::resume@82	new-test	packages/coding-agent/test/ported/batch-a.test.ts:133	expect(() => resolveResumeSessionPath(dir)).toThrow(`no sess
+coding-agent/src/session/mod.rs::trigger_sidecar_path@25	new-test	packages/coding-agent/test/ported/batch-a.test.ts:100	expect(triggerSidecarPath("/tmp/sessions/abc.jsonl")).toBe("
+coding-agent/src/session/mod.rs::trigger_sidecar_path_for_session@38	not-portable	No implementation of that name here: `triggerSidecarPathForSession` has no hits under packages/*/src. The same shape as the cron side — only triggerSidecarPath(sessionPath) exists, and the by-session-id layer was not ported.	
+coding-agent/src/skills_state.rs::apply@124	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:56	expect(out[0]?.disableModelInvocation).toBe(true);
+coding-agent/src/skills_state.rs::load@88	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:146	expect((await loadSkillsState(dir)).overrides).toEqual([]);
+coding-agent/src/skills_state.rs::lookup@47	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:174	expect(loaded.overrides).toHaveLength(2);
+coding-agent/src/skills_state.rs::remove@73	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:121	expect(removed).toBe(true);
+coding-agent/src/skills_state.rs::remove_and_save@151	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:190	expect(afterRemove, "removeAndSave cleared it on disk, not just 
+coding-agent/src/skills_state.rs::save@100	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:174	
+coding-agent/src/skills_state.rs::set@54	new-test	packages/coding-agent/test/ported/calibration-batch.test.ts:135	expect(next.overrides).toEqual([{ name: "alpha", source: "user", enabled: false }]);
+coding-agent/src/skills_state.rs::set_and_save@135	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:174	expect(loaded.overrides).toHaveLength(2);
+coding-agent/src/skills_state.rs::state_path@82	existing-test	packages/coding-agent/test/ported/skills-state-batch-c.test.ts:158	expect((await loadSkillsState(dir)).overrides, "malformed ov
+coding-agent/src/spinner.rs::as_string@68	existing-test	packages/coding-agent/test/spinner.test.ts:65	expect(
+coding-agent/src/spinner.rs::new@62	existing-test	packages/coding-agent/test/spinner.test.ts:186	expect(writes).toEqual([`${CLEAR_LINE}⠋ thinking`, CLEAR_LIN
+coding-agent/src/spinner.rs::snapshot@65	existing-test	packages/coding-agent/test/spinner.test.ts:48	expect(body.includes("⠋"), `frame 0 missing from synchronous
+coding-agent/src/spinner.rs::start@125	existing-test	packages/coding-agent/test/spinner.test.ts:181	expect(writes, "a non-TTY stderr must never be written to").
+coding-agent/src/spinner.rs::start_with@132	existing-test	packages/coding-agent/test/spinner.test.ts:48	expect(body.includes("⠋"), `frame 0 missing from synchronous
+coding-agent/src/spinner.rs::stop_sync@100	existing-test	packages/coding-agent/test/spinner.test.ts:80	expect(cleared, `stopSync must emit the clear escape immediately, got ${JSON.stringify(cleared)}`).toBe(
+coding-agent/src/tools/install_skill.rs::new@91	existing-test	packages/coding-agent/test/install-skill.test.ts:55	expect(def.name).toBe("InstallSkill");
+coding-agent/src/tools/install_skill.rs::with_skills_root@98	not-portable	Named differently here: withSkillsRoot has no hits. The skills root is passed through options.agentDir on createInstallSkillToolDefinition, rather than a builder-style with_* method.	
+coding-agent/src/tools/mcp_adapter.rs::new@28	not-portable	Named differently here: mcpToolDefinition has no hits. MCP tools are built directly as a ToolDefinition by mcp-loader.ts, with no separate adapter class or constructor.	
+coding-agent/src/tools/mod.rs::remove_cron_job_tool@135	not-portable	No factory of that name here: createRemoveCronJobToolDefinition has no hits. Cron tools are registered into the tool table directly by modules under triggers/, without upstream's tools/mod.rs factory layer.	
+coding-agent/src/tools/mod.rs::remove_skill_tool@115	existing-test	packages/coding-agent/test/remove-skill-tool.test.ts:61	expect(def.name).toBe("RemoveSkill");
+coding-agent/src/tools/mod.rs::remove_trigger_tool@165	not-portable	Structural difference: upstream's tools/mod.rs is a factory layer. Here packages/coding-agent/src/triggers/tool-definitions.ts produces the ToolDefinition directly and registers it through tools/index.ts, so there is no remove_trigger_tool factory to test.	
+coding-agent/src/tools/mod.rs::set_cron_job_state_tool@142	not-portable	Structural difference: as above — packages/coding-agent/src/triggers/tool-definitions.ts produces the set_cron_job_state ToolDefinition directly, without upstream's tools/mod.rs factory layer.	
+coding-agent/src/tools/mod.rs::set_skill_state_tool@108	new-test	packages/coding-agent/test/ported/calibration-batch.test.ts:301	expect(def.name).toBe("SetSkillState");
+coding-agent/src/tools/mod.rs::set_trigger_state_tool@171	not-portable	Structural difference: as above — set_trigger_state is defined in packages/coding-agent/src/triggers/tool-definitions.ts and registered through tools/index.ts, with no standalone factory function.	
+coding-agent/src/tools/remove_skill.rs::new@47	existing-test	packages/coding-agent/test/remove-skill-tool.test.ts:61	expect(def.name).toBe("RemoveSkill");
+coding-agent/src/tools/set_skill_state.rs::new@56	existing-test	packages/coding-agent/test/set-skill-state-tool.test.ts:57	expect(def.name).toBe("SetSkillState");
+coding-agent/src/tools/skill_builder.rs::new@46	existing-test	packages/coding-agent/test/skill-builder.test.ts:52	expect(def.name).toBe("SkillBuilder");
+coding-agent/src/tools/skill_builder.rs::with_skills_root@50	not-portable	Structural difference: upstream uses a chained builder method. Here packages/coding-agent/src/tools/install-skill.ts:208 takes an optional field `skillsRoot?: string`, defaulting through defaultSkillsRoot(getAgentDir()), so there is no chained with_skills_root setter.	
+coding-agent/src/tools/skill.rs::new@42	existing-test	packages/coding-agent/test/skill-tool.test.ts:54	expect(def.name).toBe("Skill");
+coding-agent/src/tools/truncate.rs::truncate_head@29	existing-test	packages/agent/test/harness/truncate.test.ts:69	expect(result.truncated).toBe(false);
+coding-agent/src/tools/truncate.rs::truncate_tail@54	existing-test	packages/agent/test/harness/truncate.test.ts:98	expect(result.content).toBe("🙂b");
+coding-agent/src/tools/web_search.rs::new@31	existing-test	packages/coding-agent/test/web-search-tool.test.ts:33	expect(params.required).toContain("query");
+coding-agent/src/triggers/cron.rs::add_job@113	existing-test	packages/coding-agent/test/ported/calibration-batch.test.ts:83	expect(traceId).toBeDefined();
+coding-agent/src/triggers/cron.rs::add_job_full@117	existing-test	packages/coding-agent/test/ported/cron.test.ts:173	expect(job.stateful).toBe(true);
+coding-agent/src/triggers/cron.rs::job_for_trace@245	new-test	packages/coding-agent/test/ported/batch-b.test.ts:80	expect(registry.jobForTrace(traceId)?.id).toBe(job.id);
+coding-agent/src/triggers/cron.rs::list@106	existing-test	packages/coding-agent/test/ported/calibration-batch.test.ts:52	expect(registry.list()).toEqual([]);
+coding-agent/src/triggers/cron.rs::load_from_path@86	existing-test	packages/coding-agent/test/ported/cron.test.ts:116	expect(jobs.length).toBe(1);
+coding-agent/src/triggers/cron.rs::mark_completed@254	new-test	packages/coding-agent/test/ported/calibration-batch.test.ts:89	expect(after?.running_trace_id).toBeUndefined();
+coding-agent/src/triggers/cron.rs::new@82	new-test	packages/coding-agent/test/ported/batch-b.test.ts:22	expect(new CronRegistry().list()).toEqual([]);
+coding-agent/src/triggers/cron.rs::remove_job@162	new-test	packages/coding-agent/test/ported/batch-b.test.ts:47	expect(removed?.id).toBe(job.id);
+coding-agent/src/triggers/cron.rs::set_job_enabled@177	existing-test	packages/coding-agent/test/ported/cron-tool-bugs.test.ts:97	expect(globalCronRegistry().setJobEnabled(jobId, true)?.enab
+coding-agent/src/triggers/cron.rs::storage_path@102	existing-test	packages/coding-agent/test/ported/cron-tool-bugs.test.ts:152	expect(sidecar).toBeDefined();
+coding-agent/src/triggers/dynamic.rs::add_from_spec@133	existing-test	packages/coding-agent/test/ported/dynamic.test.ts:295	expect(action.prompt).toContain(rule.id);
+coding-agent/src/triggers/dynamic.rs::add_rule@91	existing-test	packages/coding-agent/test/ported/calibration-batch.test.ts:44	expect(registry.clearRules()).toBe(2);
+coding-agent/src/triggers/dynamic.rs::add_rule_with_flags@108	new-test	packages/coding-agent/test/ported/batch-b.test.ts:117	expect([rule.fire_once, rule.promote_to_chat]).toEqual([fals
+coding-agent/src/triggers/dynamic.rs::add_rule_with_options@99	existing-test	packages/coding-agent/test/ported/dynamic.test.ts:226	expect(changed).toEqual([]);
+coding-agent/src/triggers/dynamic.rs::clear_rules@197	new-test	packages/coding-agent/test/ported/calibration-batch.test.ts:44	expect(registry.clearRules()).toBe(2);
+coding-agent/src/triggers/dynamic.rs::list@152	existing-test	packages/coding-agent/test/ported/calibration-batch.test.ts:52	expect(registry.list()).toEqual([]);
+coding-agent/src/triggers/dynamic.rs::load_from_path@75	existing-test	packages/coding-agent/test/ported/dynamic.test.ts:166	expect(reloaded.list()).toEqual([rule]);
+coding-agent/src/triggers/dynamic.rs::mark_rules_fired@210	existing-test	packages/coding-agent/test/ported/dynamic.test.ts:211	expect(changed).toHaveLength(1);
+coding-agent/src/triggers/dynamic.rs::new@71	new-test	packages/coding-agent/test/ported/batch-b.test.ts:94	expect(new DynamicTriggerRegistry().list()).toEqual([]);
+coding-agent/src/triggers/dynamic.rs::remove_rule@156	existing-test	packages/coding-agent/test/ported/dynamic.test.ts:197	expect(removed).toEqual(rule);
+coding-agent/src/triggers/dynamic.rs::set_rule_enabled@174	existing-test	packages/coding-agent/test/ported/dynamic.test.ts:242	expect(updated?.enabled).toBe(true);
+coding-agent/src/triggers/dynamic.rs::storage_path@87	not-portable	Different shape here: storagePath in dynamic.ts is a **private field** of DynamicTriggerRegistryState (dynamic.ts:336/340), not a public method as upstream has. The cron side has a method of the same name, but that belongs to a different registry and cannot stand as evidence for this function.	
+coding-agent/src/triggers/mcp_notification_hook.rs::new@90	existing-test	packages/coding-agent/test/ported/mcp-notification-hook.test.ts:401	expect(hook.status().state).toEqual({ kind: "disconnected", 
+coding-agent/src/tui.rs::render_event@142	existing-test	packages/coding-agent/test/ported/tui-render-e2e.test.ts:313	
+coding-agent/src/tui.rs::render_harness_event@213	existing-test	packages/coding-agent/test/ported/tui-render-e2e.test.ts:249	
+coding-agent/src/tui.rs::render_persisted@452	existing-test	packages/coding-agent/test/ported/tui-render-e2e.test.ts:313	
+coding-agent/src/ui/feed.rs::clear@176	existing-test	packages/coding-agent/test/ui/feed.test.ts:317	expect(feed.lines(80)).toEqual([]);
+coding-agent/src/ui/feed.rs::new@168	existing-test	packages/coding-agent/test/ui/feed.test.ts:122	expect(
+coding-agent/src/ui/feed.rs::push_user@183	existing-test	packages/coding-agent/test/ui/feed.test.ts:110	expect(rendered).toContain("you ▸ do the thing");
+coding-agent/src/ui/mod.rs::new@189	not-portable	Present here, but needs a real terminal: constructing InteractiveMode (interactive-mode.ts:267) requires a TTY and the full services graph, and no test anywhere constructs it directly. Its behavior is covered by parity scenario S2, the dual-run TUI comparison.	
+coding-agent/src/ui/mod.rs::run@354	not-portable	Needs a real terminal: the TUI main loop. The counterpart here is packages/coding-agent/src/ui/index.ts, 1903 lines, but run is a continuous rendering loop that a hermetic unit test cannot reach. Parity scenario S2 holds it by comparing upstream and TypeScript TUI output byte for byte — stronger than any unit test, only not expressible as <path>:<line>.	
+coding-agent/src/ui/relay.rs::start@170	existing-test	packages/coding-agent/test/ui/relay.test.ts:288	expect(hello.type).toBe("hello");
+coding-agent/src/ui/web.rs::run_web@217	existing-test	packages/coding-agent/test/ui/web.test.ts:525	expect(state.session_id).toBe("sess-1");
+mcp/src/client.rs::initialize@189	existing-test	packages/mcp/test/ported/client-fixture.test.ts:173	expect(init.serverInfo.name).toBe("mock-server");
+mcp/src/client.rs::tools_call@232	existing-test	packages/mcp/test/ported/client-fixture.test.ts:181	expect(res.isError).toBe(false);
+mcp/src/client.rs::tools_list@213	existing-test	packages/mcp/test/ported/client-fixture.test.ts:177	expect(tools.length).toBe(1);
+mcp/src/http.rs::bearer@93	existing-test	packages/coding-agent/test/mcp-loader.test.ts:557	
+mcp/src/http.rs::connect@115	not-portable	Present here, but needs a real HTTP endpoint: connect() performs a network handshake that a hermetic test cannot cover. Its behavior is covered indirectly by the flow in http-fixture.test.ts, but no assertion points at connect itself.	
+mcp/src/http.rs::new@81	not-portable	A private constructor here: HttpMcpTransport's constructor is private (http.ts:333) and instances can only be made through connect(), so there is no separately testable new.	
+mcp/src/http.rs::set_auth@157	not-portable	Present here, but with no separate test surface: setAuth(auth) only stores the credential on the transport (http.ts:372); every effect appears in later request headers, which http-fixture's assertions already cover. A test for it alone could only assert that what went in comes back out — a tautology.	
+mcp/src/protocol.rs::make_notification@157	new-test	packages/mcp/test/ported/batch-d.test.ts:40	expect("id" in makeNotification("notifications/cancelled", {
+mcp/src/protocol.rs::make_request@144	new-test	packages/mcp/test/ported/batch-d.test.ts:27	expect(makeRequest(1, "initialize", undefined).id).toBe(1);
+mcp/src/stdio.rs::spawn@28	not-portable	Present here, but needs a real child process: spawn starts an MCP server process, which is awkward to cover hermetically; client-fixture.test.ts uses an in-memory transport rather than stdio.	
+agent/src/agent.rs::enqueue_steering@150	existing-test	packages/agent/test/ported/batch-c.test.ts:72	expect(agent.hasQueuedMessages()).toBe(true);
+agent/src/harness/agent_harness.rs::format_skill@2156	existing-test	packages/agent/test/harness/resource-formatting.test.ts:14	expect(formatSkillInvocation(skill, "Check errors.")).toBe(
+agent/src/harness/agent_harness.rs::replace_tools@1561	existing-test	packages/agent/test/harness/agent-harness.test.ts:422	expect(captured).toEqual([
+agent/src/harness/utils/truncate.rs::truncate_text@7	existing-test	packages/agent/test/harness/truncate.test.ts:69	expect(result.truncated).toBe(false);
+ai/src/utils/json_parse.rs::parse_partial_json@11	existing-test	packages/ai/test/json-parse.test.ts:17	expect(parseStreamingJson('{"a": 1, "b": "two"}')).toEqual({ a: 
+ai/src/utils/node_http_proxy.rs::proxy_from_env@9	existing-test	packages/ai/test/node-http-proxy.test.ts:45	expect(resolveHttpProxyUrlForTarget("https://bedrock-runtime.us-
+ai/src/providers/faux.rs::append_faux_responses@32	existing-test	packages/ai/test/faux-provider.test.ts:155	expect(registration.getPendingResponseCount()).toBe(2);
+coding-agent/src/triggers/cron.rs::next_run_after@63	existing-test	packages/coding-agent/test/ported/cron.test.ts:98	expect(next).toBeDefined();
+ai/src/utils/oauth/pkce.rs::generate_pkce@12	new-test	packages/ai/test/ported/batch-u.test.ts:29	expect(verifier).toMatch(/^[A-Za-z0-9\-._~]{43,128}$/);
+ai/src/utils/sanitize_unicode.rs::sanitize_surrogates_u16@14	new-test	packages/ai/test/ported/batch-u.test.ts:45	expect(sanitizeSurrogates("hello 😀 世界")).toBe("hello 😀 世界");
+ai/src/api_registry.rs::list_api_ids@98	new-test	packages/ai/test/ported/batch-u.test.ts:76	expect(getApiProviders().map((p) => p.api)).toEqual(["openai-com
+ai/src/providers/simple_options.rs::translate_base@10	new-test	packages/ai/test/ported/batch-u.test.ts:87	expect(out.apiKey).toBe("sk-test");
+ai/src/event_stream.rs::message_type@50	not-portable	A real capability gap: reading the `:message-type` header belongs to AWS eventstream binary frame parsing. packages/ai/src/event-stream.ts **does not exist** — the probe's basename fallback mismatched it onto utils/event-stream.ts, which corresponds to a different upstream file, utils/event_stream.rs. bedrock-provider.ts is 6 lines of placeholder.	
+ai/src/event_stream.rs::parse_message@79	not-portable	A real capability gap: the AWS binary frame parser that reads the 12-byte prelude. packages/ai/src/event-stream.ts does not exist, a repo-wide grep for `crc32` and `vnd.amazon.eventstream` finds nothing, and Bedrock support amounts to the 6-line placeholder module bedrock-provider.ts.	
+ai/src/bedrock_anthropic.rs::ingest@59	not-portable	A real capability gap: ingesting Anthropic frames from Bedrock. The probe reports no file — there is no bedrock-anthropic.ts under packages/ai/src, and Bedrock here is the 6-line placeholder bedrock-provider.ts.	
+ai/src/bedrock_provider.rs::invoke_stream@114	not-portable	A real capability gap: Bedrock's `:invoke-with-response-stream`. packages/ai/src/bedrock-provider.ts is **6 lines** exporting a bedrockProviderModule placeholder; the probe reports hint=stub.	
+agent/src/harness/types.rs::with_path@60	not-portable	Structural difference: upstream has the FileError builder method `with_path(path) -> Self`. Here the FileError constructor at packages/agent/src/harness/types.ts:140 takes `path?: string` as its third argument directly, with no chained setter.	
+agent/src/harness/session/memory_storage.rs::with_metadata@36	not-portable	Structural difference: upstream has the constructor variant `with_metadata(metadata) -> Self`. Here the InMemorySessionStorage constructor at packages/agent/src/harness/session/memory-storage.ts:34 takes metadata directly, with no separate named variant.	
+coding-agent/src/tools/remove_skill.rs::with_base_dir@51	not-portable	Structural difference: upstream sets the base dir through a builder chain. Here packages/coding-agent/src/tools/remove-skill.ts passes it as an options field, the same shape as skillsRoot in install-skill.ts, with no with_base_dir method.	
+coding-agent/src/tools/set_skill_state.rs::with_base_dir@60	not-portable	Structural difference: as above — packages/coding-agent/src/tools/set-skill-state.ts passes the base dir through options, without upstream's chained with_base_dir.	
+agent/src/agent.rs::active_token@166	not-portable	Structural difference: upstream exposes `active_token()` to reach the current CancellationToken. Here packages/agent/src/agent.ts uses an AbortController and does not expose the signal on the public surface — abort() is the only entry point — so there is no corresponding token accessor.	
+agent/src/agent.rs::prompt_many@176	not-portable	Structural difference: upstream's prompt_many takes several messages. Here prompt() in packages/agent/src/agent.ts handles one and many alike through normalizePromptInput, with no separate many variant.	
+agent/src/harness/agent_harness.rs::enqueue_steering@1580	not-portable	Structural difference: upstream also carries an enqueue_steering on the harness. Here packages/agent/src/harness/agent-harness.ts delegates the steering queue to Agent (steer() in agent.ts); the harness keeps only getSteeringMode and setSteeringMode and does not hold a second queue.	
+agent/src/harness/agent_harness.rs::replace_prompt_templates@1555	not-portable	Structural difference: upstream has a standalone replace_prompt_templates. Here packages/agent/src/harness/agent-harness.ts leaves prompt templates to resourceLoader (updateFromPaths), and the harness has no replacement entry point.	
+agent/src/harness/session/session.rs::type_str@160	not-portable	Structural difference: upstream uses `type_str()` to turn an entry type into a string. Here the entry type in packages/agent/src/harness/session/session.ts is itself a literal union, and appendTypedEntry uses that string directly, so no conversion function is needed.	
+agent/src/harness/utils/shell_output.rs::truncate_shell_output@5	not-portable	Structural difference: upstream has a standalone function. Here packages/agent/src/harness/utils/shell-output.ts inlines the handling into executeShellWithCapture, through the limit fields on ShellCaptureOptions, with no separately exported entry point.	
+agent/src/types.rs::as_llm@145	not-portable	Structural difference: upstream uses `as_llm()` to turn an AgentMessage into an LLM Message. Here packages/agent/src/types.ts leaves it to the convertToLlm hook, whose default implementation defaultConvertToLlm sits at agent.ts:33 and is module-private, so the type carries no as_llm method.	
+agent/src/types.rs::to_pie_ai@84	not-portable	Structural difference: upstream uses `to_pie_ai()` to convert types across crates. Here packages/agent/src/types.ts shares one set of type definitions with @pie/ai through a direct import, so no conversion function is needed.	
+agent/src/harness/compaction/branch_summarization.rs::summarize_branch@23	not-portable	Structural difference: upstream's summarize_branch is a single entry point. Here packages/agent/src/harness/compaction/branch-summarization.ts splits it into three steps — collectEntriesForBranchSummary, prepareBranchEntries and generateBranchSummary — with no combined entry point.	
+ai/src/cli.rs::main_entry@6	not-portable	Structural difference: upstream's ai crate has a CLI entry point of its own. Here packages/ai is a pure library and the CLI lives only in packages/coding-agent/src/main.ts, so the ai package has no main entry to test.	
+ai/src/providers/faux.rs::set_faux_responses@26	not-portable	Structural difference: upstream sets faux responses through a free function. Here packages/ai/src/providers/faux.ts carries it on an instance method of FauxProviderRegistration (registration.setResponses), with no module-level setFauxResponses.	
+ai/src/providers/faux.rs::clear_faux_responses@38	not-portable	Structural difference: as above — clearing in packages/ai/src/providers/faux.ts is an instance method of FauxProviderRegistration, not a module-level free function.	
+ai/src/utils/abort.rs::send_or_abort@21	not-portable	Structural difference: upstream writes a `*_or_abort` wrapper for each kind of IO. Here packages/ai/src/utils/abort.ts passes the AbortSignal straight to fetch and to readers, which the web standard supports natively, so no wrapper is needed.	
+ai/src/utils/abort.rs::drain_bytes_or_abort@60	not-portable	Structural difference: as above — packages/ai/src/utils/abort.ts relies on ReadableStream's own signal handling, with no drainBytesOrAbort wrapper.	
+ai/src/utils/abort.rs::response_text_or_abort@78	not-portable	Structural difference: as above — `response.text()` rejects natively when the AbortSignal fires, so packages/ai/src/utils/abort.ts needs no wrapper.	
+ai/src/utils/abort.rs::next_or_abort@93	not-portable	Structural difference: as above — aborting an async iterator is carried by signal propagation in packages/ai/src/utils/abort.ts, with no nextOrAbort wrapper.	
+ai/src/utils/retry.rs::is_aborted@34	not-portable	Structural difference: upstream uses an `is_aborted()` predicate on the RetryError enum. Here packages/ai/src/utils/retry.ts decides with an instanceof check against AbortError, alongside the two named predicates isRetryableStatus and isRetryableTransportError, and has no isAborted.	
+coding-agent/src/agent_session.rs::forward_to_listener@239	not-portable	Structural difference: upstream has a named forward_to_listener. Here packages/coding-agent/src/core/agent-session.ts uses the AgentSessionEventListener interface with a direct for-of dispatch, and no standalone forwarding function.	
+coding-agent/src/session/mod.rs::open_repo@20	not-portable	Structural difference: the probe reports no file — there is no packages/coding-agent/src/session/index.ts here. Opening a session repository is carried by SessionRepo.open under packages/agent/src/harness/session/ (evidence in repo.test.ts), with no extra wrapper on the coding-agent side.	
+coding-agent/src/skills.rs::skills_dirs@18	not-portable	Structural difference: upstream lists directories through skills_dirs(). Here packages/coding-agent/src/core/skills.ts has loadSourcedSkills scan by source and return Skill[] directly, with no function that returns a directory list on its own.	
+agent/src/harness/agent_harness.rs::abort@1570	existing-test	packages/agent/test/harness/agent-harness.test.ts:277	expect(abortedSignal?.aborted).toBe(true);
+agent/src/harness/agent_harness.rs::cost@1046	existing-test	packages/agent/test/harness/agent-harness.test.ts:675	expect(harness.cost().tokens.cost.total).toBe(10);
+agent/src/harness/agent_harness.rs::notification_status_snapshot@1393	existing-test	packages/agent/test/harness/agent-harness.test.ts:1210	expect(harness.notificationStatusSnapshot().running).toHaveLengt
+agent/src/harness/agent_harness.rs::register_notification_hook@1460	existing-test	packages/coding-agent/test/ported/dynamic-trigger-e2e.test.ts:618	expect(
+agent/src/harness/agent_harness.rs::reset_cost@1051	existing-test	packages/agent/test/harness/agent-harness.test.ts:697	expect(harness.cost().tokens.cost.total).toBe(0);
+agent/src/harness/agent_harness.rs::session@1497	not-portable	Structural difference: upstream's `session()` is a public accessor returning &Session. Here packages/agent/src/harness/agent-harness.ts:892 declares it `private session: Session` and **exposes no accessor** — the outside can only observe its contents indirectly through rehydrateFromSession(), so there is no accessor to assert against.	
+agent/src/harness/agent_harness.rs::system_prompt@1511	existing-test	packages/agent/test/ported/harness-e2e.test.ts:279	expect(prompt.startsWith("Base.")).toBe(true);
+agent/src/harness/agent_harness.rs::abort_trigger@1420	existing-test	packages/agent/test/harness/agent-harness.test.ts:1215	expect(failedEvent).toMatchObject({ type: "trigger_failed", trac
+agent/src/harness/agent_harness.rs::handle_trigger@1117	existing-test	packages/agent/test/harness/agent-harness.test.ts:871	expect(outcome).toEqual({ type: "accept" });
+agent/src/harness/compaction/compaction.rs::get_last_assistant_usage@89	existing-test	packages/agent/test/harness/compaction.test.ts:352	expect(
+agent/src/harness/compaction/compaction.rs::prepare_compaction@605	existing-test	packages/agent/test/harness/compaction.test.ts:915	expect(await compact(preparation, historyModel, "test-key")).toM
+agent/src/harness/compaction/compaction.rs::serialize_conversation@286	existing-test	packages/agent/test/harness/compaction.test.ts:511	expect(result).toBe(`TOOL_RESULT[read]:\n${longContent}\n\n`);
+agent/src/harness/compaction/compaction.rs::calculate_context_tokens@60	existing-test	packages/agent/test/harness/compaction.test.ts:157	expect(calculateContextTokens(createMockUsage(1000, 500, 200, 10
+agent/src/harness/compaction/compaction.rs::find_turn_start_index@216	existing-test	packages/agent/test/harness/compaction.test.ts:221	expect(findTurnStartIndex([thinking, branchSummary], 1, 0)).toBe
+agent/src/harness/cost.rs::as_listener@78	existing-test	packages/agent/test/harness/cost.test.ts:75	expect(model.cost).toEqual({ input: 3, output: 15, cacheRead: 0.
+agent/src/harness/cost.rs::full_breakdown@108	existing-test	packages/agent/test/harness/cost.test.ts:197	expect(breakdown).toBe(
+agent/src/harness/cost.rs::one_line_summary@96	existing-test	packages/agent/test/harness/cost.test.ts:179	expect(summary).toBe("tokens: in=200 out=100 cached=30 total=330
+agent/src/harness/permission.rs::as_before_tool_call@155	existing-test	packages/agent/test/harness/permission.test.ts:149	expect(result).toEqual({});
+agent/src/harness/permission.rs::evaluate_with_category@110	existing-test	packages/agent/test/harness/permission.test.ts:21	expect(decision.type, `false positive on ${JSON.stringify(cmd)}:
+agent/src/harness/agent_harness.rs::default_for@481	existing-test	packages/coding-agent/test/ported/dynamic-tool.test.ts:410	expect(action.prompt).toBe("mcp:gh fired: pushed");
+agent/src/harness/prompt_templates.rs::list@27	existing-test	packages/agent/test/harness/prompt-templates.test.ts:168	expect(registry.list()).toEqual([a, b]);
+agent/src/harness/prompt_templates.rs::load_templates@74	existing-test	packages/agent/test/harness/prompt-templates.test.ts:25	expect(diagnostics).toEqual([]);
+agent/src/harness/session/jsonl_storage.rs::metadata@93	existing-test	packages/agent/test/harness/storage.test.ts:14	expect(await storage.getMetadata()).toEqual(metadata);
+agent/src/harness/session/jsonl_storage.rs::path@89	existing-test	packages/agent/test/harness/storage.test.ts:83	await expect(storage.getPathToRoot("a")).rejects.toThrow("cycle 
+agent/src/harness/session/memory_repo.rs::list@35	existing-test	packages/agent/test/harness/repo.test.ts:18	expect((await repo.list()).map((info) => info.id)).toEqual(["ses
+agent/src/harness/session/session.rs::build_session_context@259	existing-test	packages/agent/test/harness/session.test.ts:22	expect(context.messages.map((message) => message.role)).toEqual(
+agent/src/harness/skills.rs::load_skills@45	existing-test	packages/agent/test/harness/skills.test.ts:26	expect(diagnostics).toEqual([]);
+agent/src/harness/skills.rs::load_sourced_skills@88	existing-test	packages/agent/test/harness/skills.test.ts:67	expect(diagnostics).toEqual([]);
+agent/src/harness/agent_harness.rs::replace_skills@1517	existing-test	packages/agent/test/ported/harness-e2e.test.ts:2581	expect(result.skills).toHaveLength(2);
+agent/src/harness/agent_harness.rs::subscribe_harness@1059	existing-test	packages/coding-agent/test/ported/dynamic-trigger-e2e.test.ts:394	expect(await waitForCompleted(events, "trace-dynamic-e2e"), "dyn
+agent/src/harness/agent_harness.rs::enqueue_follow_up@1584	not-portable	Structural difference: upstream's harness forwards enqueue_follow_up to the inner Agent. Here the harness at packages/agent/src/harness/agent-harness.ts:907 **holds followUpQueue itself**, privately, and drains it only inside the getFollowUpMessages callback at :1238, with no public enqueue method. The Agent-level followUp is a different function (agent.rs::enqueue_follow_up, already decided in batch C).	
+agent/src/harness/agent_harness.rs::skills@1501	existing-test	packages/coding-agent/test/resource-loader.test.ts:36	expect(loader.getSkills().skills).toEqual([]);
+agent/src/harness/compaction/compaction.rs::estimate_text_tokens@102	new-test	packages/agent/test/ported/batch-f.test.ts:22	expect(cjk).toBeGreaterThan(ascii);
+agent/src/harness/compaction/compaction.rs::estimate_tokens@116	new-test	packages/agent/test/ported/batch-f.test.ts:34	expect(estimateTokens(msg)).toBe(estimateTextTokens("hello world
+agent/src/harness/messages.rs::custom@24	new-test	packages/agent/test/ported/batch-f.test.ts:54	expect(m.customType).toBe("note");
+agent/src/harness/agent_harness.rs::agent@1099	not-portable	Structural difference: upstream's `agent()` returns the inner Agent instance. Here packages/agent/src/harness/agent-harness.ts holds Agent as a private field and does not expose it; the outside can only drive it indirectly through the harness's methods.	
+agent/src/harness/agent_harness.rs::subscribe@1588	not-portable	Structural difference: upstream's harness has two subscription entry points, subscribe and subscribe_harness. Here packages/agent/src/harness/agent-harness.ts keeps only subscribeHarness, for HarnessEvent; Agent-level events go through subscribe in agent.ts, and the harness does not forward them a second time.	
+agent/src/harness/agent_harness.rs::as_audit_str@307	not-portable	Structural difference: upstream uses `as_audit_str()` to turn a control-plane enum into an audit string. The corresponding type in packages/agent/src/harness/agent-harness.ts is a literal union where the string is the value itself; capControlPlaneAuditLabel only shortens, it does not convert.	
+agent/src/harness/agent_harness.rs::as_audit_str@610	not-portable	Structural difference: as with as_audit_str@307 — packages/agent/src/harness/agent-harness.ts expresses the same set as a literal union, so no enum-to-string conversion function is needed.	
+agent/src/harness/agent_harness.rs::as_audit_str@713	not-portable	Structural difference: as with as_audit_str@307 — this is the method of the same name on a third impl block, which is exactly why the roster keys carry upstream line numbers. packages/agent/src/harness/agent-harness.ts expresses the same set as a literal union, where the string is the value itself.	
+agent/src/harness/agent_harness.rs::abort_all_triggers@1429	not-portable	Structural difference: upstream has a bulk abort_all_triggers entry point. Here abortAllTriggers in packages/agent/src/harness/agent-harness.ts loops over abortTrigger, which already has evidence at agent-harness.test.ts:1214, so the bulk version has no observable consequence of its own to assert.	
+agent/src/harness/agent_harness.rs::templates@1507	not-portable	Structural difference: upstream's `templates()` returns the prompt template list. Here packages/agent/src/harness/agent-harness.ts leaves it to resourceLoader.getPromptTemplates(), with evidence for registry.list() at prompt-templates.test.ts:168, and the harness has no forwarding method.	
+agent/src/harness/agent_harness.rs::new@873	not-portable	Structural difference: upstream has two `new` constructors (@873 and @995, in different impl blocks). Here AgentHarness in packages/agent/src/harness/agent-harness.ts has a single constructor taking an options object, merging both Rust variants into one.	
+agent/src/harness/agent_harness.rs::new@995	not-portable	Structural difference: as with new@873 — packages/agent/src/harness/agent-harness.ts merges upstream's two constructor variants into a single constructor(options).	
+agent/src/harness/messages.rs::branch_summary@16	not-portable	Structural difference: upstream's `branch_summary()` builds the branch summary message. Here packages/agent/src/harness/messages.ts assembles it from the two constants BRANCH_SUMMARY_PREFIX and BRANCH_SUMMARY_SUFFIX — BranchSummaryMessage is an interface, not a constructor — so there is no named builder.	
+agent/src/harness/messages.rs::compaction_summary@8	not-portable	Structural difference: as with branch_summary — packages/agent/src/harness/messages.ts assembles the compaction summary from constant prefix and suffix, without a named constructor.	
+agent/src/harness/permission.rs::new@83	not-portable	Structural difference: upstream has PermissionEvaluator::new. Here packages/agent/src/harness/permission.ts exports the free functions evaluate and evaluateWithCategory, which are stateless, so there is no object to construct.	
+agent/src/harness/prompt_templates.rs::get@31	not-portable	Structural difference: upstream's registry has `get(name)`. Here the registry in packages/agent/src/harness/prompt-templates.ts exposes only list(), and lookup by name is a find at the call site (prompt-templates.test.ts:168 covers what list returns).	
+agent/src/harness/session/jsonl_repo.rs::new@20	not-portable	Structural difference: upstream has JsonlSessionRepo::new. Here packages/agent/src/harness/session/jsonl-repo.ts uses the factory createJsonlSessionRepo, with no class constructor to call directly.	
+agent/src/harness/session/jsonl_repo.rs::root@24	not-portable	Structural difference: upstream's `root()` returns the session root directory. Here packages/agent/src/harness/session/jsonl-repo.ts captures the root as a closure variable and exposes no accessor; path correctness is held indirectly by getPathToRoot at storage.test.ts:83.	
+agent/src/harness/session/memory_repo.rs::new@17	not-portable	Structural difference: upstream has InMemorySessionRepo::new. Here the constructor in packages/agent/src/harness/session/memory-repo.ts takes no arguments and has no behavior of its own; list() already has evidence (repo.test.ts:18).	
+agent/src/harness/session/memory_repo.rs::count@31	not-portable	Structural difference: upstream has `count()`. Here packages/agent/src/harness/session/memory-repo.ts has none, and call sites use (await list()).length — the count comes from the same source as list, so asserting it separately would be a tautology.	
+agent/src/harness/session/memory_storage.rs::new@26	not-portable	Structural difference: upstream has InMemorySessionStorage::new. Here the constructor at packages/agent/src/harness/session/memory-storage.ts:34 takes metadata directly, merging with_metadata into it, and has no argument-free variant.	
+agent/src/harness/session/repo_utils.rs::to_session@19	not-portable	Structural difference: upstream's `to_session()` turns a repo record into a Session. Here createSessionId in packages/agent/src/harness/session/repo-utils.ts only produces an id, and the Session object is built directly by SessionRepo.open, with no separate conversion function.	
+agent/src/harness/session/session.rs::new@367	not-portable	Structural difference: upstream has Session::new. Here the Session in packages/agent/src/harness/session/session.ts is returned by SessionRepo.open (evidence at repo.test.ts:17), and the constructor is not on the public surface.	
+agent/src/harness/session/session.rs::storage@371	not-portable	Structural difference: upstream's `storage()` returns the underlying storage. Here packages/agent/src/harness/session/session.ts keeps storage as a private field with no accessor; storage behavior is tested against the underlying implementation directly in storage.test.ts.	
+agent/src/harness/session/session.rs::id@130	not-portable	Structural difference: upstream's `id()` is an accessor on the entry enum, matching each variant to pull out its id. Here the entry in packages/agent/src/harness/session/session.ts is a union of object literals where `entry.id` is readable directly, so no accessor function is needed.	
+agent/src/harness/session/session.rs::parent_id@145	not-portable	Structural difference: as with id@130 — the entry in packages/agent/src/harness/session/session.ts carries a parentId field directly (filled at session.ts:140 from storage.getLeafId()), with no enum accessor method.	
+coding-agent/src/debug.rs::wrap_stream_fn@21	existing-test	packages/coding-agent/test/debug.test.ts:385	expect(updates.every((u) => u.kind === "plain" && u.level === "s
+coding-agent/src/hooks.rs::harness_listener@304	existing-test	packages/coding-agent/test/ported/hooks-e2e.test.ts:222	expect(separator, "request must contain a body separator").toBeG
+coding-agent/src/logging.rs::logs_dir@90	existing-test	packages/coding-agent/test/logging.test.ts:99	expect(logsDir()).toBe(join(base, "logs"));
+coding-agent/src/lsp.rs::await_diagnostics@206	existing-test	packages/coding-agent/test/lsp.test.ts:324	expect(initResult).toEqual({ capabilities: {} });
+coding-agent/src/lsp.rs::diagnostics_for@196	existing-test	packages/coding-agent/test/lsp.test.ts:343	expect(client.diagnosticsFor(uri)).toEqual(pushed?.diagnostics);
+coding-agent/src/lsp.rs::shutdown@214	existing-test	packages/coding-agent/test/lsp.test.ts:494	expect(exitBody).toBeDefined();
+coding-agent/src/lsp_supervisor.rs::as_after_tool_call@163	existing-test	packages/coding-agent/test/lsp-supervisor.test.ts:515	expect(result).toBeUndefined();
+coding-agent/src/lsp_supervisor.rs::is_empty@106	existing-test	packages/coding-agent/test/lsp-supervisor.test.ts:212	expect(supervisor.isEmpty()).toBe(true);
+coding-agent/src/lsp_supervisor.rs::language_count@110	existing-test	packages/coding-agent/test/lsp-supervisor.test.ts:213	expect(supervisor.languageCount()).toBe(0);
+coding-agent/src/mcp_loader.rs::load_all@100	existing-test	packages/coding-agent/test/mcp-loader.test.ts:378	expect(result.clientCount).toBe(0);
+coding-agent/src/oauth.rs::redirect_uri@57	existing-test	packages/ai/test/anthropic-oauth.test.ts:71	expect(credentials.access).toBe("access-token");
+coding-agent/src/otlp.rs::with_service_name@78	existing-test	packages/coding-agent/test/otlp.test.ts:246	expect(body(calls[0]).resourceSpans[0].resource.attributes[0]).t
+coding-agent/src/skills.rs::load_all@33	existing-test	packages/agent/test/harness/skills.test.ts:27	expect(skills).toEqual([
+coding-agent/src/templates.rs::load_all@16	existing-test	packages/agent/test/ported/templates-loader.test.ts:37	expect(userLoad.diagnostics, JSON.stringify(userLoad.diagnostics
+coding-agent/src/tools/memory.rs::load_memory_block@257	existing-test	packages/coding-agent/test/memory-tool.test.ts:228	expect(block).toContain("<memory>");
+coding-agent/src/tools/mod.rs::default_tools@31	existing-test	packages/coding-agent/test/tools-index.test.ts:26	expect(tools.map((t) => t.name)).toEqual([
+coding-agent/src/tools/mod.rs::install_skill_tool@91	existing-test	packages/coding-agent/test/install-skill.test.ts:55	expect(def.name).toBe("InstallSkill");
+coding-agent/src/tools/mod.rs::skill_builder_tool@100	existing-test	packages/coding-agent/test/skill-builder.test.ts:52	expect(def.name).toBe("SkillBuilder");
+coding-agent/src/tools/mod.rs::skill_tool@82	existing-test	packages/coding-agent/test/ported/tools-e2e.test.ts:386	expect(text).toContain('<skill name="test-skill"');
+coding-agent/src/tools/mod.rs::subagent_read_only_tools@50	existing-test	packages/coding-agent/test/tools-index.test.ts:43	expect(tools.map((t) => t.name)).toEqual(["read", "ls", "grep", 
+coding-agent/src/tools/mod.rs::task_tool@63	existing-test	packages/coding-agent/test/task-tool.test.ts:103	expect(def.name).toBe("task");
+coding-agent/src/tools/truncate.rs::note@17	existing-test	packages/coding-agent/test/truncate.test.ts:157	expect(formatInclusiveTruncationNote(trunc)).toBe("[truncated: k
+coding-agent/src/ui/feed.rs::push_user_at@187	existing-test	packages/coding-agent/test/ui/feed.test.ts:263	expect(blocks.map((b) => b.kind)).toEqual(["user", "assistant", 
+coding-agent/src/ui/mod.rs::replay@294	existing-test	packages/coding-agent/test/ported/ui-app.test.ts:880	expect(rendered, "middle of long tool output should be hidden in
+coding-agent/src/ui/relay.rs::push_snapshot@97	existing-test	packages/coding-agent/test/ui/relay.test.ts:310	expect(frames.length).toBe(2);
+coding-agent/src/ui/relay.rs::shutdown@119	existing-test	packages/coding-agent/test/ui/relay.test.ts:296	expect(errors).toEqual([]);
+coding-agent/src/ui/relay.rs::status_line@101	existing-test	packages/coding-agent/test/ui/relay.test.ts:62	expect(lines.length).toBeGreaterThan(10); // expected a QR-sized
+coding-agent/src/ui/mod.rs::banner@248	not-portable	Needs a real terminal: the counterpart is packages/coding-agent/src/ui/index.ts:434, whose doc comment marks it `pie: mod.rs:248-282`. banner is only called from inside the TUI rendering loop, out of reach of a hermetic unit test; parity scenario S2 holds it by comparing upstream and TypeScript TUI output byte for byte.	
+coding-agent/src/ui/mod.rs::system_line@284	not-portable	Needs a real terminal: the counterpart is systemLine at packages/coding-agent/src/ui/index.ts:450, same as banner — no test anywhere references `.systemLine(`, and parity S2 holds it.	
+coding-agent/src/ui/mod.rs::error_line@288	not-portable	Needs a real terminal: the counterpart is errorLine at packages/coding-agent/src/ui/index.ts:455, same as systemLine — no test references it, and parity S2 holds it.	
+coding-agent/src/tui.rs::banner@47	not-portable	Structural difference: upstream has a banner in both tui.rs and ui/mod.rs, which is exactly why the roster keys carry upstream line numbers. Here only one remains, at packages/coding-agent/src/ui/index.ts:434; packages/coding-agent/src/tui.ts does not implement a second.	
+coding-agent/src/tui.rs::system_line@86	not-portable	Structural difference: upstream has a system_line in both tui.rs and ui/mod.rs. Here they are merged into the single systemLine at packages/coding-agent/src/ui/index.ts:450.	
+coding-agent/src/tui.rs::error_line@93	not-portable	Structural difference: upstream has an error_line in both tui.rs and ui/mod.rs. Here they are merged into the single errorLine at packages/coding-agent/src/ui/index.ts:455.	
+coding-agent/src/tui.rs::user_prompt_marker@78	not-portable	Structural difference: upstream produces the user prompt marker through user_prompt_marker. Here that marker is inlined into feed rendering — pushUser in packages/coding-agent/src/ui/feed.ts, already covered by ui/feed.test.ts:263 — and packages/coding-agent/src/tui.ts has no separate function.	
+coding-agent/src/tui.rs::listener@102	not-portable	Structural difference: upstream's tui.rs provides an AgentListener. Here packages/coding-agent/src/tui.ts builds no listener of its own; events flow in through the feed update channel in packages/coding-agent/src/ui/index.ts, leaving no listener entry point to assert against.	
+coding-agent/src/tui.rs::harness_listener@112	not-portable	Structural difference: as with listener@102 — packages/coding-agent/src/tui.ts provides no HarnessListener, and harness events are handled centrally by harnessListener in packages/coding-agent/src/hooks.ts (evidence at hooks-e2e.test.ts:222).	
+coding-agent/src/tui.rs::new@38	not-portable	Structural difference: upstream has Tui::new. Here packages/coding-agent/src/tui.ts is produced by a factory whose construction only assigns fields, with no observable consequence of its own.	
+coding-agent/src/ui/listener.rs::agent_listener@21	not-portable	Structural difference: upstream's agent_listener(tx) turns Agent events into FeedUpdates pushed onto a channel. Here packages/coding-agent/src/ui/index.ts calls the feed's push* methods directly from its event handling (ui/feed.ts), with no separate listener factory.	
+coding-agent/src/ui/listener.rs::harness_listener@95	not-portable	Structural difference: as with agent_listener@21 — upstream's harness_listener(tx, debug) is handled inline by packages/coding-agent/src/ui/index.ts here, and the FeedUpdate channel layer does not exist.	
+coding-agent/src/lsp_supervisor.rs::from_config@52	not-portable	Structural difference: upstream has LspSupervisor::from_config(cwd, cfg). Here packages/coding-agent/src/lsp-supervisor.ts carries it through the single entry point load(cwd), with config parsing inlined, and has no constructor taking an LspConfig.	
+coding-agent/src/lsp_supervisor.rs::load@78	not-portable	Structural difference: upstream has load and from_config as two entry points; here packages/coding-agent/src/lsp-supervisor.ts merges them into one. The `supervisor.isEmpty()` asserted at lsp-supervisor.test.ts:212 is exactly the state after load, but that evidence is assigned to is_empty@106, and load itself has no observable consequence of its own.	
+coding-agent/src/tools/mod.rs::new_cron_job_tool@122	not-portable	Structural difference: upstream's tools/mod.rs is a factory layer. Here packages/coding-agent/src/triggers/tool-definitions.ts produces the new_cron_job ToolDefinition directly and registers it through tools/index.ts, with no corresponding factory function.	
+coding-agent/src/tools/mod.rs::list_cron_jobs_tool@128	not-portable	Structural difference: as with new_cron_job_tool — defined in packages/coding-agent/src/triggers/tool-definitions.ts, with no standalone factory function.	
+coding-agent/src/tools/mod.rs::new_trigger_tool@151	not-portable	Structural difference: as above — the new_trigger ToolDefinition lives in packages/coding-agent/src/triggers/tool-definitions.ts and is registered through tools/index.ts.	
+coding-agent/src/tools/mod.rs::list_triggers_tool@158	not-portable	Structural difference: as above — list_triggers is defined in packages/coding-agent/src/triggers/tool-definitions.ts, without upstream's factory layer.	
+coding-agent/src/otlp.rs::new@61	not-portable	Structural difference: upstream has OtlpExporter::new. Here packages/coding-agent/src/otlp.ts configures through the chained withServiceName (evidence at otlp.test.ts:246), and the constructor itself only assigns fields.	
+coding-agent/src/tools/memory.rs::new@22	not-portable	Structural difference: upstream has MemoryTool::new. Here packages/coding-agent/src/core/tools/memory.ts exports a ToolDefinition object literal, with no class to construct.	
+coding-agent/src/tools/task.rs::new@49	not-portable	Structural difference: upstream has TaskTool::new. Here packages/coding-agent/src/core/tools/task.ts produces a ToolDefinition through the createTaskTool factory (evidence at task-tool.test.ts:103), with no separate constructor.	
+coding-agent/src/tools/web_search.rs::with_base_url@40	not-portable	Structural difference: upstream sets the base url through a builder chain. Here packages/coding-agent/src/core/tools/web-search.ts passes it as an options field, the same shape as skillsRoot in install-skill.ts, with no chained withBaseUrl.	
+coding-agent/src/hooks.rs::listener@294	not-portable	Structural difference: upstream's hooks.rs has two subscription entry points, listener and harness_listener. Here packages/coding-agent/src/hooks.ts keeps only harnessListener (evidence at hooks-e2e.test.ts:222) and does not provide a second, Agent-level listener.	
+coding-agent/src/hooks.rs::load@152	not-portable	Structural difference: upstream loads hooks through a standalone function. Here packages/coding-agent/src/hooks.ts folds loading into HookRunner's construction path, with no separate load entry point (hooks.test.ts:345 covers the shape of HookPayload).	
+coding-agent/src/main.rs::user_message@1262	not-portable	Structural difference: upstream's main.rs has user_message(text) to build an AgentMessage. Here packages/coding-agent/src/main.ts uses the object literal `{ role: "user", content, timestamp }` directly, matching the message shape in agent.ts, with no named constructor; no test asserts on userMessage directly.	
+ai/src/image_models.rs::get_image_model@6	existing-test	packages/ai/test/image-models-list-all.test.ts:12	expect(all).toHaveLength(expected.length);
+ai/src/image_models.rs::list_image_models@13	existing-test	packages/ai/test/image-models-list-all.test.ts:12	expect(all).toHaveLength(expected.length);
+ai/src/models.rs::get_model@23	existing-test	packages/ai/test/abort-payload-midstream.test.ts:81	expect(model.cost.input).toBeGreaterThan(0);
+ai/src/models.rs::list_apis@52	existing-test	packages/ai/test/models-catalog-surface.test.ts:23	expect(flat.length).toBe(expected.length);
+ai/src/models.rs::list_models@34	existing-test	packages/ai/test/bedrock-models.test.ts:29	expect(models.length).toBeGreaterThan(0);
+ai/src/providers/google_shared.rs::convert_messages@41	existing-test	packages/ai/test/google-shared-gemini3-unsigned-tool-call.test.ts:70	expect(modelTurn).toBeTruthy();
+ai/src/providers/google_shared.rs::convert_tools@134	existing-test	packages/ai/test/google-shared-convert-tools.test.ts:37	expect(decl).toBeDefined();
+ai/src/providers/google_shared.rs::is_thinking_part@13	existing-test	packages/ai/test/google-thinking-signature.test.ts:6	expect(isThinkingPart({ thought: true, thoughtSignature: undefin
+ai/src/providers/google_shared.rs::map_stop_reason@30	existing-test	packages/ai/test/google-oracle-parity.test.ts:18	expect(mapStopReason(FinishReason.STOP)).toBe("stop");
+ai/src/providers/google_shared.rs::retain_thought_signature@20	existing-test	packages/ai/test/google-thinking-signature.test.ts:25	expect(first).toBe("sig-1");
+ai/src/stream.rs::complete@30	existing-test	packages/ai/test/abort.test.ts:55	expect(followUp.stopReason).toBe("stop");
+ai/src/stream.rs::complete_simple@49	existing-test	packages/ai/test/interleaved-thinking.test.ts:91	expect(firstResponse.stopReason, `Error: ${firstResponse.errorMe
+ai/src/stream.rs::stream@19	existing-test	packages/agent/test/agent-loop.test.ts:119	expect(messages[1].role).toBe("assistant");
+ai/src/stream.rs::stream_simple@38	existing-test	packages/ai/test/api-registry-error-streams.test.ts:71	expect(handle).toBeDefined();
+ai/src/utils/headers.rs::user_agent@5	existing-test	packages/coding-agent/test/pi-user-agent.test.ts:9	expect(userAgent).toBe(`pi/1.2.3 (${process.platform}; ${runtime
+ai/src/utils/sanitize_unicode.rs::sanitize_surrogates@9	existing-test	packages/ai/test/ported/batch-u.test.ts:45	expect(sanitizeSurrogates("hello 😀 世界")).toBe("hello 😀 世界");
+ai/src/utils/typebox_helpers.rs::string@8	existing-test	packages/ai/test/typebox-helpers-defaults.test.ts:12	expect(schema).toHaveProperty("default", "");
+mcp/src/client.rs::catalog@223	existing-test	packages/mcp/test/protocol-and-client-regressions.test.ts:107	expect(client.getCatalog()).toEqual([{ name: "bare", inputSchema
+mcp/src/client.rs::close@249	existing-test	packages/mcp/test/stdio-integration.test.ts:68	await expect(StdioTransport.spawn("pie-mcp-definitely-does-not-e
+mcp/src/client.rs::is_initialized@208	existing-test	packages/mcp/test/ported/client-fixture.test.ts:174	expect(client.isInitialized()).toBe(true);
+mcp/src/client.rs::take_notifications@179	existing-test	packages/mcp/test/ported/client-fixture.test.ts:215	expect(first?.method).toBe("notifications/tools/listChanged");
+mcp/src/client.rs::with_timeout@183	existing-test	packages/mcp/test/ported/client-fixture.test.ts:325	await expect(client.toolsCall("slow_echo", undefined)).rejects.t
+ai/src/providers/cloudflare.rs::is_cloudflare_provider@25	new-test	packages/ai/test/ported/batch-h.test.ts:11	expect(isCloudflareProvider("cloudflare-workers-ai")).toBe(true)
+ai/src/bedrock_provider.rs::register@199	not-portable	A real capability gap: registering the Bedrock provider. packages/ai/src/bedrock-provider.ts is **6 lines**, exporting a bedrockProviderModule placeholder, and the probe reports hint=stub — what registers is an empty shell with no behavior to assert.	
+ai/src/utils/typebox_helpers.rs::boolean@13	not-portable	Structural difference: upstream hand-writes `boolean(desc)` to produce a JSON Schema fragment. Here packages/ai/src/utils/typebox-helpers.ts uses TypeBox's `Type.Boolean({ description })` directly, keeping a hand-written wrapper only for StringEnum, whose falsy-default behavior in TypeBox needs correcting.	
+ai/src/utils/typebox_helpers.rs::number@18	not-portable	Structural difference: as with boolean@13 — packages/ai/src/utils/typebox-helpers.ts uses TypeBox's `Type.Number()` with no wrapper of its own.	
+ai/src/utils/typebox_helpers.rs::object@23	not-portable	Structural difference: as with boolean@13 — packages/ai/src/utils/typebox-helpers.ts uses TypeBox's `Type.Object(props)`, where TypeBox derives required from optionality, so no required list has to be passed.	
+ai/src/providers/register_builtins.rs::ensure@12	not-portable	Structural difference: upstream uses `ensure()` for idempotent registration of the built-in providers. Here packages/ai/src/providers/register-builtins.ts registers at module top level, and an ES module is evaluated once by construction, so no idempotence guard is needed.	
+ai/src/providers/images/register_builtins.rs::ensure@8	not-portable	Structural difference: as with register_builtins::ensure — packages/ai/src/providers/images/register-builtins.ts registers at module load, and the single-evaluation semantics of an ES module replace the ensure guard.	
+ai/src/providers/openai_prompt_cache.rs::placeholder@4	not-portable	Structural difference: upstream's file holds a single `placeholder()` function, because a Rust module cannot be empty. Here packages/ai/src/providers/openai-prompt-cache.ts exports the real logic directly, with no placeholder.	
+ai/src/providers/openai_responses_shared.rs::placeholder@4	not-portable	Structural difference: as with openai_prompt_cache::placeholder — upstream's placeholder has no counterpart in packages/ai/src/providers/openai-responses-shared.ts.	
+ai/src/models.rs::register_custom_model@41	not-portable	Structural difference: upstream keeps a separate custom-model registry, where register_custom_model writes a global Mutex. Here packages/ai/src/models.ts exports only getModel, getModels, listModels and listApis; custom models are managed within their own scope by local-models.ts in packages/coding-agent, and the ai layer holds no global mutable registry.	
+ai/src/models.rs::unregister_custom_model@47	not-portable	Structural difference: as with register_custom_model — packages/ai/src/models.ts has no global custom registry, and therefore no unregister entry point either.	
+ai/src/providers/faux.rs::faux_thinking@51	not-portable	Structural difference: upstream uses the free function `faux_thinking()` to produce a thinking block. Here packages/ai/src/providers/faux.ts expresses it as a FauxContentBlock object literal, with no named constructor.	
+ai/src/providers/github_copilot_headers.rs::copilot_headers@7	not-portable	Structural difference: upstream produces every header through a single `copilot_headers()`. Here packages/ai/src/providers/github-copilot-headers.ts splits it into buildCopilotDynamicHeaders, hasCopilotVisionInput and inferCopilotInitiator, with no combined entry point.	
+mcp/src/client.rs::new@90	not-portable	Structural difference: upstream has McpClient::new. Here packages/mcp/src/client.ts builds instances through connect(), with a private constructor; client-fixture.test.ts covers behavior after connecting, where isInitialized, takeNotifications and withTimeout each have their own evidence.	

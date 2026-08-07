@@ -1,0 +1,59 @@
+# Install, build, gates, tests — the same four commands a contributor runs locally.
+#
+# Two suites are deliberately absent, and neither absence is an oversight:
+#
+#   * `migration/parity/run-parity.sh`, the differential harness, compares this binary against the
+#     Rust original scenario by scenario. It needs a checkout of that repository and a cargo build of
+#     it, neither of which exists on a runner. Running it here would either fail for want of a binary
+#     or, worse, skip quietly and read as having passed. It runs where both binaries exist.
+#
+#   * `npm run test:live`, the tests that need a real provider, needs real API keys and costs real
+#     money per run. Putting it here would mean either holding credentials that any fork's pull
+#     request could reach, or watching it skip on every build and calling that coverage.
+#
+# What remains is genuinely hermetic: `npm test` runs bash test.sh, which unsets every provider key
+# and sets PI_NO_LOCAL_LLM=1, so nothing reaches a network. Five of the gates inside `npm run check`
+# also need the upstream checkout; without it they print SKIP and exit 0 by design, so a clean run
+# passes while saying plainly which checks did not run.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-check-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev fd-find ripgrep
+          sudo ln -s $(which fdfind) /usr/local/bin/fd
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build
+        run: npm run build
+
+      - name: Check
+        run: npm run check
+
+      - name: Test
+        run: npm test

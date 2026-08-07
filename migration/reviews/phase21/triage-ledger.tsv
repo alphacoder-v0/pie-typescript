@@ -1,0 +1,122 @@
+oracle_file	test_name	batch	verdict	evidence	note
+ai/src/providers/anthropic.rs	long_retention_adds_ttl	E	covered	packages/ai/test/cache-retention.test.ts:87	cache_control equals {type:ephemeral, ttl:'1h'}
+ai/src/providers/faux.rs	falls_back_to_canned_message	E	covered	packages/ai/test/faux-provider.test.ts:42	Stronger than upstream: upstream asserts only is_some(), this asserts the canned content itself
+ai/src/providers/faux.rs	replays_queued_text_and_tool_call	E	covered	packages/ai/test/faux-provider.test.ts:62	text and toolCall replayed in the same turn; :66 asserts stopReason toolUse
+ai/src/utils/abort.rs	next_or_abort_stops_pending_stream	E	covered	packages/ai/test/abort-payload.test.ts:132	A pre-aborted signal with a 20s timeout: hanging is a failure, the same behavior upstream holds with "an already-cancelled token must not wait on the stream". There is no nextOrAbort primitive here; the abort check is inlined in each provider's stream loop
+ai/src/utils/oauth/anthropic.rs	authorize_url_contains_pkce_and_state	B	covered	packages/ai/test/anthropic-oauth.test.ts:155	Stronger than upstream: :157 asserts the full order of all seven parameters, and :169-175 assert each encoded value byte for byte
+ai/src/utils/oauth/anthropic.rs	client_id_decodes	B	covered	packages/ai/test/anthropic-oauth.test.ts:173	Asserts 9d1c250a%2De61b%2D44d9%2D88ed%2D5944d1962f5e in the URL, which decodes to the UUID upstream asserts; the assertion goes red the moment decode() breaks
+ai/src/utils/overflow.rs	excludes_rate_limit	E	covered	packages/ai/test/overflow.test.ts:71	429 and rate limit do not count as a context overflow
+ai/src/utils/overflow.rs	length_stop_zero_output	E	covered	packages/ai/test/overflow.test.ts:101	stop reason length, zero output and a full context together mean an overflow
+ai/src/vertex_provider.rs	from_env_requires_project_and_one_auth_method	E	covered	packages/ai/test/google-vertex-token-resolution.test.ts:210	Fails hard when there is no project configuration
+coding-agent/src/agent_session.rs	retryable_patterns_match_ts_regex	D	gap	packages/coding-agent/test/ported/session-archive-batch-d.test.ts	
+coding-agent/src/auth.rs	missing_file_loads_empty_store	B	gap	packages/coding-agent/test/ported/auth-batch-b.test.ts	
+coding-agent/src/auth.rs	needs_refresh_evaluates_expiry_slack	B	not-portable		Upstream's ProviderCredential::needs_refresh has zero production call sites — all three references at auth.rs:240/241/243 are in its own tests. The slack it parameterises is in fact baked in at mint time: `now + expires_in*1000 - 5*60*1000` at ai/src/utils/oauth/anthropic.rs:69. This side reproduces that subtraction verbatim at anthropic.ts:242 and :439, and decides refresh on the same bare `now >= expires`. Porting the function would only add a second piece of dead code that nothing calls
+coding-agent/src/auth.rs	resolve_for_provider_uses_shared_provider_env_map	B	gap	packages/coding-agent/test/ported/auth-batch-b.test.ts	
+coding-agent/src/auth.rs	round_trip_api_key	B	covered	packages/coding-agent/test/auth-storage.test.ts:843	ED14 reads an auth.json in upstream's shape and gets the original value back from get(); the write side is asserted byte for byte at :371
+coding-agent/src/auth.rs	round_trip_oauth	B	covered	packages/coding-agent/test/auth-storage.test.ts:861	access, refresh, expires and scopes each asserted, including the conversion of expires from seconds to milliseconds
+coding-agent/src/auth.rs	save_sets_mode_0600	B	covered	packages/coding-agent/test/auth-storage.test.ts:487	Stronger than upstream: umask(0o000) first, then asserts 0600, and asserts that loading creates no file
+coding-agent/src/bug_report.rs	redact_leaves_normal_text_alone	B	covered	packages/coding-agent/test/bug-report.test.ts:82	Counter-example: text with no key comes back unchanged
+coding-agent/src/bug_report.rs	redacts_known_patterns	B	covered	packages/coding-agent/test/bug-report.test.ts:60	Ten negative assertions at :60-69 plus five [REDACTED:*] positive ones at :71-76, matching upstream one for one
+coding-agent/src/builtin_skills.rs	merge_user_project_skill_shadows_builtin_same_name	C	covered	packages/coding-agent/test/builtin-skills.test.ts:127	
+coding-agent/src/builtin_skills.rs	parse_config_malformed_toml_degrades_to_empty_not_panic	C	covered	packages/coding-agent/test/builtin-skills.test.ts:172	Direction verified: degrades to empty — bad toml becomes an empty state rather than throwing — the opposite of local_models' fail-closed. Both were checked separately this round
+coding-agent/src/clipboard_image.rs	encodes_rgba_clipboard_image_as_png	E	covered	packages/coding-agent/test/clipboard-paste.test.ts:66	The same fixture (1,1,[255,0,0,255]); :71 asserts the PNG magic number
+coding-agent/src/commands.rs	attach_skill_prompt_wraps_prompt_without_skill_body	A	covered	packages/coding-agent/test/ported/commands-e2e.test.ts:1072	
+coding-agent/src/commands.rs	help_topic_renders_command_usage_and_aliases	A	gap	packages/coding-agent/test/ported/command-help-text.test.ts	
+coding-agent/src/commands.rs	help_unknown_topic_gives_recovery_hint	A	gap	packages/coding-agent/test/ported/command-help-text.test.ts	
+coding-agent/src/commands.rs	model_catalog_includes_custom_models_without_secret_fields	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	model_credential_hint_accepts_env_or_auth_store_for_selected_provider	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	model_credential_hint_uses_only_selected_provider_credentials	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	model_spec_accepts_colon_slash_and_two_args	A	covered	packages/coding-agent/test/ported/model-picker-overlay.test.ts:189	colon :189, slash :193, two-args :194, and the None branch :202 — all four upstream assertions covered
+coding-agent/src/commands.rs	parse_keeps_quoted_args_together	A	covered	packages/coding-agent/test/ported/commands.test.ts:29	
+coding-agent/src/commands.rs	parse_returns_none_for_non_slash	A	covered	packages/coding-agent/test/ported/commands.test.ts:37	
+coding-agent/src/commands.rs	parse_splits_on_whitespace	A	covered	packages/coding-agent/test/ported/commands.test.ts:21	
+coding-agent/src/commands.rs	registry_and_help_do_not_expose_removed_hub_surface	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	registry_lookup_by_name_and_alias	A	covered	packages/coding-agent/test/ported/commands.test.ts:98	
+coding-agent/src/commands.rs	render_triggers_status_summarizes_runtime_hooks_and_running	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	skill_source_label_maps_enum_variants	A	covered	packages/coding-agent/test/ported/cli-skills.test.ts:198	skillSourceLabel here is the identity mapping (skills-state.ts:49-51); :198 and :199 assert the user and project variants, and builtin is not asserted separately because it goes through the same identity function
+coding-agent/src/commands.rs	skill_source_parse_error_is_fixed_and_bounded	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	trigger_decision_details_explain_dedup_and_cycle_states	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	unknown_model_error_lists_candidates	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/commands.rs	unknown_provider_error_lists_provider_candidates	A	gap	packages/coding-agent/test/ported/commands-batch-a.test.ts	
+coding-agent/src/debug.rs	debug_context_redacts_user_and_tool_result_secrets	B	covered	packages/coding-agent/test/debug.test.ts:92	user message :92-93; the bearer in the tool result :110-111
+coding-agent/src/debug.rs	debug_error_message_is_redacted	B	covered	packages/coding-agent/test/debug.test.ts:146	:146-147 in the describe 'error message is redacted (oracle debug.rs:386-409)'. This previously said :110, but that line belongs to the tool-result branch of debug_context_redacts_user_and_tool_result_secrets — a duplicated reference the spot check caught
+coding-agent/src/debug.rs	debug_tool_call_and_assistant_text_are_redacted	B	covered	packages/coding-agent/test/debug.test.ts:124	the github token in the tool arguments :124-125; assistant text and thinking :132-135
+coding-agent/src/hooks.rs	compaction_command_hook_receives_env_and_payload	B	covered	packages/coding-agent/test/hooks.test.ts:295	The hook command line reproduces upstream verbatim (:277) and asserts the output 'compaction manual 42 '
+coding-agent/src/images.rs	infer_jpeg	E	covered	packages/coding-agent/test/image-attachments.test.ts:39	The assertion spans three lines (:39 expect( / :40 inferMime(...) / :41 .toBe("image/jpeg")); the evidence points at :39, where expect( is, matching the gate's requirement that the line contain expect(
+coding-agent/src/images.rs	infer_png	E	covered	packages/coding-agent/test/image-attachments.test.ts:34	
+coding-agent/src/images.rs	infer_webp	E	covered	packages/coding-agent/test/image-attachments.test.ts:47	
+coding-agent/src/images.rs	load_one_rejects_unknown_format	E	covered	packages/coding-agent/test/image-attachments.test.ts:57	The negative control for the three infer_* cases, on a line of its own
+coding-agent/src/images.rs	load_one_round_trips_a_png	E	covered	packages/coding-agent/test/image-attachments.test.ts:85	Reading from a path and reading from bytes produce the same base64
+coding-agent/src/local_models.rs	cli_base_url_registers_ds4_model_and_overrides_env_url	C	covered	packages/coding-agent/test/local-models.test.ts:172	
+coding-agent/src/local_models.rs	ds4_env_without_url_reports_base_url_config	C	covered	packages/coding-agent/test/local-models.test.ts:177	
+coding-agent/src/local_models.rs	ds4_responses_model_uses_ds4_env_not_openai_env	C	gap	packages/coding-agent/test/ported/local-models-stream-batch-c.test.ts	
+coding-agent/src/local_models.rs	ds4_url_env_alias_registers_model	C	covered	packages/coding-agent/test/local-models.test.ts:166	
+coding-agent/src/local_models.rs	loaded_openai_responses_model_streams_text_from_local_fixture	C	gap	packages/coding-agent/test/ported/local-models-stream-batch-c.test.ts	
+coding-agent/src/local_models.rs	loaded_openai_responses_model_streams_tool_call_from_local_fixture	C	gap	packages/coding-agent/test/ported/local-models-stream-batch-c.test.ts	
+coding-agent/src/local_models.rs	loads_and_registers_custom_model	C	covered	packages/coding-agent/test/local-models.test.ts:188	
+coding-agent/src/local_models.rs	malformed_config_fails_closed_without_registering	C	covered	packages/coding-agent/test/local-models.test.ts:217	Direction verified: fails closed — a broken configuration registers nothing — the opposite of builtin_skills' degrade-to-empty. Both were checked separately this round
+coding-agent/src/local_models.rs	project_model_overrides_user_model_with_same_provider_and_id	C	covered	packages/coding-agent/test/local-models.test.ts:208	
+coding-agent/src/local_models.rs	registers_ds4_model_from_explicit_env_url_and_allows_user_override	C	covered	packages/coding-agent/test/local-models.test.ts:149	
+coding-agent/src/main.rs	auth_wrapper_fails_closed_without_provider_scoped_key	A	gap	packages/coding-agent/test/ported/main-batch-a.test.ts	
+coding-agent/src/main.rs	auth_wrapper_injects_provider_scoped_stored_key	A	gap	packages/coding-agent/test/ported/main-batch-a.test.ts	
+coding-agent/src/main.rs	auth_wrapper_keeps_explicit_api_key	A	gap	packages/coding-agent/test/ported/main-batch-a.test.ts	
+coding-agent/src/main.rs	base_url_override_requires_explicit_provider	A	gap	packages/coding-agent/test/cli-state-surfaces.test.ts	
+coding-agent/src/main.rs	cli_parses_session_export_import_commands	A	not-portable		D7 (intentional-divergences.md:281) already declares it: session export and import are deliberately not implemented here, and are refused with a pointer to /session export|import inside the REPL. What this upstream case asserts is the fields of the SessionCliCommand::Export struct that clap parses, and that execution path does not exist here
+coding-agent/src/main.rs	cli_session_import_ask_imports_disabled_first	A	not-portable		The same as D7. This upstream case goes through run_session_cli_command and asserts that the CLI layer downgrades ask to Off before confirming interactively; the CLI subcommand is not executed here under D7, so there is nowhere for the downgrade to live. The half where the archive layer refuses ask is already covered by session-archive.test.ts:151
+coding-agent/src/main.rs	explicit_ui_flags_override_default	A	covered	packages/coding-agent/test/ported/ui-mode.test.ts:39	
+coding-agent/src/main.rs	remote_tty_env_detects_ssh_and_mosh	A	covered	packages/coding-agent/test/ported/ui-mode.test.ts:59	
+coding-agent/src/main.rs	resume_flag_accepts_optional_session_id	A	covered	packages/coding-agent/test/args.test.ts:384	bare --resume :384, with an id :390, not swallowing the next flag :396, and --resume-id winning :403 — all five upstream assertions covered
+coding-agent/src/main.rs	trigger_poll_interval_defaults_to_ten_minutes_and_allows_overrides	A	covered	packages/coding-agent/test/ported/trigger-wiring.test.ts:238	default 600 (DEFAULT_DYNAMIC_TRIGGER_POLL_INTERVAL_SECS = 10*60) :237, config 60 :243, CLI 15 :246
+coding-agent/src/main.rs	ui_mode_defaults_to_tui_for_remote_tty	A	covered	packages/coding-agent/test/ported/ui-mode.test.ts:30	
+coding-agent/src/main.rs	ui_mode_defaults_to_web_for_local_tty	A	covered	packages/coding-agent/test/ported/ui-mode.test.ts:26	
+coding-agent/src/main.rs	ui_mode_keeps_headless_for_non_tty	A	covered	packages/coding-agent/test/ported/ui-mode.test.ts:34	
+coding-agent/src/markdown.rs	bold_inline_emits_ansi	E	covered	packages/tui/test/markdown-stream.test.ts:16	Asserts the specific SGR: \x1b[1m
+coding-agent/src/markdown.rs	code_inline_emits_ansi	E	covered	packages/tui/test/markdown-stream.test.ts:33	Asserts CODE = \x1b[2;36m (:77 pins the constant's value)
+coding-agent/src/markdown.rs	heading_marked	E	covered	packages/tui/test/markdown-stream.test.ts:41	Asserts the HEADING constant; :73-77 pin each SGR literal
+coding-agent/src/markdown.rs	italic_inline_emits_ansi	E	covered	packages/tui/test/markdown-stream.test.ts:26	Asserts \x1b[3m
+coding-agent/src/markdown.rs	renderer_tracks_fence_across_lines	E	covered	packages/tui/test/markdown-stream.test.ts:49	State carries across a fence that spans lines
+coding-agent/src/markdown.rs	unclosed_backtick_is_left_alone	E	covered	packages/tui/test/markdown-stream.test.ts:61	strictEqual returns 'partial `code' unchanged
+coding-agent/src/mcp_loader.rs	empty_configs_reports_zero	B	covered	packages/coding-agent/test/mcp-loader.test.ts:145	Four empty assertions on serverNames, tools, notificationHooks and diagnostics, plus clientCount 0 at :144
+coding-agent/src/mcp_loader.rs	streamable_http_auth_resolves_from_auth_store_without_debug_leak	B	covered	packages/coding-agent/test/mcp-loader.test.ts:559	The negative assertion at :559 plus the <redacted> assertion at :560
+coding-agent/src/mcp_loader.rs	streamable_http_config_deserializes_with_bearer_ref	B	covered	packages/coding-agent/test/mcp-loader.test.ts:434	
+coding-agent/src/mcp_loader.rs	streamable_http_missing_auth_diagnostic_does_not_echo_token_ref	B	covered	packages/coding-agent/test/mcp-loader.test.ts:571	The negative assertion at :571 plus the <configured-token-ref> assertion at :572
+coding-agent/src/mcp_loader.rs	streamable_http_rejects_command_args	B	covered	packages/coding-agent/test/mcp-loader.test.ts:411	
+coding-agent/src/mentions.rs	expand_reads_files_and_falls_back_to_error_block_on_missing	E	covered	packages/coding-agent/test/mentions.test.ts:120	
+coding-agent/src/mentions.rs	expand_returns_input_unchanged_when_no_mentions	E	covered	packages/coding-agent/test/mentions.test.ts:109	
+coding-agent/src/mentions.rs	extracts_multiple_with_punctuation	E	covered	packages/coding-agent/test/mentions.test.ts:43	
+coding-agent/src/mentions.rs	extracts_simple_mention	E	covered	packages/coding-agent/test/mentions.test.ts:38	
+coding-agent/src/mentions.rs	ignores_at_inside_email	E	covered	packages/coding-agent/test/mentions.test.ts:48	
+coding-agent/src/model_picker.rs	catalog_keeps_openai_and_anthropic_families_only	C	covered	packages/coding-agent/test/model-picker.test.ts:73	
+coding-agent/src/model_picker.rs	catalog_sorts_models_and_flags_credentials	C	covered	packages/coding-agent/test/model-picker.test.ts:97	
+coding-agent/src/model_picker.rs	picker_back_returns_to_providers_then_closes	C	covered	packages/coding-agent/test/model-picker.test.ts:216	
+coding-agent/src/model_picker.rs	picker_cursor_clamps_at_bounds	C	covered	packages/coding-agent/test/model-picker.test.ts:226	
+coding-agent/src/model_picker.rs	picker_empty_catalog_is_inert	C	covered	packages/coding-agent/test/model-picker.test.ts:126	
+coding-agent/src/model_picker.rs	picker_navigates_descends_and_selects	C	covered	packages/coding-agent/test/model-picker.test.ts:205	
+coding-agent/src/model_picker.rs	picker_starts_on_active_model_when_descending	C	covered	packages/coding-agent/test/model-picker.test.ts:237	
+coding-agent/src/model_picker.rs	picker_view_windows_around_cursor	C	covered	packages/coding-agent/test/model-picker.test.ts:274	
+coding-agent/src/model.rs	explicit_override_resolves_custom_model_registered_before_detection	C	covered	packages/coding-agent/test/local-models-registry-wiring.test.ts:99	
+coding-agent/src/readline.rs	lists_commands_and_aliases_for_bare_slash	E	covered	packages/coding-agent/test/readline.test.ts:35	
+coding-agent/src/readline.rs	no_completion_once_argument_typed	E	covered	packages/coding-agent/test/readline.test.ts:48	
+coding-agent/src/resume_picker.rs	keys_map_to_actions	D	covered	packages/coding-agent/test/session-picker.test.ts:181	
+coding-agent/src/resume_picker.rs	render_marks_selection_and_shows_badges_and_scroll_indicators	D	covered	packages/coding-agent/test/session-picker.test.ts:85	
+coding-agent/src/resume_picker.rs	render_truncates_to_width	D	covered	packages/coding-agent/test/session-picker.test.ts:103	
+coding-agent/src/resume_picker.rs	window_follows_selection_through_long_lists	D	covered	packages/coding-agent/test/session-picker.test.ts:49	
+coding-agent/src/resume_picker.rs	window_shows_everything_when_it_fits	D	covered	packages/coding-agent/test/session-picker.test.ts:42	
+coding-agent/src/session_archive.rs	export_manifest_uses_explicit_leaf_target_not_leaf_row_id	D	not-portable		The skeleton's SessionManager format — the input to .piesession — has no leaf variant in its SessionEntry union (session-manager.ts:157-166); a leaf is derived from the parentId tree, not written as a marker row. The LeafEntry at jsonl-storage.ts:347 in @pie/agent belongs to a different storage format that this archive never reads. Adaptation note 1 in the header of session-archive.ts already records this. I misread it as a defect once and changed src, which tsgo rejected on the spot with TS2367; that change was reverted
+coding-agent/src/session_archive.rs	export_manifest_uses_last_entry_as_leaf_without_explicit_leaf_row	D	gap	packages/coding-agent/test/ported/session-archive-batch-d.test.ts	
+coding-agent/src/session_archive.rs	export_refuses_to_overwrite_existing_output	D	covered	packages/coding-agent/test/session-archive.test.ts:188	Stronger than upstream: :189 also asserts that the existing bytes were left untouched
+coding-agent/src/session_archive.rs	failed_sidecar_write_cleans_up_partial_import	D	gap	packages/coding-agent/test/ported/session-archive-batch-d.test.ts	
+coding-agent/src/session_archive.rs	import_records_source_provenance_in_metadata	D	covered	packages/coding-agent/test/session-archive.test.ts:85	The four fields of importedFrom — sessionId, cwd, exportedAt and pieVersion — at :85-88
+coding-agent/src/session_archive.rs	import_rejects_manifest_active_leaf_that_does_not_match_session_jsonl	D	gap	packages/coding-agent/test/ported/session-archive-batch-d.test.ts	
+coding-agent/src/session_archive.rs	import_summary_records_originally_enabled_automation_and_activates_it	D	covered	packages/coding-agent/test/session-archive.test.ts:247	originallyEnabledTriggers and Cron at :247-248, and the activation side at :252
+coding-agent/src/skills_state.rs	apply_disables_matching_source_name	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	apply_enable_overrides_frontmatter_disable	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	apply_is_source_aware	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	malformed_file_is_treated_as_empty	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	missing_file_is_empty_overlay	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	no_override_keeps_frontmatter_value	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	remove_and_save_clears_entry_on_disk	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	remove_drops_matching_entry_and_is_source_aware	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	save_then_load_round_trips	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	
+coding-agent/src/skills_state.rs	set_and_save_persists	C	covered	packages/coding-agent/test/set-skill-state-tool.test.ts:82	The tool layer already asserts state.overrides equals [{name:foo,source:user,enabled:false}], which is the set, save and reload round trip
+coding-agent/src/skills_state.rs	set_upserts_not_duplicates	C	gap	packages/coding-agent/test/ported/skills-state-batch-c.test.ts	

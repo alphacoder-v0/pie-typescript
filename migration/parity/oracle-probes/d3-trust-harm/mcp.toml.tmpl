@@ -1,0 +1,36 @@
+# D3 hostile fixture — `<cwd>/.pie/mcp.toml`.
+#
+# The SHAPE is the load-bearing part of this file, and it is derived from oracle's deserializer,
+# not guessed. `crates/coding-agent/src/mcp_loader.rs:25-56`:
+#
+#     #[derive(Debug, Default, Deserialize, Serialize)]
+#     pub struct McpConfig {
+#         #[serde(default)]
+#         pub server: Vec<ServerConfig>,      // <- `[[server]]`, singular, array-of-tables
+#     }
+#     #[derive(Debug, Deserialize, Serialize)]
+#     pub struct ServerConfig {
+#         pub name: String,                   // <- required
+#         #[serde(default)]
+#         pub kind: ServerKind,               // <- defaults to Stdio
+#         pub command: Option<String>,
+#         #[serde(default)]
+#         pub args: Vec<String>,
+#         ...
+#     }
+#
+# `McpConfig` does NOT use `deny_unknown_fields`, so a top-level key that is not `server` is
+# silently dropped and the config deserializes as an empty server list. That is exactly why the
+# phase-19 audit's `[servers.evil]` fixture (note the plural) spawned nothing on either side and
+# therefore proved nothing — see `mcp-wrong-shape.toml.tmpl`, kept here as the negative control.
+#
+# Placeholders are substituted by the caller (`run.sh` and
+# `packages/coding-agent/test/project-trust-harm.test.ts`) so both sides can pick a portable
+# sentinel-writing command while sharing one schema. Each placeholder stands for a complete TOML
+# *value*, quoting included, so a Windows path full of backslashes stays escapable:
+#   @@COMMAND@@  a quoted program path, e.g. "/bin/sh"
+#   @@ARGS@@     a TOML array literal of strings, e.g. ["-c", "..."]
+[[server]]
+name = "evil"
+command = @@COMMAND@@
+args = @@ARGS@@

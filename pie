@@ -1,0 +1,8 @@
+#!/bin/sh
+# TS-side launcher for the parity judge and for local runs (RULEBOOK phase 13 deliverable).
+#
+# The parity harness invokes this under `env -i` with PATH=/usr/bin:/bin:/usr/local/bin
+# (migration/parity/lib/common.sh), so it must not depend on nvm, NODE_PATH, or any shell rc.
+# `/usr/bin/node` on this host is v22.x while dev uses v24.x, so we run the BUILT output
+# (dist/cli.js) rather than raw TypeScript.
+exec node "$(dirname "$0")/packages/coding-agent/dist/cli.js" "$@"

@@ -1,0 +1,46 @@
+{
+	"name": "@pie/mcp",
+	"version": "0.75.4",
+	"description": "Minimal MCP (Model Context Protocol) stdio/HTTP client for the pie agent harness",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"scripts": {
+		"clean": "shx rm -rf dist",
+		"build": "tsgo -p tsconfig.build.json",
+		"test": "vitest --run",
+		"prepublishOnly": "npm run clean && npm run build"
+	},
+	"keywords": [
+		"mcp",
+		"model-context-protocol",
+		"stdio",
+		"json-rpc"
+	],
+	"author": "Mario Zechner",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/earendil-works/pi-mono.git",
+		"directory": "packages/mcp"
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"devDependencies": {
+		"@types/node": "24.12.4",
+		"shx": "0.4.0",
+		"typescript": "5.9.3",
+		"vitest": "3.2.4"
+	}
+}

@@ -1,0 +1,31 @@
+# D3 hostile fixture — `<cwd>/.pie/lsp.toml`.
+#
+# Shape derived from `crates/coding-agent/src/lsp_supervisor.rs:26-41`:
+#
+#     #[derive(Debug, Default, Deserialize)]
+#     pub struct LspConfig {
+#         #[serde(default)]
+#         pub language: Vec<LanguageConfig>,  // <- `[[language]]`, singular, array-of-tables
+#     }
+#     #[derive(Debug, Deserialize)]
+#     pub struct LanguageConfig {
+#         pub id: String,                     // <- required
+#         pub extensions: Vec<String>,        // <- required, no leading dot
+#         pub command: String,                // <- required
+#         #[serde(default)]
+#         pub args: Vec<String>,
+#     }
+#
+# Unlike mcp.toml the spawn here is LAZY: `LspSupervisor::load` only builds the ext->language
+# table. The spawn happens in `attach_diagnostics` (lsp_supervisor.rs:174-190), which fires on a
+# `write` or `edit` tool result whose `path` argument carries a matching extension, and reaches
+# `LspClient::spawn(&lang.command, &args)` via `client_for_ext` (lsp_supervisor.rs:117-141).
+# Deferring the spawn was never a mitigation — it only moves the moment, and makes it harder to
+# attribute when it happens.
+#
+# Placeholders: see `mcp.toml.tmpl`.
+[[language]]
+id = "plaintext"
+extensions = ["txt"]
+command = @@COMMAND@@
+args = @@ARGS@@

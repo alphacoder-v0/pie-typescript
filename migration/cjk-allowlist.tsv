@@ -1,0 +1,139 @@
+path	line	kind	reason
+packages/agent/test/harness/truncate.test.ts	139	fixture	CJK input exercising column width, where one character occupies two columns
+packages/agent/test/ported/harness-e2e.test.ts	1700	fixture	CJK input built to exercise width or budget handling
+packages/agent/test/ported/harness-e2e.test.ts	1728	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/ai/test/hash.test.ts	25	fixture	CJK input pinning the hash of a non-ASCII string
+packages/ai/test/hash.test.ts	26	fixture	CJK input pinning the hash of a non-ASCII string
+packages/ai/test/hash.test.ts	28	fixture	CJK input pinning the hash of a non-ASCII string
+packages/ai/test/ported/batch-u.test.ts	45	fixture	CJK input exercising surrogate pair handling
+packages/coding-agent/src/core/system-prompt.ts	81	behavior	Chinese trigger words inside the prompt text sent to the model; the model matches on them
+packages/coding-agent/src/core/system-prompt.ts	89	behavior	Chinese trigger words inside the prompt text sent to the model; the model matches on them
+packages/coding-agent/src/triggers/cron.ts	1120	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/cron.ts	1122	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/cron.ts	1124	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/cron.ts	1130	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/cron.ts	1274	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/cron.ts	1281	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/cron.ts	1302	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/cron.ts	1313	behavior	Chinese schedule alias the parser compares against, including its traditional form
+packages/coding-agent/src/triggers/dynamic.ts	60	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	61	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	62	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	63	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	64	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	646	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	647	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	648	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	649	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	650	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	651	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	652	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	653	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	654	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	655	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	656	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	657	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	658	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	659	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	660	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	661	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	662	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	663	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	664	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	665	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	666	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	667	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	668	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	669	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	670	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	966	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1080	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1081	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1082	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1083	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1084	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1085	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1086	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/src/triggers/dynamic.ts	1087	behavior	Chinese connective the trigger parser splits sentences on
+packages/coding-agent/test/footer-width.test.ts	96	fixture	CJK input built to exercise width or budget handling
+packages/coding-agent/test/mentions.test.ts	217	fixture	CJK input built to exercise width or budget handling
+packages/coding-agent/test/ported/dynamic.test.ts	121	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	461	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	489	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	490	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	491	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	492	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	508	fixture	CJK input built to exercise width or budget handling
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	534	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	541	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/prompt-templates.test.ts	92	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/prompt-templates.test.ts	277	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/prompt-templates.test.ts	341	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/session-picker.test.ts	162	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/session-picker.test.ts	163	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/system-prompt.test.ts	38	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/tools.test.ts	1180	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/tools.test.ts	1185	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ui/feed.test.ts	98	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ui/feed.test.ts	101	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ui/feed.test.ts	221	fixture	CJK input built to exercise width or budget handling
+packages/coding-agent/test/ui/terminal-driver.test.ts	106	fixture	CJK input built to exercise width or budget handling
+packages/coding-agent/test/ui/terminal-driver.test.ts	108	fixture	CJK input built to exercise width or budget handling
+packages/coding-agent/test/ui/terminal-driver.test.ts	163	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/ui/terminal-driver.test.ts	166	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/coding-agent/test/web-fetch-tool.test.ts	44	fixture	CJK string an assertion compares against; changing it changes what the test proves
+packages/tui/test/editor.test.ts	915	fixture	CJK input built to exercise width or budget handling
+packages/tui/test/truncate-to-width.test.ts	7	fixture	CJK input built to exercise width or budget handling
+packages/tui/test/truncate-to-width.test.ts	38	fixture	CJK input exercising column width, where one character occupies two columns
+packages/tui/test/truncate-to-width.test.ts	42	fixture	CJK input exercising column width, where one character occupies two columns
+packages/tui/test/truncate-to-width.test.ts	53	fixture	CJK input exercising column width, where one character occupies two columns
+packages/agent/test/ported/batch-f.test.ts	21	fixture	CJK fixture for token estimation.
+packages/agent/test/ported/compaction-prompt-budget.test.ts	63	fixture	CJK fixture for token estimation under the summary budget.
+packages/agent/test/ported/harness-e2e.test.ts	1694	fixture	CJK fixture: the comment counts its UTF-8 bytes.
+packages/ai/test/unicode-surrogate.test.ts	97	fixture	CJK fixture inside a document body.
+packages/coding-agent/test/lsp.test.ts	332	fixture	CJK fixture for UTF-16 offset handling.
+packages/coding-agent/test/mentions.test.ts	96	fixture	CJK fixture: a mention is not picked up after an ideograph.
+packages/coding-agent/test/ported/commands-e2e.test.ts	723	behavior	Trigger rule text driven end to end; the parser matches on these connectives.
+packages/coding-agent/test/ported/commands-e2e.test.ts	724	behavior	Trigger rule text driven end to end; the parser matches on these connectives.
+packages/coding-agent/test/ported/commands-e2e.test.ts	745	behavior	Trigger rule text driven end to end; the parser matches on these connectives.
+packages/coding-agent/test/ported/cron-tool-bugs.test.ts	247	behavior	Chinese cron schedule alias the parser recognises.
+packages/coding-agent/test/ported/cron-tool-bugs.test.ts	252	behavior	Chinese cron schedule alias the parser recognises.
+packages/coding-agent/test/ported/dynamic-tool.test.ts	247	behavior	Chinese cron schedule alias the parser recognises.
+packages/coding-agent/test/ported/dynamic-trigger-e2e.test.ts	184	behavior	Chinese cron alias, and the prompt that has to produce it.
+packages/coding-agent/test/ported/dynamic-trigger-e2e.test.ts	429	behavior	Chinese cron alias, and the prompt that has to produce it.
+packages/coding-agent/test/ported/dynamic.test.ts	119	behavior	Trigger rule text the parser splits on; the connectives are what it matches.
+packages/coding-agent/test/ported/dynamic.test.ts	134	behavior	Trigger rule text the parser splits on; the connectives are what it matches.
+packages/coding-agent/test/ported/dynamic.test.ts	135	behavior	Trigger rule text the parser splits on; the connectives are what it matches.
+packages/coding-agent/test/ported/dynamic.test.ts	136	behavior	Trigger rule text the parser splits on; the connectives are what it matches.
+packages/coding-agent/test/ported/dynamic.test.ts	147	behavior	Trigger rule text the parser splits on; the connectives are what it matches.
+packages/coding-agent/test/ported/dynamic.test.ts	149	behavior	Trigger rule text the parser splits on; the connectives are what it matches.
+packages/coding-agent/test/ported/tools-e2e.test.ts	268	behavior	Chinese cron schedule alias the parser recognises.
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	439	fixture	CJK fixture for end-to-end rendering width.
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	440	fixture	CJK fixture for end-to-end rendering width.
+packages/coding-agent/test/ported/tui-render-e2e.test.ts	441	fixture	CJK fixture for end-to-end rendering width.
+packages/coding-agent/test/tools.test.ts	1176	fixture	CJK fixture including full-width parentheses.
+packages/coding-agent/test/truncate-to-width.test.ts	35	fixture	CJK width fixture for shortening to a column budget.
+packages/coding-agent/test/ui/feed.test.ts	404	fixture	CJK width fixture: two ideographs are four columns.
+packages/coding-agent/test/ui/listener.test.ts	183	fixture	CJK fixture for a prompt preview string.
+packages/coding-agent/test/web-fetch-tool.test.ts	42	fixture	CJK fixture inside HTML to be pulled out.
+packages/tui/test/editor.test.ts	645	fixture	CJK width fixture: one ideograph occupies two terminal columns.
+packages/tui/test/editor.test.ts	646	fixture	CJK width fixture: one ideograph occupies two terminal columns.
+packages/tui/test/editor.test.ts	657	fixture	CJK width fixture: one ideograph occupies two terminal columns.
+packages/tui/test/editor.test.ts	665	fixture	CJK width fixture: one ideograph occupies two terminal columns.
+packages/tui/test/editor.test.ts	666	fixture	CJK width fixture: one ideograph occupies two terminal columns.
+packages/tui/test/editor.test.ts	912	fixture	CJK width fixture: one ideograph occupies two terminal columns.
+packages/tui/test/input.test.ts	42	fixture	CJK width fixture: long Japanese and Chinese lines for wrapping.
+packages/tui/test/input.test.ts	43	fixture	CJK width fixture: long Japanese and Chinese lines for wrapping.
+packages/tui/test/markdown-stream.test.ts	179	fixture	CJK fixture for byte-level and inline-markup rendering.
+packages/tui/test/markdown-stream.test.ts	180	fixture	CJK fixture for byte-level and inline-markup rendering.
+packages/tui/test/markdown-stream.test.ts	186	fixture	CJK fixture for byte-level and inline-markup rendering.
+packages/tui/test/markdown-stream.test.ts	187	fixture	CJK fixture for byte-level and inline-markup rendering.
+packages/tui/test/markdown-stream.test.ts	192	fixture	CJK fixture for byte-level and inline-markup rendering.
+packages/tui/test/overlay-options.test.ts	113	fixture	CJK width fixture for overlay layout.
+packages/tui/test/stdin-buffer.test.ts	48	fixture	CJK fixture for multi-byte input decoding.
+packages/tui/test/stdin-buffer.test.ts	49	fixture	CJK fixture for multi-byte input decoding.
+packages/tui/test/stdin-buffer.test.ts	431	fixture	CJK fixture for multi-byte input decoding.
+packages/tui/test/stdin-buffer.test.ts	433	fixture	CJK fixture for multi-byte input decoding.
+packages/tui/test/truncate-to-width.test.ts	60	fixture	CJK width fixture for shortening to a column budget.
+migration/reviews/phase23/evidence.tsv	338	fixture	Anchor column: the test line it quotes carries a CJK surrogate-pair fixture.
+migration/reviews/phase23/evidence.tsv	494	fixture	Anchor column: the test line it quotes carries a CJK surrogate-pair fixture.

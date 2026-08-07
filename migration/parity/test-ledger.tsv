@@ -1,0 +1,8 @@
+module	rs_count	ts_count	exclusions	notes
+@pie/mcp	12	38	0	All 12 #[test] in upstream crates/mcp are ported, plus 17 regression tests and client and http fixture cases produced by the review rounds
+@pie/ai	92	427	710-skipped-credential-gated	All 92 #[test] in upstream crates/ai are ported. All 710 skips are live-API cases that skip themselves in hermetic mode when no provider key is present (test.sh unsets every provider key and sets PI_NO_LOCAL_LLM=1); none is a gap
+@pie/agent-core	171	432	21-skipped-known-gaps	All 171 #[test] in upstream crates/agent are ported, plus 113 integration tests ported in phase 8 as an acceptance gate. The 21 skips are recorded one by one in migration/reviews/agent/gap-inventory.md
+@pie/coding-agent	491	2479	45-skipped	The 491 #[test] in upstream crates/coding-agent. Of the 45 skips, 4 are harness control_plane_prompt audit entries (migration/reviews/phase13) and the rest are gaps recorded in phases 13 and 14
+@pie/tui	—	612	0	A package that comes with the skeleton, with no corresponding upstream crate (upstream's TUI lives in coding-agent/tui.rs and ui/, already counted on the previous row). The 612 are the skeleton's existing tests, all green
+workers/fefe-hub	—	17	0	Upstream is TypeScript already; brought into the root build and test chain in phase 15, with no Rust counterpart
+**Total**	**766**	**4005**	**776-skipped**	rs_count totals 766 = every #[test] and #[tokio::test] across the upstream crates (ai 92 + agent 171 + coding-agent 491 + mcp 12), matching the threshold in the phase 17 acceptance criteria. ts_count 4005, all green, zero failures. Of the 776 skips, 710 are the hermetic credential gate and are not gaps, and 66 are known gaps recorded one by one

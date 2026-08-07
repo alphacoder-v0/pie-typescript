@@ -1,0 +1,15 @@
+pie-typescript — TypeScript rewrite of pie
+
+This repository contains code derived from:
+
+1. pi (https://github.com/earendil-works/pi), MIT License,
+   Copyright (c) 2025 Mario Zechner
+   — packages/{ai,agent,coding-agent,tui} vendored from commit 4868222e.
+
+2. pie (https://github.com/c4pt0r/pie), MIT License,
+   Copyright (c) 2026 c4pt0r (dongxu)
+   — behavioral specification (oracle) for the migration; workers/fefe-hub
+     copied from commit 0a120dfd; Rust modules ported per migration/manifest.tsv.
+
+All modifications for the TypeScript rewrite:
+   Copyright (c) 2026 the pie-typescript contributors, MIT License.

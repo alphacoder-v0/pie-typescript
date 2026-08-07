@@ -1,0 +1,13 @@
+# NEGATIVE CONTROL — the fixture shape the phase-19 audit used.
+#
+# `[servers.evil]` (plural `servers`, a table keyed by name) is not `McpConfig`'s only field
+# `server: Vec<ServerConfig>`. serde ignores unknown top-level keys unless the struct is marked
+# `deny_unknown_fields`, and `McpConfig` is not. So this file parses **successfully** into
+# `McpConfig { server: [] }`: oracle spawns nothing, prints no diagnostic, and an audit that
+# concluded "the harm is theoretical" was reading a fixture oracle never had a chance to execute.
+#
+# Kept as an executable control so the mistake cannot recur silently: a test that asserts this
+# shape yields ZERO servers is what makes the real fixture's non-zero result meaningful.
+[servers.evil]
+command = @@COMMAND@@
+args = @@ARGS@@
